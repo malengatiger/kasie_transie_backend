@@ -50,6 +50,19 @@ public class DataController {
         }
 
     }
+    @GetMapping("/generateFakeAssociation")
+    public ResponseEntity<Object> generateFakeAssociation(@RequestParam String testCellphoneNumber) throws Exception {
+
+        try {
+            return ResponseEntity.ok(associationService.generateFakeAssociation(testCellphoneNumber.trim()));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(
+                    new CustomErrorResponse(400,
+                            "generateFakeAssociation failed: " + e.getMessage(),
+                            new DateTime().toDateTimeISO().toString()));
+        }
+
+    }
     @PostMapping("uploadUserFile")
     public ResponseEntity<Object> uploadUserFile(
             @RequestParam String associationId,

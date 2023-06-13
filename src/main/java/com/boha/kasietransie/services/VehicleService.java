@@ -30,7 +30,7 @@ public class VehicleService {
     private static final Gson gson = new GsonBuilder().setPrettyPrinting().create();
     private static final Logger logger = Logger.getLogger(VehicleService.class.getSimpleName());
 
-    private static final String MM = "\uD83C\uDF4E\uD83C\uDF4E\uD83C\uDF4E\uD83C\uDF4E\uD83C\uDF4E\uD83C\uDF4E\uD83C\uDF4E\uD83C\uDF4E\uD83C\uDF4E ";
+    private static final String MM = "\uD83D\uDC26\uD83D\uDC26\uD83D\uDC26\uD83D\uDC26\uD83D\uDC26\uD83D\uDC26\uD83D\uDC26";
 
     public VehicleService(VehicleRepository vehicleRepository, AssociationRepository associationRepository) {
         this.vehicleRepository = vehicleRepository;

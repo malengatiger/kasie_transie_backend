@@ -1,9 +1,10 @@
 package com.boha.kasietransie.services;
 
-import com.boha.kasietransie.data.dto.Association;
-import com.boha.kasietransie.data.dto.RegistrationBag;
-import com.boha.kasietransie.data.dto.User;
+import com.boha.kasietransie.data.dto.*;
 import com.boha.kasietransie.data.repos.AssociationRepository;
+import com.boha.kasietransie.data.repos.CityRepository;
+import com.boha.kasietransie.data.repos.CountryRepository;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import org.joda.time.DateTime;
@@ -11,6 +12,8 @@ import org.springframework.stereotype.Service;
 import util.Constants;
 import util.E;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 import java.util.logging.Logger;
 
@@ -24,37 +27,104 @@ public class AssociationService {
 
     private final AssociationRepository associationRepository;
     private final UserService userService;
+    private final CountryRepository countryRepository;
+    private final CityRepository cityRepository;
 
 
-    public AssociationService(AssociationRepository associationRepository, UserService userService) {
+    public AssociationService(AssociationRepository associationRepository, UserService userService, CountryRepository countryRepository, CityRepository cityRepository) {
         this.associationRepository = associationRepository;
         this.userService = userService;
-        logger.info(MM +" VehicleService constructed ");
+        this.countryRepository = countryRepository;
+        this.cityRepository = cityRepository;
+        logger.info(MM + " AssociationService constructed ");
 
     }
 
     public RegistrationBag registerAssociation(Association association) throws Exception {
-        logger.info(E.LEAF+E.LEAF+ " registerAssociation starting ........... ");
-                Association ass = associationRepository.insert(association);
-        logger.info(E.LEAF+E.LEAF+ " Association: " + ass.getAssociationName() + " added to MongoDB database");
+        logger.info(E.LEAF + E.LEAF + " registerAssociation starting ........... ");
+        association.setDateRegistered(DateTime.now().toDateTimeISO().toString());
 
         User u = new User();
-        u.setAssociationId(ass.getAssociationId());
-        u.setFirstName(ass.getAdminUserFirstName());
-        u.setLastName(ass.getAdminUserLastName());
-        u.setCellphone(ass.getAdminCellphone());
+        u.setAssociationId(association.getAssociationId());
+        u.setFirstName(association.getAdminUserFirstName());
+        u.setLastName(association.getAdminUserLastName());
+        u.setCellphone(association.getAdminCellphone());
         u.setPassword(UUID.randomUUID().toString());
-        u.setEmail(ass.getAdminEmail());
-        u.setUserId(ass.getUserId());
-        u.setAssociationName(ass.getAssociationName());
-        u.setCountryId(ass.getCountryId());
-        u.setCountryName(ass.getCountryName());
+        u.setEmail(association.getAdminEmail());
+        u.setAssociationName(association.getAssociationName());
+        u.setCountryId(association.getCountryId());
+        u.setCountryName(association.getCountryName());
         u.setDateRegistered(DateTime.now().toDateTimeISO().toString());
         u.setUserType(Constants.ASSOCIATION_OFFICIAL);
 
-        User user = userService.createUser(u);
-        RegistrationBag bag = new RegistrationBag(ass, user);
-        logger.info(E.LEAF+E.LEAF+ " Association Admin Official: " + u.getName() + " registered OK");
+        Association ass = null;
+        try {
+            User user = userService.createUser(u);
+            association.setUserId(user.getUserId());
+            u.setUserId(user.getUserId());
+            ass = associationRepository.insert(association);
+            logger.info(E.LEAF + E.LEAF + " Association: " + ass.getAssociationName() + " added to MongoDB database");
+
+            RegistrationBag bag = new RegistrationBag(ass, user);
+            logger.info(E.LEAF + E.LEAF + " Association Admin Official: " + u.getName() + " registered OK");
+            return bag;
+
+        } catch (Exception e) {
+            try {
+                if (u.getUserId() == null) {
+                    FirebaseAuth.getInstance().deleteUser(u.getUserId());
+                    logger.info(E.RED_DOT + "Successfully deleted user.");
+                }
+                if (ass != null) {
+                    associationRepository.delete(ass);
+                }
+            } catch (Exception ex) {
+                throw new Exception("Firebase or MongoDB failed to create user or " +
+                        "association; registration broke down! : " + ex.getMessage());
+            }
+
+        }
+        throw new Exception("Firebase or MongoDB failed to create user or " +
+                "association; registration broke down; like, crashed and burned!!");
+    }
+
+    public RegistrationBag generateFakeAssociation(String testCellphoneNumber) throws Exception {
+        Association ass = new Association();
+        List<Country> cs = countryRepository.findByName("South Africa");
+        List<City> cities = cityRepository.findByName("Johannesburg");
+        RegistrationBag bag = null;
+        if (!cs.isEmpty()) {
+            ass.setAssociationName("The Greatest Taxi Association");
+            ass.setAssociationId(UUID.randomUUID().toString());
+            ass.setCountryId(cs.get(0).getCountryId());
+            ass.setCountryName(cs.get(0).getName());
+            if (!cities.isEmpty()) {
+                ass.setCityId(cities.get(0).getCityId());
+                ass.setCityName(cities.get(0).getName());
+            }
+            ass.setAdminEmail("fake2@thegreatest.co.za");
+            ass.setAdminCellphone("+" + testCellphoneNumber);
+            ass.setActive(0);
+            ass.setAdminUserFirstName("Thabiso Thomas");
+            ass.setAdminUserLastName("Moroka");
+            ass.setDateRegistered(DateTime.now().toDateTimeISO().toString());
+            final double lat = -26.195246;
+            final double lng = 28.034088;
+            List<Double> coords = new ArrayList<>();
+            coords.add(lng);
+            coords.add(lat);
+            ass.setPosition(new Position(
+                    "Point", coords, lat, lng
+            ));
+        }
+        if (ass.getAssociationName() != null) {
+            bag = registerAssociation(ass);
+            logger.info(E.RED_APPLE + E.RED_APPLE + " Fake association on the books! " + E.LEAF);
+            logger.info(E.RED_APPLE + E.RED_APPLE + " Fake association and admin user: " + gson.toJson(bag));
+        } else {
+            logger.severe(E.RED_DOT + " fake Association crashed and burned! " + E.RED_DOT);
+        }
+
         return bag;
     }
 }

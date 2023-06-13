@@ -39,7 +39,7 @@ public class MailService {
 
             mimeMessage.setContent(htmlContent, "text/html; charset=utf-8");
 
-            mailSender.send(mimeMessage);
+//            mailSender.send(mimeMessage);
             LOGGER.info(E.BELL + E.BELL + E.BELL + " Email message sent to " + to);
         } catch (Exception e) {
             e.printStackTrace();

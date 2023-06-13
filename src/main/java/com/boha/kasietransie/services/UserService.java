@@ -1,6 +1,5 @@
 package com.boha.kasietransie.services;
 
-import com.boha.kasietransie.KasieTransieBackendApplication;
 import com.boha.kasietransie.data.dto.Association;
 import com.boha.kasietransie.data.dto.User;
 import com.boha.kasietransie.data.repos.AssociationRepository;
@@ -14,7 +13,6 @@ import org.springframework.stereotype.Service;
 import util.FileToUsers;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
@@ -26,7 +24,7 @@ public class UserService {
     private final MailService mailService;
     private final AssociationRepository associationRepository;
     private static final Gson gson = new GsonBuilder().setPrettyPrinting().create();
-    private static final Logger logger = Logger.getLogger(KasieTransieBackendApplication.class.getSimpleName());
+    private static final Logger logger = Logger.getLogger(UserService.class.getSimpleName());
 
     private static final String MM = "\uD83D\uDD35\uD83D\uDC26\uD83D\uDD35\uD83D\uDC26\uD83D\uDD35\uD83D\uDC26 ";
 
@@ -34,7 +32,7 @@ public class UserService {
         this.userRepository = userRepository;
         this.mailService = mailService;
         this.associationRepository = associationRepository;
-        logger.info(MM +" UserService constructed ");
+        logger.info(MM + " UserService constructed ");
 
     }
 
@@ -42,6 +40,8 @@ public class UserService {
         logger.info("\uD83E\uDDE1\uD83E\uDDE1 create user : " + gson.toJson(user));
         FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
         logger.info("\uD83E\uDDE1\uD83E\uDDE1 createRequest  .... ");
+        String storedPassword = user.getPassword();
+
         try {
             UserRecord.CreateRequest createRequest = new UserRecord.CreateRequest();
             createRequest.setPhoneNumber(user.getCellphone());
@@ -51,31 +51,36 @@ public class UserService {
 
             logger.info("\uD83E\uDDE1\uD83E\uDDE1 createUserAsync  .... ");
 
-            ApiFuture<UserRecord> userRecord = firebaseAuth.createUserAsync(createRequest);
-            logger.info("\uD83E\uDDE1\uD83E\uDDE1 userRecord : " + gson.toJson(userRecord));
-            String uid = userRecord.get().getUid();
-            user.setUserId(uid);
+            ApiFuture<UserRecord> userRecordFuture = firebaseAuth.createUserAsync(createRequest);
+            UserRecord userRecord = userRecordFuture.get();
+            logger.info("\uD83E\uDDE1\uD83E\uDDE1 userRecord from Firebase : " + gson.toJson(userRecord));
+            if (userRecord.getUid() != null) {
+                String uid = userRecord.getUid();
+                user.setUserId(uid);
+                user.setPassword(null);
+                userRepository.insert(user);
+                user.setPassword(storedPassword);
+                String message = "Dear " + user.getName() +
+                        "      ,\n\nYou have been registered with KasieTransie and the team is happy to send you the first time login password. '\n" +
+                        "      \nPlease login on the web with your email and the attached password but use your cellphone number to sign in on the phone.\n" +
+                        "      \n\nThank you for working with GeoMonitor. \nWelcome aboard!!\nBest Regards,\nThe KasieTransie Team\ninfo@geomonitorapp.io\n\n";
 
-            user.setPassword(null);
-            String message = "Dear " + user.getName() +
-                    "      ,\n\nYou have been registered with KasieTransie and the team is happy to send you the first time login password. '\n" +
-                    "      \nPlease login on the web with your email and the attached password but use your cellphone number to sign in on the phone.\n" +
-                    "      \n\nThank you for working with GeoMonitor. \nWelcome aboard!!\nBest Regards,\nThe KasieTransie Team\ninfo@geomonitorapp.io\n\n";
-
-            logger.info("\uD83E\uDDE1\uD83E\uDDE1 sending email  .... ");
-
-            mailService.sendHtmlEmail(user.getEmail(), message, "Welcome to GeoMonitor");
-            logger.info("\uD83E\uDDE1\uD83E\uDDE1 create user completed. ");
+                logger.info("\uD83E\uDDE1\uD83E\uDDE1 sending email  .... ");
+                mailService.sendHtmlEmail(user.getEmail(), message, "Welcome to KasieTransie");
+                logger.info("\uD83E\uDDE1\uD83E\uDDE1 KasieTransie user created. ");
+            } else {
+                throw new Exception("We have a problem with Firebase, Jack! ... or maybe MongoDB?");
+            }
 
         } catch (InterruptedException e) {
             e.printStackTrace();
             throw e;
         }
 
-        return userRepository.insert(user);
+        return user;
     }
 
-    public  List<User> importUsersFromJSON(File file, String associationId) throws Exception {
+    public List<User> importUsersFromJSON(File file, String associationId) throws Exception {
         List<Association> orgs = associationRepository.findByAssociationId(associationId);
         List<User> resultUsers = new ArrayList<>();
         if (!orgs.isEmpty()) {
@@ -91,7 +96,8 @@ public class UserService {
         logger.info("Users imported from file: " + resultUsers.size());
         return resultUsers;
     }
-    public  List<User> importUsersFromCSV(File file, String associationId) throws Exception {
+
+    public List<User> importUsersFromCSV(File file, String associationId) throws Exception {
         List<Association> orgs = associationRepository.findByAssociationId(associationId);
         List<User> resultUsers = new ArrayList<>();
         if (!orgs.isEmpty()) {
