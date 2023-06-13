@@ -1,0 +1,58 @@
+[
+  {
+    "ownerName": "Big John Tate",
+    "vehicleReg": "DBK 52 GP",
+    "model": "Quantum",
+    "make": "Toyota",
+    "year": "2021",
+    "passengerCapacity": 16
+  },
+  {
+    "ownerName": "Frederick Johnson",
+    "vehicleReg": "BVD 50 GP",
+    "model": "Quantum",
+    "make": "Toyota",
+    "year": "2020",
+    "passengerCapacity": 16
+  },
+  {
+    "ownerName": "David J Tate",
+    "vehicleReg": "PVF 17 GP",
+    "model": "Quantum",
+    "make": "Toyota",
+    "year": "2018",
+    "passengerCapacity": 16
+  },
+  {
+    "ownerName": "Mary Ferreira",
+    "vehicleReg": "VTR 65 GP",
+    "model": "Quantum",
+    "make": "Toyota",
+    "year": "2014",
+    "passengerCapacity": 16
+  },
+  {
+    "ownerName": "Samuel Nkosi",
+    "vehicleReg": "DGV 18 GP",
+    "model": "Quantum",
+    "make": "Toyota",
+    "year": "2019",
+    "passengerCapacity": 16
+  },
+  {
+    "ownerName": "Florence Deepfake",
+    "vehicleReg": "DXV 98 GP",
+    "model": "Quantum",
+    "make": "Toyota",
+    "year": "2019",
+    "passengerCapacity": 16
+  },
+  {
+    "ownerName": "Taboo Josephs",
+    "vehicleReg": "PTB 18 GP",
+    "model": "Quantum",
+    "make": "Toyota",
+    "year": "2017",
+    "passengerCapacity": 16
+  }
+]
