@@ -1,12 +1,7 @@
 package com.boha.kasietransie.controllers;
 
-import com.boha.kasietransie.data.dto.Association;
-import com.boha.kasietransie.data.dto.User;
-import com.boha.kasietransie.data.dto.Vehicle;
-import com.boha.kasietransie.services.AssociationService;
-import com.boha.kasietransie.services.MongoService;
-import com.boha.kasietransie.services.UserService;
-import com.boha.kasietransie.services.VehicleService;
+import com.boha.kasietransie.data.dto.*;
+import com.boha.kasietransie.services.*;
 import com.google.common.io.Files;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -36,12 +31,72 @@ public class DataController {
     private final UserService userService;
     private final VehicleService vehicleService;
     private final AssociationService associationService;
+    private final GeofenceService geofenceService;
+    private final DispatchService dispatchService;
+    private final LandmarkService landmarkService;
+    private final RouteService routeService;
 
     @PostMapping("/addVehicle")
     public ResponseEntity<Object> addVehicle(@RequestBody Vehicle vehicle) throws Exception {
 
         try {
             Vehicle v = vehicleService.addVehicle(vehicle);
+            return ResponseEntity.ok(v);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(
+                    new CustomErrorResponse(400,
+                            "addVehicle failed: " + e.getMessage(),
+                            new DateTime().toDateTimeISO().toString()));
+        }
+
+    }
+    @PostMapping("/addLandmark")
+    public ResponseEntity<Object> addLandmark(@RequestBody Landmark landmark)  {
+
+        try {
+            Landmark v = landmarkService.addLandmark(landmark);
+            return ResponseEntity.ok(v);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(
+                    new CustomErrorResponse(400,
+                            "addLandmark failed: " + e.getMessage(),
+                            new DateTime().toDateTimeISO().toString()));
+        }
+
+    }
+    @PostMapping("/addRoute")
+    public ResponseEntity<Object> addRoute(@RequestBody Route route)  {
+
+        try {
+            Route v = routeService.addRoute(route);
+            return ResponseEntity.ok(v);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(
+                    new CustomErrorResponse(400,
+                            "addRoute failed: " + e.getMessage(),
+                            new DateTime().toDateTimeISO().toString()));
+        }
+
+    }
+    @PostMapping("/addRoutePoints")
+    public ResponseEntity<Object> addRoutePoints(@RequestBody List<RoutePoint> routePoints)  {
+
+        try {
+            int v = routeService.addRoutePoints(routePoints);
+            return ResponseEntity.ok(v);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(
+                    new CustomErrorResponse(400,
+                            "addRoutePoints failed: " + e.getMessage(),
+                            new DateTime().toDateTimeISO().toString()));
+        }
+
+    }
+    @PostMapping("/addDispatchRecord")
+    public ResponseEntity<Object> addDispatchRecord(@RequestBody DispatchRecord dispatchRecord) throws Exception {
+
+        try {
+            DispatchRecord v = dispatchService.addDispatchRecord(dispatchRecord);
             return ResponseEntity.ok(v);
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(
@@ -61,6 +116,33 @@ public class DataController {
             return ResponseEntity.badRequest().body(
                     new CustomErrorResponse(400,
                             "registerAssociation failed: " + e.getMessage(),
+                            new DateTime().toDateTimeISO().toString()));
+        }
+
+    }
+    @PostMapping("/addVehicleGeofenceEvent")
+    public ResponseEntity<Object> addVehicleGeofenceEvent(@RequestBody VehicleGeofenceEvent event) throws Exception {
+
+        try {
+            return ResponseEntity.ok(geofenceService.addVehicleGeofenceEvent(event));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(
+                    new CustomErrorResponse(400,
+                            "addVehicleGeofenceEvent failed: " + e.getMessage(),
+                            new DateTime().toDateTimeISO().toString()));
+        }
+
+    }
+
+    @PostMapping("/addUserGeofenceEvent")
+    public ResponseEntity<Object> addUserGeofenceEvent(@RequestBody UserGeofenceEvent event) throws Exception {
+
+        try {
+            return ResponseEntity.ok(geofenceService.addUserGeofenceEvent(event));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(
+                    new CustomErrorResponse(400,
+                            "addUserGeofenceEvent failed: " + e.getMessage(),
                             new DateTime().toDateTimeISO().toString()));
         }
 
