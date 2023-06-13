@@ -5,10 +5,34 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="a7485aca-7a98-4bda-a4fb-cbb0b1e4b4ad" name="Changes" comment="🥬association and admin user registration done">
+      <change afterPath="$PROJECT_DIR$/.idea/csv-editor.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/boha/kasietransie/data/dto/DispatchRecord.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/boha/kasietransie/data/dto/UserGeofenceEvent.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/boha/kasietransie/data/dto/VehicleGeofenceEvent.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/boha/kasietransie/data/repos/UserGeofenceEventRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/boha/kasietransie/data/repos/VehicleGeofenceEventRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/boha/kasietransie/services/GeofenceService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/users.csv" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/users.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/users_excel.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/vehicles.csv" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/vehicles.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/vehicles_excel.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/users.csv" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/users.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/users_excel.png" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/boha/kasietransie/controllers/DataController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/boha/kasietransie/controllers/DataController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/boha/kasietransie/services/AssociationService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/boha/kasietransie/services/AssociationService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/boha/kasietransie/data/dto/Association.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/boha/kasietransie/data/dto/Association.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/boha/kasietransie/data/dto/City.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/boha/kasietransie/data/dto/City.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/boha/kasietransie/data/dto/Country.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/boha/kasietransie/data/dto/Country.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/boha/kasietransie/data/dto/State.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/boha/kasietransie/data/dto/State.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/boha/kasietransie/data/dto/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/boha/kasietransie/data/dto/User.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/boha/kasietransie/data/dto/Vehicle.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/boha/kasietransie/data/dto/Vehicle.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/boha/kasietransie/services/MongoService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/boha/kasietransie/services/MongoService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/boha/kasietransie/services/VehicleService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/boha/kasietransie/services/VehicleService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/util/FileToUsers.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/util/FileToUsers.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/util/FileToVehicles.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/util/FileToVehicles.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -67,11 +91,15 @@
       <recent name="$PROJECT_DIR$/src/main/resources" />
       <recent name="$PROJECT_DIR$" />
     </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/src/main/resources" />
+      <recent name="$PROJECT_DIR$" />
+    </key>
     <key name="CopyClassDialog.RECENTS_KEY">
-      <recent name="com.boha.kasietransie.services" />
-      <recent name="util" />
       <recent name="com.boha.kasietransie.data.repos" />
       <recent name="com.boha.kasietransie.data.dto" />
+      <recent name="com.boha.kasietransie.services" />
+      <recent name="util" />
       <recent name="com.boha.kasietransie.config" />
     </key>
   </component>
@@ -152,7 +180,14 @@
       <option name="project" value="LOCAL" />
       <updated>1686645218479</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="🥬association and admin user registration done">
+      <created>1686647344256</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1686647344256</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">

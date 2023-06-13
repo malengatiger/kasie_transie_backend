@@ -19,6 +19,7 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 public class FileToUsers {
+    private FileToUsers(){}
     private static final Gson G = new GsonBuilder().setPrettyPrinting().create();
     private static final Logger LOGGER = LoggerFactory.getLogger(FileToUsers.class);
 

@@ -494,153 +494,21 @@ public class MongoService {
         logger.info(XX + " MongoService has started setup of indexes ... " + E.BELL + E.BELL);
 
         try {
-            createCityIndexes();
-            createCountryIndexes();
+            Vehicle.createIndex(db);
+            User.createIndex(db);
+            Country.createIndex(db);
+            DispatchRecord.createIndex(db);
+            State.createIndex(db);
+            User.createIndex(db);
+            VehicleGeofenceEvent.createIndex(db);
+            Association.createIndex(db);
+            UserGeofenceEvent.createIndex(db);
 
             logger.info(XX + " MongoService has completed setup of indexes " + E.BELL + E.BELL);
 
         } catch (Exception e) {
             logger.severe(E.RED_DOT + E.RED_DOT + " Index building failed: " + e.getMessage());
         }
-    }
-
-    private void createCountryIndexes() {
-        //add index
-        MongoCollection<Document> dbCollection = db.getCollection(Country.class.getSimpleName());
-
-        String result2 = dbCollection.createIndex(Indexes.ascending("name"),
-                new IndexOptions().unique(true));
-
-        logger.info(E.BLUE_DOT + E.BLUE_BIRD + "Indexes created for Country: " + result2);
-
-    }
-
-//    private void createOrganizationIndexes() {
-//        //add index
-//        MongoCollection<Document> dbCollection = db.getCollection(Organization.class.getSimpleName());
-//
-//        String result2 = dbCollection.createIndex(Indexes.ascending("name"),
-//                new IndexOptions().unique(true));
-//
-//        dbCollection.createIndex(Indexes.ascending("organizationId"));
-//        logger.info(E.BLUE_DOT+E.BLUE_BIRD+ "Indexes created for Organization");
-//
-//    }
-//
-//    private void createSettingsIndexes() {
-//        //add index
-//        MongoCollection<Document> dbCollection = db.getCollection(SettingsModel.class.getSimpleName());
-//
-//        dbCollection.createIndex(Indexes.ascending("organizationId"));
-//        dbCollection.createIndex(Indexes.ascending("projectId"));
-//        logger.info(E.BLUE_DOT+E.BLUE_BIRD+ "Indexes created for SettingsModel");
-//
-//    }
-//
-//    private void createProjectIndexes() {
-//        //add index
-//        MongoCollection<Document> dbCollection = db.getCollection(Project.class.getSimpleName());
-//
-//        dbCollection.createIndex(Indexes.ascending("organizationId", "name"),
-//                new IndexOptions().unique(true));
-//
-//        dbCollection.createIndex(Indexes.ascending("organizationId"));
-//        logger.info(E.BLUE_DOT+E.BLUE_BIRD+ "Indexes created for Project");
-//
-//    }
-//
-//    private void createProjectSummaryIndexes() {
-//        //add index
-//        MongoCollection<Document> dbCollection = db.getCollection(ProjectSummary.class.getSimpleName());
-//
-//        dbCollection.createIndex(Indexes.ascending("organizationId", "date"),
-//                new IndexOptions().unique(false));
-//
-//        dbCollection.createIndex(Indexes.ascending("projectId", "date"),
-//                new IndexOptions().unique(false));
-//
-//        dbCollection.createIndex(Indexes.ascending("organizationId"));
-//        dbCollection.createIndex(Indexes.ascending("projectId"));
-//        dbCollection.createIndex(Indexes.ascending("date"));
-//        logger.info(E.BLUE_DOT+E.BLUE_BIRD+ "Indexes created for ProjectSummary");
-//
-//    }
-//
-//    private void createUserIndexes() {
-//        //add index
-//        MongoCollection<Document> dbCollection = db.getCollection(User.class.getSimpleName());
-//
-//        dbCollection.createIndex(Indexes.ascending("email"),
-//                new IndexOptions().unique(false));
-//
-//        dbCollection.createIndex(Indexes.ascending("cellphone"));
-//        dbCollection.createIndex(Indexes.ascending("organizationId"));
-//        logger.info(E.BLUE_DOT+E.BLUE_BIRD+ "Indexes created for User");
-//    }
-//
-//    private void createCommunityIndexes() {
-//        //add index
-//        MongoCollection<Document> dbCollection = db.getCollection(Community.class.getSimpleName());
-//
-//        dbCollection.createIndex(Indexes.ascending("name", "countryId"),
-//                new IndexOptions().unique(true));
-//        dbCollection.createIndex(Indexes.ascending("countryId"));
-//        logger.info(E.BLUE_DOT+E.BLUE_BIRD+ "Indexes created for Community");
-//
-//    }
-//
-//    private void createAudioIndexes() {
-//        //add index
-//        MongoCollection<Document> dbCollection = db.getCollection(Audio.class.getSimpleName());
-//
-//        dbCollection.createIndex(Indexes.ascending("projectId"),
-//                new IndexOptions().unique(false));
-//
-//        dbCollection.createIndex(Indexes.ascending("userId"));
-//        dbCollection.createIndex(Indexes.geo2dsphere("position"));
-//        dbCollection.createIndex(Indexes.ascending("organizationId"));
-//        logger.info(E.BLUE_DOT+E.BLUE_BIRD+ "Indexes created for Audio");
-//
-//    }
-//
-//    private void createSchedulesIndexes() {
-//        //add index
-//        MongoCollection<Document> dbCollection = db.getCollection(FieldMonitorSchedule.class.getSimpleName());
-//
-//        dbCollection.createIndex(Indexes.ascending("projectId"),
-//                new IndexOptions().unique(false));
-//
-//        dbCollection.createIndex(Indexes.ascending("userId"));
-//        dbCollection.createIndex(Indexes.geo2dsphere("position"));
-//
-//        logger.info(E.BLUE_DOT+E.BLUE_BIRD+ "Indexes created for FieldMonitorSchedule");
-//
-//    }
-//
-//    private void createStateIndex() {
-//        MongoCollection<Document> dbCollection = db.getCollection(State.class.getSimpleName());
-//
-//        dbCollection.createIndex(Indexes.ascending("countryId", "name"),
-//                new IndexOptions().unique(true));
-//        logger.info(E.BLUE_DOT+E.BLUE_BIRD+ "Indexes created for State");
-//
-//    }
-//
-//    private static final String XX = E.LEAF + " ";
-
-    private void createCityIndexes() {
-        //add index
-        MongoCollection<Document> dbCollection = db.getCollection(City.class.getSimpleName());
-
-        dbCollection.createIndex(Indexes.geo2dsphere("position"));
-        dbCollection.createIndex(Indexes.ascending("stateId"));
-        dbCollection.createIndex(Indexes.ascending("countryId"));
-        dbCollection.createIndex(Indexes.ascending("countryId", "stateId", "name"),
-                new IndexOptions().unique(true));
-
-        logger.info(E.BLUE_DOT + E.BLUE_BIRD + "Indexes created for City");
-
-
     }
 
     public String checkDatabaseTotals() {

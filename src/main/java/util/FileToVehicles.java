@@ -20,6 +20,7 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 public class FileToVehicles {
+    private FileToVehicles(){};
     private static final Gson G = new GsonBuilder().setPrettyPrinting().create();
     private static final Logger LOGGER = LoggerFactory.getLogger(FileToVehicles.class);
 
@@ -32,7 +33,8 @@ public class FileToVehicles {
             Type listType = new TypeToken<ArrayList<Vehicle>>() {
             }.getType();
             users = G.fromJson(json, listType);
-            LOGGER.info("\uD83C\uDF4E\uD83C\uDF4E\uD83C\uDF4E Vehicle objects created: " + users.size());
+            LOGGER.info("\uD83C\uDF4E\uD83C\uDF4E\uD83C\uDF4E " +
+                    "Vehicle objects created: " + users.size());
 
         } catch (Exception e) {
             e.printStackTrace();

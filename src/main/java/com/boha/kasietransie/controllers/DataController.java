@@ -84,6 +84,35 @@ public class DataController {
         }
 
     }
+    @GetMapping("/generateFakeVehiclesFromFile")
+    public ResponseEntity<Object> generateFakeVehiclesFromFile(@RequestParam String associationId) throws Exception {
+
+        try {
+            return ResponseEntity.ok(vehicleService.generateFakeVehiclesFromFile(
+                    associationId));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(
+                    new CustomErrorResponse(400,
+                            "generateFakeVehiclesFromFile failed: " + e.getMessage(),
+                            new DateTime().toDateTimeISO().toString()));
+        }
+
+    }
+    @GetMapping("/generateFakeVehicles")
+    public ResponseEntity<Object> generateFakeVehicles(@RequestParam String associationId,
+                                                       @RequestParam int number) {
+
+        try {
+            return ResponseEntity.ok(vehicleService.generateFakeVehicles(
+                    associationId,number));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(
+                    new CustomErrorResponse(400,
+                            "generateFakeVehicles failed: " + e.getMessage(),
+                            new DateTime().toDateTimeISO().toString()));
+        }
+
+    }
 
     @PostMapping("uploadUserFile")
     public ResponseEntity<Object> uploadUserFile(

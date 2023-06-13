@@ -1,12 +1,20 @@
 package com.boha.kasietransie.data.dto;
 
+import com.mongodb.client.MongoCollection;
+import com.mongodb.client.MongoDatabase;
+import com.mongodb.client.model.IndexOptions;
+import com.mongodb.client.model.Indexes;
 import lombok.Data;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+import util.E;
+
+import java.util.logging.Logger;
 
 @Data
 @Document(collection = "User")
 public class User {
+    private String _partitionKey;
     @Id
     private String _id;
     String userType;
@@ -25,6 +33,26 @@ public class User {
     String dateRegistered;
 
 
+    private static final Logger logger = Logger.getLogger(Vehicle.class.getSimpleName());
+    private static final String XX = E.COFFEE + E.COFFEE + E.COFFEE;
+
+    public static void createIndex(MongoDatabase db) {
+        MongoCollection<org.bson.Document> dbCollection =
+                db.getCollection(User.class.getSimpleName());
+
+        dbCollection.createIndex(
+                Indexes.ascending("email"),
+                new IndexOptions().unique(true));
+        dbCollection.createIndex(
+                Indexes.ascending("cellphone"),
+                new IndexOptions().unique(true));
+
+        dbCollection.createIndex(
+                Indexes.ascending("associationId","lastName","firstName"),
+                new IndexOptions().unique(true));
+
+        logger.info(XX + "User indexes done; result: ");
+    }
     public String getName() {
         return firstName + " " + lastName;
     }

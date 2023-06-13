@@ -12,42 +12,41 @@ import util.E;
 import java.util.logging.Logger;
 
 @Data
-@Document(collection = "Association")
-public class Association {
+@Document(collection = "VehicleGeofenceEvent")
+public class VehicleGeofenceEvent {
     private String _partitionKey;
     @Id
     private String _id;
-    String associationId;
-    String cityId;
-    String countryId;
-    String associationName;
-    int active;
-    String countryName;
-    String cityName;
-    String dateRegistered;
+    String landmarkId;
+    String activityType;
+    String action;
+    String vehicleId;
+    long longDate;
+    String date;
+    String vehicleReg;
+    String make;
+    String landmarkName;
+    int confidence;
+    double odometer;
+    boolean moving;
     Position position;
-    String adminUserFirstName;
-    String adminUserLastName;
-    String userId;
-    String adminCellphone;
-    String adminEmail;
 
     private static final Logger logger = Logger.getLogger(Vehicle.class.getSimpleName());
     private static final String XX = E.COFFEE + E.COFFEE + E.COFFEE;
 
     public static void createIndex(MongoDatabase db) {
         MongoCollection<org.bson.Document> dbCollection =
-                db.getCollection(Association.class.getSimpleName());
+                db.getCollection(VehicleGeofenceEvent.class.getSimpleName());
 
         dbCollection.createIndex(
-                Indexes.ascending("associationId"));
+                Indexes.ascending( "landmarkId", "created"));
 
         dbCollection.createIndex(
-                Indexes.ascending("countryId","associationName"),
-                new IndexOptions().unique(true));
+                Indexes.ascending( "vehicleId", "created"));
 
-        logger.info(XX + "Association indexes done");
+        dbCollection.createIndex(
+                Indexes.geo2dsphere("position"));
+
+        logger.info(XX + "VehicleGeofenceEvent indexes done");
     }
-
-
 }
