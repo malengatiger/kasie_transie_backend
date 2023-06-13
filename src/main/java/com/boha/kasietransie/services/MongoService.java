@@ -4,7 +4,6 @@ import com.boha.kasietransie.data.dto.*;
 import com.boha.kasietransie.data.repos.CityRepository;
 import com.boha.kasietransie.data.repos.CountryRepository;
 import com.boha.kasietransie.data.repos.StateRepository;
-import com.boha.kasietransie.data.repos.UserRepository;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.mongodb.bulk.BulkWriteResult;
@@ -56,7 +55,6 @@ public class MongoService {
     public MongoService(CityRepository cityRepo,
                         MongoClient mongoClient,
                         ResourceLoader resourceLoader,
-                        UserRepository userRepository,
                         CountryRepository countryRepository,
                         StateRepository stateRepository,
                         MongoTemplate mongoTemplate) {
@@ -116,21 +114,31 @@ public class MongoService {
     }
 
     private void citiesBulkInsert(List<City> cities) {
-        logger.info("\n\n" + E.DICE + E.DICE + " Bulk insert of " + cities.size() + " cities starting ... ");
+        logger.info("\n\n" + E.DICE + E.DICE + E.DICE + E.DICE + E.DICE +
+                " Bulk insert of " + cities.size() + " cities starting ... ");
         Instant start = Instant.now();
 
-        BulkOperations bulkInsertion = mongoTemplate.bulkOps(
-                BulkOperations.BulkMode.UNORDERED, City.class);
-        bulkInsertion.insert(cities);
-        BulkWriteResult bulkWriteResult = bulkInsertion.execute();
+        int inserted = 0;
+        BulkWriteResult bulkWriteResult = null;
+        try {
+            BulkOperations bulkInsertion = mongoTemplate.bulkOps(
+                    BulkOperations.BulkMode.UNORDERED, City.class);
+            bulkInsertion.insert(cities);
+            bulkWriteResult = bulkInsertion.execute();
+            inserted = bulkWriteResult.getInsertedCount();
+            logger.info(E.DICE + E.DICE + " Bulk insert of Cities added: " + inserted + " documents; elapsed time: "
+                    + Duration.between(start, Instant.now()).toSeconds() + " seconds");
+        } catch (Exception e) {
+            if (bulkWriteResult != null) {
+                int failed = cities.size() - bulkWriteResult.getInsertedCount();
+                logger.severe("Problem with bulk write; inserted: " + bulkWriteResult.getInsertedCount()
+                        + " - failed: " + failed + " " + e.getMessage());
+                if (failed > 0) {
+                    logger.info(E.RED_DOT + E.RED_DOT + " Cities failed during bulk insert: "
+                            + failed + "; possible duplicates " + E.RED_DOT);
+                }
+            }
 
-        long inserted = bulkWriteResult.getInsertedCount();
-        logger.info(E.DICE + E.DICE + " Bulk insert of Cities added: " + inserted + " documents; elapsed time: "
-                + Duration.between(start, Instant.now()).toSeconds() + " seconds");
-
-        long failed = cities.size() - inserted;
-        if (failed > 0) {
-            logger.info(E.RED_DOT + E.RED_DOT + " Cities failed during bulk insert: " + failed + "; possible duplicates " + E.RED_DOT);
         }
     }
 
@@ -302,13 +310,13 @@ public class MongoService {
         return null;
     }
 
-    private List<City> getCitiesFromFile() throws IOException {
+    private List<City> getSouthAfricanCitiesFromFile() throws IOException {
         logger.info(XX + " Getting cities from file ... current file: South Africa ");
         Resource resource = resourceLoader.getResource("classpath:cities.json");
         File file = resource.getFile();
         logger.info(XX + " Cities json file length: " + file.length());
         //get all states in SA
-        String COUNTRY_ID = "9a41505e-bee3-4382-859b-090845f89367";
+        String COUNTRY_ID = "7a2328bf-915f-4194-82ae-6c220c046cac";
         List<State> states =
                 stateRepository.findByCountryId(COUNTRY_ID);
 
@@ -352,6 +360,7 @@ public class MongoService {
             } else {
                 city.setCountry("South Africa");
                 city.setStateName(province);
+                city.setStateId(UUID.randomUUID().toString());
             }
             city.setCountryId(COUNTRY_ID);
             city.setCountry("South Africa");
@@ -364,11 +373,11 @@ public class MongoService {
         return cities;
     }
 
-    public long addCitiesToDB() throws Exception {
-        logger.info(XX + " ... adding cities to MongoDB ...");
+    public long addSouthAfricanCitiesToDB() throws Exception {
+        logger.info(XX + " ... adding South African cities to MongoDB ...");
         long start = System.currentTimeMillis();
 
-        List<City> cities = getCitiesFromFile();
+        List<City> cities = getSouthAfricanCitiesFromFile();
 
         long end1 = System.currentTimeMillis();
         long elapsed1 = (end1 - start);
@@ -377,14 +386,13 @@ public class MongoService {
                 + " it took " + elapsed1 + " milliseconds to build list: "
                 + cities.size());
 
-        processCities(cities);
+        processCities(cities, 2000);
 
         return cities.size();
     }
 
     public String addCountriesStatesCitiesToDB() throws Exception {
         CountryBag countryBag = getCountriesFromFile();
-
         Instant start = Instant.now();
 
         cityRepo.deleteAll();
@@ -397,11 +405,11 @@ public class MongoService {
         countriesBulkInsert(countryBag.getCountries());
         logger.info(XX + " countries added to DB: ");
 
-        int NUMBER_STATES = 1000;
+        int STATE_BATCH_SIZE = 1000;
         List<State> states = countryBag.getStates();
 
-        int numberOfStateBatches = states.size() / NUMBER_STATES;
-        int rem = states.size() % NUMBER_STATES;
+        int numberOfStateBatches = states.size() / STATE_BATCH_SIZE;
+        int rem = states.size() % STATE_BATCH_SIZE;
         if (rem > 0) {
             numberOfStateBatches++;
         }
@@ -409,7 +417,7 @@ public class MongoService {
 
         for (int i = 0; i < numberOfStateBatches; i++) {
             try {
-                List<State> list = states.subList(i * NUMBER_STATES, (i + 1) * NUMBER_STATES);
+                List<State> list = states.subList(i * STATE_BATCH_SIZE, (i + 1) * STATE_BATCH_SIZE);
                 statesBulkInsert(list);
                 logger.info(XX + " states added to DB: " + E.RED_APPLE + " batch #" + (i + 1)
                         + " count: " + list.size() + "\n");
@@ -420,7 +428,7 @@ public class MongoService {
                 } else {
                     //get the rest ...
                     logger.severe(E.RED_DOT + " City Batches complete? " + e.getMessage() + " index: " + i);
-                    List<State> list = states.subList(i * NUMBER_STATES, states.size() - 1);
+                    List<State> list = states.subList(i * STATE_BATCH_SIZE, states.size() - 1);
                     statesBulkInsert(list);
                     logger.info(XX + " states added to DB: " + E.RED_APPLE + " batch #" + (i + 1)
                             + " count: " + list.size() + "\n");
@@ -428,7 +436,7 @@ public class MongoService {
             }
         }
         //
-        processCities(countryBag.getCities());
+        processCities(countryBag.getCities(), 10000);
 
         long a = countryRepository.count();
         long b = stateRepository.count();
@@ -443,10 +451,9 @@ public class MongoService {
         return countryBag.toString();
     }
 
-    private void processCities(List<City> cities) {
-        int NUMBER_CITIES = 10000;
-        int numberOfCityBatches = cities.size() / NUMBER_CITIES;
-        int rem2 = cities.size() % NUMBER_CITIES;
+    private void processCities(List<City> cities, int batchSize) {
+        int numberOfCityBatches = cities.size() / batchSize;
+        int rem2 = cities.size() % batchSize;
         if (rem2 > 0) {
             numberOfCityBatches++;
         }
@@ -455,18 +462,19 @@ public class MongoService {
 
         for (int i = 0; i < numberOfCityBatches; i++) {
             try {
-                List<City> list = cities.subList(i * NUMBER_CITIES, (i + 1) * NUMBER_CITIES);
+                List<City> list = cities.subList(i * batchSize, (i + 1) * batchSize);
                 citiesBulkInsert(list);
                 logger.info(XX + " cities added to DB: " + E.RED_APPLE + " batch #" + (i + 1)
                         + " count: " + list.size() + "\n");
             } catch (Exception e) {
                 if (e.getMessage().contains("Bulk write operation error")) {
-                    logger.info(E.RED_DOT + E.RED_DOT + " Bulk write operation error, means that some docs were duplicates!");
+                    logger.info(E.RED_DOT + E.RED_DOT +
+                            " Bulk write operation error, means that some docs were duplicates!");
                 } else {
                     //get the rest ...
                     logger.severe(E.RED_DOT + " City Batches complete? " + e.getMessage() + " index: " + i);
 
-                    List<City> list = cities.subList(i * NUMBER_CITIES, cities.size() - 1);
+                    List<City> list = cities.subList(i * batchSize, cities.size() - 1);
                     citiesBulkInsert(list);
                     logger.info(XX + " cities added to DB: " + E.RED_APPLE + " batch #" + (i + 1)
                             + " count: " + list.size() + "\n");
@@ -633,6 +641,19 @@ public class MongoService {
         logger.info(E.BLUE_DOT + E.BLUE_BIRD + "Indexes created for City");
 
 
+    }
+
+    public String checkDatabaseTotals() {
+        long countries = countryRepository.count();
+        long states = stateRepository.count();
+        long cities = cityRepo.count();
+
+        StringBuilder sb = new StringBuilder();
+        sb.append("countries: ").append(countries).append("\n");
+        sb.append("states: ").append(states).append("\n");
+        sb.append("cities: ").append(cities).append("\n");
+        logger.info(E.RED_APPLE + E.RED_APPLE + "DATABASE COUNTS: " + sb.toString());
+        return sb.toString();
     }
 
 

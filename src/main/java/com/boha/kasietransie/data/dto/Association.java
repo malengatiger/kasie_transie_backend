@@ -5,7 +5,7 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Data
-@Document()
+@Document(collection = "Association")
 public class Association {
     @Id
     private String _id;
@@ -13,11 +13,17 @@ public class Association {
     String cityId;
     String countryId;
     String associationName;
-    String phone;
-    String status;
+    int active;
     String countryName;
     String cityName;
-    String stringDate;
-    int date;
-    String path;
+    String dateRegistered;
+    Position position;
+    String adminUserFirstName;
+    String adminUserLastName;
+    String userId;
+    String adminCellphone;
+    String adminEmail;
+
+
+
 }

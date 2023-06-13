@@ -25,6 +25,6 @@ server:
 spring:
     data:
         mongodb:
-            database: mongo_geo
+            database: kasie_transie_db
 storageBucket: thermal-effort-366015.appspot.com
 surnames: surnames.json
