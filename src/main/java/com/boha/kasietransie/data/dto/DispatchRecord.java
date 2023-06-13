@@ -31,7 +31,7 @@ public class DispatchRecord {
     String vehicleId;
     String vehicleArrivalId;
     String vehicleReg;
-    String associationD;
+    String associationId;
     String associationName;
     boolean dispatched;
 

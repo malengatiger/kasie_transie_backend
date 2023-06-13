@@ -15,8 +15,8 @@ public class RoutePoint {
     double heading;
     int index;
     String created;
-    String routeID;
-    String landmarkID;
+    String routeId;
+    String landmarkId;
     String landmarkName;
     Position position;
 }

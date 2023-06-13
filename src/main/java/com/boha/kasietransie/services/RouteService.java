@@ -1,6 +1,5 @@
 package com.boha.kasietransie.services;
 
-import com.boha.kasietransie.data.dto.City;
 import com.boha.kasietransie.data.dto.Route;
 import com.boha.kasietransie.data.dto.RoutePoint;
 import com.boha.kasietransie.data.repos.RoutePointRepository;
@@ -49,8 +48,8 @@ public class RouteService {
         }
         HashMap<String, String> map = new HashMap<>();
         for (RoutePoint routePoint : mList) {
-            if (!map.containsKey(routePoint.getRouteID())) {
-                map.put(routePoint.getRouteID(),routePoint.getRouteID());
+            if (!map.containsKey(routePoint.getRouteId())) {
+                map.put(routePoint.getRouteId(),routePoint.getRouteId());
             }
         }
         for (String value : map.values()) {

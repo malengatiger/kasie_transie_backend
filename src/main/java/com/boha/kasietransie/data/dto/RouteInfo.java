@@ -5,8 +5,8 @@ import lombok.Data;
 @Data
 public class RouteInfo {
     String name;
-    String routeID;
-    String associationID;
+    String routeId;
+    String associationId;
     String associationName;
 
 }

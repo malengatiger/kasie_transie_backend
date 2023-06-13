@@ -35,9 +35,10 @@ public class DataController {
     private final DispatchService dispatchService;
     private final LandmarkService landmarkService;
     private final RouteService routeService;
+    private final HeartbeatService heartbeatService;
 
     @PostMapping("/addVehicle")
-    public ResponseEntity<Object> addVehicle(@RequestBody Vehicle vehicle) throws Exception {
+    public ResponseEntity<Object> addVehicle(@RequestBody Vehicle vehicle) {
 
         try {
             Vehicle v = vehicleService.addVehicle(vehicle);
@@ -92,6 +93,7 @@ public class DataController {
         }
 
     }
+
     @PostMapping("/addDispatchRecord")
     public ResponseEntity<Object> addDispatchRecord(@RequestBody DispatchRecord dispatchRecord) throws Exception {
 
@@ -102,6 +104,50 @@ public class DataController {
             return ResponseEntity.badRequest().body(
                     new CustomErrorResponse(400,
                             "addVehicle failed: " + e.getMessage(),
+                            new DateTime().toDateTimeISO().toString()));
+        }
+
+    }
+
+    @PostMapping("/addVehicleHeartbeat")
+    public ResponseEntity<Object> addVehicleHeartbeat(@RequestBody VehicleHeartbeat vehicleHeartbeat) throws Exception {
+
+        try {
+            int v = heartbeatService.addVehicleHeartbeat(vehicleHeartbeat);
+            return ResponseEntity.ok(v);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(
+                    new CustomErrorResponse(400,
+                            "addVehicleHeartbeat failed: " + e.getMessage(),
+                            new DateTime().toDateTimeISO().toString()));
+        }
+
+    }
+    @PostMapping("/addVehicleArrival")
+    public ResponseEntity<Object> addVehicleArrival(@RequestBody VehicleArrival vehicleArrival) throws Exception {
+
+        try {
+            VehicleArrival v = dispatchService.addVehicleArrival(vehicleArrival);
+            return ResponseEntity.ok(v);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(
+                    new CustomErrorResponse(400,
+                            "addVehicleArrival failed: " + e.getMessage(),
+                            new DateTime().toDateTimeISO().toString()));
+        }
+
+    }
+
+    @PostMapping("/addVehicleDeparture")
+    public ResponseEntity<Object> addVehicleDeparture(@RequestBody VehicleDeparture vehicleDeparture) throws Exception {
+
+        try {
+            VehicleDeparture v = dispatchService.addVehicleDeparture(vehicleDeparture);
+            return ResponseEntity.ok(v);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(
+                    new CustomErrorResponse(400,
+                            "addVehicleDeparture failed: " + e.getMessage(),
                             new DateTime().toDateTimeISO().toString()));
         }
 
