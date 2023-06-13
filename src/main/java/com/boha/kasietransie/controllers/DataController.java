@@ -37,7 +37,22 @@ public class DataController {
     private final VehicleService vehicleService;
     private final AssociationService associationService;
 
-    @GetMapping("/registerAssociation")
+    @PostMapping("/addVehicle")
+    public ResponseEntity<Object> addVehicle(@RequestBody Vehicle vehicle) throws Exception {
+
+        try {
+            Vehicle v = vehicleService.addVehicle(vehicle);
+            return ResponseEntity.ok(v);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(
+                    new CustomErrorResponse(400,
+                            "addVehicle failed: " + e.getMessage(),
+                            new DateTime().toDateTimeISO().toString()));
+        }
+
+    }
+
+    @PostMapping("/registerAssociation")
     public ResponseEntity<Object> registerAssociation(@RequestBody Association association) throws Exception {
 
         try {
@@ -50,11 +65,17 @@ public class DataController {
         }
 
     }
+
     @GetMapping("/generateFakeAssociation")
-    public ResponseEntity<Object> generateFakeAssociation(@RequestParam String testCellphoneNumber) throws Exception {
+    public ResponseEntity<Object> generateFakeAssociation(@RequestParam String testCellphoneNumber,
+                                                          @RequestParam String firstName,
+                                                          @RequestParam String lastName,
+                                                          @RequestParam String associationName,
+                                                          @RequestParam String email) throws Exception {
 
         try {
-            return ResponseEntity.ok(associationService.generateFakeAssociation(testCellphoneNumber.trim()));
+            return ResponseEntity.ok(associationService.generateFakeAssociation(
+                    associationName,email,testCellphoneNumber,firstName,lastName));
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(
                     new CustomErrorResponse(400,
@@ -63,6 +84,7 @@ public class DataController {
         }
 
     }
+
     @PostMapping("uploadUserFile")
     public ResponseEntity<Object> uploadUserFile(
             @RequestParam String associationId,

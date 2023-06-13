@@ -39,6 +39,11 @@ public class VehicleService {
 
     }
 
+    public Vehicle addVehicle(Vehicle vehicle) {
+        Vehicle v = vehicleRepository.insert(vehicle);
+        logger.info("Vehicle has been added to database");
+        return v;
+    }
     public  List<Vehicle> importVehiclesFromJSON(File file, String associationId) throws IOException {
         List<Association> orgs = associationRepository.findByAssociationId(associationId);
         List<Vehicle> vehicles = new ArrayList<>();

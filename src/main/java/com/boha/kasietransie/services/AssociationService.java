@@ -88,13 +88,17 @@ public class AssociationService {
                 "association; registration broke down; like, crashed and burned!!");
     }
 
-    public RegistrationBag generateFakeAssociation(String testCellphoneNumber) throws Exception {
+    public RegistrationBag generateFakeAssociation(String associationName,
+                                                   String email,
+                                                   String testCellphoneNumber,
+                                                   String firstName,
+                                                   String lastName) throws Exception {
         Association ass = new Association();
         List<Country> cs = countryRepository.findByName("South Africa");
         List<City> cities = cityRepository.findByName("Johannesburg");
         RegistrationBag bag = null;
         if (!cs.isEmpty()) {
-            ass.setAssociationName("The Greatest Taxi Association");
+            ass.setAssociationName(associationName);
             ass.setAssociationId(UUID.randomUUID().toString());
             ass.setCountryId(cs.get(0).getCountryId());
             ass.setCountryName(cs.get(0).getName());
@@ -102,11 +106,11 @@ public class AssociationService {
                 ass.setCityId(cities.get(0).getCityId());
                 ass.setCityName(cities.get(0).getName());
             }
-            ass.setAdminEmail("fake2@thegreatest.co.za");
+            ass.setAdminEmail(email);
             ass.setAdminCellphone("+" + testCellphoneNumber);
             ass.setActive(0);
-            ass.setAdminUserFirstName("Thabiso Thomas");
-            ass.setAdminUserLastName("Moroka");
+            ass.setAdminUserFirstName(firstName);
+            ass.setAdminUserLastName(lastName);
             ass.setDateRegistered(DateTime.now().toDateTimeISO().toString());
             final double lat = -26.195246;
             final double lng = 28.034088;
