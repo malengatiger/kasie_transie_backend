@@ -1,0 +1,1 @@
+[engine:junit-jupiter]/[class:com.boha.kasietransie.KasieTransieBackendApplicationTests]/[method:contextLoads()]
