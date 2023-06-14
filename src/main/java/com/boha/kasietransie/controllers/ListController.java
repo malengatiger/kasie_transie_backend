@@ -29,7 +29,7 @@ public class ListController {
     private final UserService userService;
     private final VehicleService vehicleService;
     private final AssociationService associationService;
-    private final GeofenceService geofenceService;
+    private final UserGeofenceService userGeofenceService;
     private final DispatchService dispatchService;
     private final CityService cityService;
 

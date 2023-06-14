@@ -26,6 +26,7 @@ public class UserGeofenceEvent {
     int confidence;
     double odometer;
     boolean moving;
+    String associationId;
     Position position;
 
     private static final Logger logger = Logger.getLogger(Vehicle.class.getSimpleName());
@@ -34,6 +35,9 @@ public class UserGeofenceEvent {
     public static void createIndex(MongoDatabase db) {
         MongoCollection<org.bson.Document> dbCollection =
                 db.getCollection(UserGeofenceEvent.class.getSimpleName());
+
+        dbCollection.createIndex(
+                Indexes.ascending( "associationId", "created"));
 
         dbCollection.createIndex(
                 Indexes.ascending( "landmarkId", "created"));

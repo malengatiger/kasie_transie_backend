@@ -10,4 +10,7 @@ public interface UserGeofenceEventRepository extends MongoRepository<UserGeofenc
     List<UserGeofenceEvent> findByLandmarkId(String landmarkId);
     List<UserGeofenceEvent> findByUserId(String userId);
 
+    List<UserGeofenceEvent> findByAssociationId(String associationId);
+
+
 }

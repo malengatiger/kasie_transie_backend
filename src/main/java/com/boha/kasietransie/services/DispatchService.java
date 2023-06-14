@@ -15,15 +15,19 @@ public class DispatchService {
     private final DispatchRecordRepository dispatchRecordRepository;
     private final VehicleArrivalRepository vehicleArrivalRepository;
     private final VehicleDepartureRepository vehicleDepartureRepository;
+    private final MessagingService messagingService;
 
-    public DispatchService(DispatchRecordRepository dispatchRecordRepository, VehicleArrivalRepository vehicleArrivalRepository, VehicleDepartureRepository vehicleDepartureRepository) {
+    public DispatchService(DispatchRecordRepository dispatchRecordRepository, VehicleArrivalRepository vehicleArrivalRepository, VehicleDepartureRepository vehicleDepartureRepository, MessagingService messagingService) {
         this.dispatchRecordRepository = dispatchRecordRepository;
         this.vehicleArrivalRepository = vehicleArrivalRepository;
         this.vehicleDepartureRepository = vehicleDepartureRepository;
+        this.messagingService = messagingService;
     }
 
     public DispatchRecord addDispatchRecord(DispatchRecord dispatchRecord) {
-        return dispatchRecordRepository.insert(dispatchRecord);
+        DispatchRecord rec = dispatchRecordRepository.insert(dispatchRecord);
+        messagingService.sendMessage(rec);
+        return rec;
     }
     public List<DispatchRecord> getLandmarkDispatchRecords(String landmarkId) {
         return dispatchRecordRepository.findByLandmarkId(landmarkId);
@@ -36,10 +40,14 @@ public class DispatchService {
     }
     //
     public VehicleArrival addVehicleArrival(VehicleArrival vehicleArrival) {
-        return vehicleArrivalRepository.insert(vehicleArrival);
+        VehicleArrival v = vehicleArrivalRepository.insert(vehicleArrival);
+        messagingService.sendMessage(v);
+        return v;
     }
     public VehicleDeparture addVehicleDeparture(VehicleDeparture vehicleDeparture) {
-        return vehicleDepartureRepository.insert(vehicleDeparture);
+        VehicleDeparture v = vehicleDepartureRepository.insert(vehicleDeparture);
+        messagingService.sendMessage(v);
+        return v;
     }
     public List<VehicleArrival> getLandmarkVehicleArrivals(String landmarkId) {
         return vehicleArrivalRepository.findByLandmarkId(landmarkId);

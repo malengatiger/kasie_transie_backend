@@ -4,23 +4,17 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a7485aca-7a98-4bda-a4fb-cbb0b1e4b4ad" name="Changes" comment="🍎added more services and controller api">
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/boha/kasietransie/data/dto/VehicleArrival.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/boha/kasietransie/data/dto/VehicleDeparture.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/boha/kasietransie/data/dto/VehicleHeartbeat.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/boha/kasietransie/data/repos/HeartbeatRepository.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/boha/kasietransie/data/repos/VehicleArrivalRepository.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/boha/kasietransie/data/repos/VehicleDepartureRepository.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/boha/kasietransie/services/HeartbeatService.java" afterDir="false" />
+    <list default="true" id="a7485aca-7a98-4bda-a4fb-cbb0b1e4b4ad" name="Changes" comment="🌼basic services refactored and running good!">
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/boha/kasietransie/services/MessagingService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/boha/kasietransie/services/UserGeofenceService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/boha/kasietransie/controllers/DataController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/boha/kasietransie/controllers/DataController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/boha/kasietransie/data/dto/DispatchRecord.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/boha/kasietransie/data/dto/DispatchRecord.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/boha/kasietransie/data/dto/Route.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/boha/kasietransie/data/dto/Route.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/boha/kasietransie/data/dto/RouteInfo.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/boha/kasietransie/data/dto/RouteInfo.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/boha/kasietransie/data/dto/RoutePoint.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/boha/kasietransie/data/dto/RoutePoint.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/boha/kasietransie/controllers/ListController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/boha/kasietransie/controllers/ListController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/boha/kasietransie/data/dto/UserGeofenceEvent.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/boha/kasietransie/data/dto/UserGeofenceEvent.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/boha/kasietransie/data/repos/UserGeofenceEventRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/boha/kasietransie/data/repos/UserGeofenceEventRepository.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/boha/kasietransie/services/DispatchService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/boha/kasietransie/services/DispatchService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/boha/kasietransie/services/RouteService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/boha/kasietransie/services/RouteService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/vehicles.csv" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/vehicles.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/boha/kasietransie/services/GeofenceService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/boha/kasietransie/services/UserService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/boha/kasietransie/services/UserService.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -196,7 +190,14 @@
       <option name="project" value="LOCAL" />
       <updated>1686683694161</updated>
     </task>
-    <option name="localTasksCounter" value="10" />
+    <task id="LOCAL-00010" summary="🌼basic services refactored and running good!">
+      <created>1686691799050</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1686691799058</updated>
+    </task>
+    <option name="localTasksCounter" value="11" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
@@ -207,7 +208,8 @@
     <MESSAGE value="association and admin user registration done" />
     <MESSAGE value="services added" />
     <MESSAGE value="added more services and controller api" />
-    <option name="LAST_COMMIT_MESSAGE" value="added more services and controller api" />
+    <MESSAGE value="basic services refactored and running good!" />
+    <option name="LAST_COMMIT_MESSAGE" value="basic services refactored and running good!" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
