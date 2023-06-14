@@ -36,6 +36,7 @@ public class DataController {
     private final LandmarkService landmarkService;
     private final RouteService routeService;
     private final HeartbeatService heartbeatService;
+    private final LocationRequestService locationRequestService;
 
     @PostMapping("/addVehicle")
     public ResponseEntity<Object> addVehicle(@RequestBody Vehicle vehicle) {
@@ -136,6 +137,32 @@ public class DataController {
                             new DateTime().toDateTimeISO().toString()));
         }
 
+    }
+    @PostMapping("/addLocationRequest")
+    public ResponseEntity<Object> addLocationRequest(@RequestBody LocationRequest locationRequest) throws Exception {
+
+        try {
+            LocationRequest v = locationRequestService.addLocationRequest(locationRequest);
+            return ResponseEntity.ok(v);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(
+                    new CustomErrorResponse(400,
+                            "addLocationRequest failed: " + e.getMessage(),
+                            new DateTime().toDateTimeISO().toString()));
+        }
+    }
+    @PostMapping("/addLocationResponse")
+    public ResponseEntity<Object> addLocationResponse(@RequestBody LocationResponse locationResponse) throws Exception {
+
+        try {
+            LocationResponse v = locationRequestService.addLocationResponse(locationResponse);
+            return ResponseEntity.ok(v);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(
+                    new CustomErrorResponse(400,
+                            "addLocationResponse failed: " + e.getMessage(),
+                            new DateTime().toDateTimeISO().toString()));
+        }
     }
     @PostMapping("/addUserGeofenceEvent")
     public ResponseEntity<Object> addUserGeofenceEvent(@RequestBody UserGeofenceEvent userGeofenceEvent) throws Exception {

@@ -49,6 +49,40 @@ public class MessagingService {
             e.printStackTrace();
         }
     }
+    public void sendMessage(LocationRequest locationRequest) {
+        try {
+            String topic = "locationRequest_" + locationRequest.getAssociationId();
+            Notification notification = Notification.builder()
+                    .setBody("A vehicle location has been requested ")
+                    .setTitle("Vehicle Location Request")
+                    .build();
+
+            Message message = buildMessage("locationRequest", topic,
+                    G.toJson(locationRequest), notification);
+            FirebaseMessaging.getInstance().send(message);
+
+        } catch (Exception e) {
+            LOGGER.error("Failed to send locationRequest FCM message");
+            e.printStackTrace();
+        }
+    }
+    public void sendMessage(LocationResponse locationResponse) {
+        try {
+            String topic = "locationResponse_" + locationResponse.getAssociationId();
+            Notification notification = Notification.builder()
+                    .setBody("A vehicle location response has been sent to you ")
+                    .setTitle("Vehicle Location Response")
+                    .build();
+
+            Message message = buildMessage("locationResponse", topic,
+                    G.toJson(locationResponse), notification);
+            FirebaseMessaging.getInstance().send(message);
+
+        } catch (Exception e) {
+            LOGGER.error("Failed to send locationResponse FCM message");
+            e.printStackTrace();
+        }
+    }
     public void sendMessage(UserGeofenceEvent userGeofenceEvent) {
         try {
             String topic = "userGeofenceEvent_" + userGeofenceEvent.getAssociationId();

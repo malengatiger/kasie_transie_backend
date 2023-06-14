@@ -4,17 +4,15 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a7485aca-7a98-4bda-a4fb-cbb0b1e4b4ad" name="Changes" comment="🌼basic services refactored and running good!">
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/boha/kasietransie/services/MessagingService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/boha/kasietransie/services/UserGeofenceService.java" afterDir="false" />
+    <list default="true" id="a7485aca-7a98-4bda-a4fb-cbb0b1e4b4ad" name="Changes" comment="🛎added location request service">
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/boha/kasietransie/data/dto/LocationRequest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/boha/kasietransie/data/dto/LocationResponse.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/boha/kasietransie/data/repos/LocationRequestRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/boha/kasietransie/data/repos/LocationResponseRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/boha/kasietransie/services/LocationRequestService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/boha/kasietransie/controllers/DataController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/boha/kasietransie/controllers/DataController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/boha/kasietransie/controllers/ListController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/boha/kasietransie/controllers/ListController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/boha/kasietransie/data/dto/UserGeofenceEvent.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/boha/kasietransie/data/dto/UserGeofenceEvent.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/boha/kasietransie/data/repos/UserGeofenceEventRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/boha/kasietransie/data/repos/UserGeofenceEventRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/boha/kasietransie/services/DispatchService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/boha/kasietransie/services/DispatchService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/boha/kasietransie/services/GeofenceService.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/boha/kasietransie/services/UserService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/boha/kasietransie/services/UserService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/boha/kasietransie/services/MessagingService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/boha/kasietransie/services/MessagingService.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -61,7 +59,7 @@
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "SONARLINT_PRECOMMIT_ANALYSIS": "true",
-    "com.google.cloudcode.ide_session_index": "20230613_0001",
+    "com.google.cloudcode.ide_session_index": "20230614_0001",
     "dart.analysis.tool.window.visible": "false",
     "last_opened_file_path": "/Users/aubreymalabie/Work/aftarobot/kasie_transie_backend/src/main/resources",
     "settings.editor.selected.configurable": "shared-indexes",
@@ -197,7 +195,14 @@
       <option name="project" value="LOCAL" />
       <updated>1686691799058</updated>
     </task>
-    <option name="localTasksCounter" value="11" />
+    <task id="LOCAL-00011" summary="🍎backend ready to rumble!">
+      <created>1686701557664</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1686701557664</updated>
+    </task>
+    <option name="localTasksCounter" value="12" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
@@ -209,7 +214,9 @@
     <MESSAGE value="services added" />
     <MESSAGE value="added more services and controller api" />
     <MESSAGE value="basic services refactored and running good!" />
-    <option name="LAST_COMMIT_MESSAGE" value="basic services refactored and running good!" />
+    <MESSAGE value="backend ready to rumble!" />
+    <MESSAGE value="added location request service" />
+    <option name="LAST_COMMIT_MESSAGE" value="added location request service" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
