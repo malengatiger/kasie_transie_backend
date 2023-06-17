@@ -19,8 +19,6 @@ import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.mongodb.core.MongoTemplate;
-import org.springframework.ui.ModelMap;
-import org.springframework.util.StringUtils;
 import util.E;
 
 import static org.bson.codecs.configuration.CodecRegistries.fromProviders;
@@ -29,7 +27,7 @@ import static org.bson.codecs.configuration.CodecRegistries.fromRegistries;
 @RequiredArgsConstructor
 @EnableCaching
 @Configuration
-public class MongoConfig {
+public class MongoConfig  {
     public static final Logger LOGGER = LoggerFactory.getLogger(MongoConfig.class.getSimpleName());
     private static final Gson G = new GsonBuilder().setPrettyPrinting().create();
     private static final String MM = E.AMP + E.AMP + E.AMP;
@@ -130,4 +128,13 @@ public class MongoConfig {
 
         return secretPayload;
     }
+
+//    @Bean
+//    MongoTransactionManager transactionManager(MongoDatabaseFactory dbFactory) {
+//        return new MongoTransactionManager(dbFactory);
+//    }
+//    @Override
+//    public String getDatabaseName() {
+//        return databaseName;
+//    }
 }

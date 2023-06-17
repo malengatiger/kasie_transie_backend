@@ -1,8 +1,8 @@
 package com.boha.kasietransie.services;
 
-import com.boha.kasietransie.data.dto.City;
 import com.boha.kasietransie.data.dto.Landmark;
 import com.boha.kasietransie.data.repos.LandmarkRepository;
+import com.github.davidmoten.geo.GeoHash;
 import org.springframework.data.geo.Distance;
 import org.springframework.data.geo.GeoResult;
 import org.springframework.data.geo.GeoResults;
@@ -22,12 +22,16 @@ public class LandmarkService {
     }
 
     public Landmark addLandmark(Landmark landmark) {
+        String geoHash = GeoHash.encodeHash(landmark.getPosition().getLatitude(),
+                landmark.getPosition().getLongitude());
+        landmark.setGeoHash(geoHash);
         return landmarkRepository.insert(landmark);
     }
 
     public List<Landmark> getAssociationLandmarks(String associationId) {
         return landmarkRepository.findByAssociationId(associationId);
     }
+
     public List<Landmark> findLandmarksByLocation(double latitude,
                                                   double longitude, double radiusInKM) {
         org.springframework.data.geo.Point point =

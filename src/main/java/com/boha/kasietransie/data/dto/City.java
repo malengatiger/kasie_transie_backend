@@ -26,6 +26,7 @@ public class City implements Comparable<City> {
     private String stateName;
     private String countryName;
     private String province;
+    private String geoHash;
     private Position position;
     private double latitude;
     private double longitude;

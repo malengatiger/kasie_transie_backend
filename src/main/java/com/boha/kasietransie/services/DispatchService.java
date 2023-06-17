@@ -6,6 +6,7 @@ import com.boha.kasietransie.data.dto.VehicleDeparture;
 import com.boha.kasietransie.data.repos.DispatchRecordRepository;
 import com.boha.kasietransie.data.repos.VehicleArrivalRepository;
 import com.boha.kasietransie.data.repos.VehicleDepartureRepository;
+import com.github.davidmoten.geo.GeoHash;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -25,6 +26,9 @@ public class DispatchService {
     }
 
     public DispatchRecord addDispatchRecord(DispatchRecord dispatchRecord) {
+        String geoHash = GeoHash.encodeHash(dispatchRecord.getPosition().getLatitude(),
+                dispatchRecord.getPosition().getLongitude());
+        dispatchRecord.setGeoHash(geoHash);
         DispatchRecord rec = dispatchRecordRepository.insert(dispatchRecord);
         messagingService.sendMessage(rec);
         return rec;

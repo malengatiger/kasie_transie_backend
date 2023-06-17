@@ -24,6 +24,7 @@ public class DispatchRecord {
     String ownerId;
     String created;
     Position position;
+    String geoHash;
     String landmarkName;
     String marshalName;
     String routeName;
@@ -35,7 +36,7 @@ public class DispatchRecord {
     String associationName;
     boolean dispatched;
 
-    private static final Logger logger = Logger.getLogger(Vehicle.class.getSimpleName());
+    private static final Logger logger = Logger.getLogger(DispatchRecord.class.getSimpleName());
     private static final String XX = E.COFFEE + E.COFFEE + E.COFFEE;
 
     public static void createIndex(MongoDatabase db) {

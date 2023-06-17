@@ -15,6 +15,7 @@ import util.FileToUsers;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.logging.Logger;
 
 @Service
@@ -112,4 +113,14 @@ public class UserService {
         return resultUsers;
     }
 
+    public User getUserById(String userId) {
+        List<User> list = userRepository.findByUserId(userId);
+        if (list.isEmpty()) {
+            throw new NoSuchElementException();
+        }
+        return list.get(0);
+    }
+    public List<User> getAssociationUsers(String associationId) {
+        return userRepository.findByAssociationId(associationId);
+    }
 }

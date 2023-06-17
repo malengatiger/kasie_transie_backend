@@ -33,14 +33,13 @@ public class Route {
     String activationDate;
     String associationId;
     String associationName;
-    List<RoutePoint> rawRoutePoints;
-    List<RoutePoint> routePoints;
+    List<String> geoHashes;
     List<CalculatedDistance> calculatedDistances;
     List<String> landmarkIds = new ArrayList<>();
     double heading;
     int lengthInMetres;
 
-    private static final Logger logger = Logger.getLogger(Vehicle.class.getSimpleName());
+    private static final Logger logger = Logger.getLogger(Route.class.getSimpleName());
     private static final String XX = E.COFFEE + E.COFFEE + E.COFFEE;
 
     public static void createIndex(MongoDatabase db) {

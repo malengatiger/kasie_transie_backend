@@ -66,6 +66,20 @@ public class DataController {
         }
 
     }
+    @PostMapping("/addSettingsModel")
+    public ResponseEntity<Object> addSettingsModel(@RequestBody SettingsModel model)  {
+
+        try {
+            SettingsModel v = associationService.addSettingsModel(model);
+            return ResponseEntity.ok(v);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(
+                    new CustomErrorResponse(400,
+                            "addSettingsModel failed: " + e.getMessage(),
+                            new DateTime().toDateTimeISO().toString()));
+        }
+
+    }
     @PostMapping("/addRoute")
     public ResponseEntity<Object> addRoute(@RequestBody Route route)  {
 
@@ -191,8 +205,22 @@ public class DataController {
                             "addVehicleDeparture failed: " + e.getMessage(),
                             new DateTime().toDateTimeISO().toString()));
         }
+    }
+    @PostMapping("/addAppError")
+    public ResponseEntity<Object> addAppError(@RequestBody AppError appError) throws Exception {
+
+        try {
+            AppError v = associationService.addAppError(appError);
+            return ResponseEntity.ok(v);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(
+                    new CustomErrorResponse(400,
+                            "addAppError failed: " + e.getMessage(),
+                            new DateTime().toDateTimeISO().toString()));
+        }
 
     }
+
 
     @PostMapping("/registerAssociation")
     public ResponseEntity<Object> registerAssociation(@RequestBody Association association) throws Exception {

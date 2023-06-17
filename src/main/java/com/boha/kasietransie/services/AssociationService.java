@@ -1,19 +1,23 @@
 package com.boha.kasietransie.services;
 
 import com.boha.kasietransie.data.dto.*;
-import com.boha.kasietransie.data.repos.AssociationRepository;
-import com.boha.kasietransie.data.repos.CityRepository;
-import com.boha.kasietransie.data.repos.CountryRepository;
+import com.boha.kasietransie.data.repos.*;
+import com.github.davidmoten.geo.GeoHash;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import org.joda.time.DateTime;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.ResourceLoader;
+import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Service;
 import util.Constants;
 import util.E;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.UUID;
 import java.util.logging.Logger;
 
@@ -25,21 +29,41 @@ public class AssociationService {
 
     private static final String MM = "\uD83C\uDF4E\uD83C\uDF4E\uD83C\uDF4E\uD83C\uDF4E\uD83C\uDF4E\uD83C\uDF4E\uD83C\uDF4E\uD83C\uDF4E\uD83C\uDF4E ";
 
+    private final AppErrorRepository appErrorRepository;
     private final AssociationRepository associationRepository;
     private final UserService userService;
+
+    private final VehicleService vehicleService;
     private final CountryRepository countryRepository;
     private final CityRepository cityRepository;
+    private final SettingsModelRepository settingsModelRepository;
+    private final ResourceLoader resourceLoader;
+    private final MongoTemplate mongoTemplate;
 
 
-    public AssociationService(AssociationRepository associationRepository, UserService userService, CountryRepository countryRepository, CityRepository cityRepository) {
+
+    public AssociationService(AppErrorRepository appErrorRepository,
+                              AssociationRepository associationRepository,
+                              UserService userService,
+                              VehicleService vehicleService,
+                              CountryRepository countryRepository,
+                              CityRepository cityRepository,
+                              SettingsModelRepository settingsModelRepository,
+                              ResourceLoader resourceLoader,
+                              MongoTemplate mongoTemplate) {
+        this.appErrorRepository = appErrorRepository;
         this.associationRepository = associationRepository;
         this.userService = userService;
+        this.vehicleService = vehicleService;
         this.countryRepository = countryRepository;
         this.cityRepository = cityRepository;
+        this.settingsModelRepository = settingsModelRepository;
+        this.resourceLoader = resourceLoader;
+        this.mongoTemplate = mongoTemplate;
         logger.info(MM + " AssociationService constructed ");
 
     }
-
+//    @Transactional
     public RegistrationBag registerAssociation(Association association) throws Exception {
         logger.info(E.LEAF + E.LEAF + " registerAssociation starting ........... ");
         association.setDateRegistered(DateTime.now().toDateTimeISO().toString());
@@ -63,9 +87,30 @@ public class AssociationService {
             association.setUserId(user.getUserId());
             u.setUserId(user.getUserId());
             ass = associationRepository.insert(association);
+            SettingsModel settingsModel = new SettingsModel();
+            settingsModel.setCreated(DateTime.now().toDateTimeISO().toString());
+            settingsModel.setLocale("en");
+            settingsModel.setThemeIndex(0);
+            settingsModel.setAssociationId(association.getAssociationId());
+            settingsModel.setDistanceFilter(100);
+            settingsModel.setCommuterGeoQueryRadius(50);
+            settingsModel.setGeofenceRadius(200);
+            settingsModel.setHeartbeatIntervalSeconds(300);
+            settingsModel.setLoiteringDelay(30);
+            settingsModel.setNumberOfLandmarksToScan(100);
+            settingsModel.setRefreshRateInSeconds(300);
+            settingsModel.setVehicleGeoQueryRadius(100);
+            settingsModel.setVehicleSearchMinutes(15);
+            settingsModel.setCommuterSearchMinutes(30);
+            settingsModelRepository.insert(settingsModel);
             logger.info(E.LEAF + E.LEAF + " Association: " + ass.getAssociationName() + " added to MongoDB database");
 
-            RegistrationBag bag = new RegistrationBag(ass, user);
+            List<Country> countries = countryRepository.findByCountryId(association.getCountryId());
+            Country country = null;
+            if (!countries.isEmpty()) {
+                country = countries.get(0);
+            }
+            RegistrationBag bag = new RegistrationBag(ass, user, settingsModel, country);
             logger.info(E.LEAF + E.LEAF + " Association Admin Official: " + u.getName() + " registered OK");
             return bag;
 
@@ -88,6 +133,30 @@ public class AssociationService {
                 "association; registration broke down; like, crashed and burned!!");
     }
 
+    public SettingsModel addSettingsModel(SettingsModel model) {
+        return settingsModelRepository.insert(model);
+    }
+    public AppError addAppError(AppError error) {
+        String geoHash = GeoHash.encodeHash(error.getErrorPosition().getLatitude(),
+                error.getErrorPosition().getLongitude());
+        error.setGeoHash(geoHash);
+        return appErrorRepository.insert(error);
+    }
+    public List<AppError> getAssociationAppErrors(String associationId) {
+        return appErrorRepository.findByAssociationId(associationId);
+    }
+    public List<SettingsModel> getAssociationSettingsModels(String associationId) {
+        return settingsModelRepository.findByAssociationId(associationId);
+    }
+
+    public Association getAssociationById(String associationId) {
+        List<Association> list = associationRepository.findByAssociationId(associationId);
+        if (list.isEmpty()) {
+            throw new NoSuchElementException();
+        }
+        return list.get(0);
+    }
+
     public RegistrationBag generateFakeAssociation(String associationName,
                                                    String email,
                                                    String testCellphoneNumber,
@@ -96,6 +165,7 @@ public class AssociationService {
         Association ass = new Association();
         List<Country> cs = countryRepository.findByName("South Africa");
         List<City> cities = cityRepository.findByName("Johannesburg");
+
         RegistrationBag bag = null;
         if (!cs.isEmpty()) {
             ass.setAssociationName(associationName);
@@ -114,21 +184,32 @@ public class AssociationService {
             ass.setDateRegistered(DateTime.now().toDateTimeISO().toString());
             final double lat = -26.195246;
             final double lng = 28.034088;
+            String geoHash = GeoHash.encodeHash(lat,lng);
+            ass.setGeoHash(geoHash);
             List<Double> coords = new ArrayList<>();
             coords.add(lng);
             coords.add(lat);
             ass.setPosition(new Position(
-                    "Point", coords, lat, lng
+                    "Point", coords, lat, lng, geoHash
             ));
         }
-        if (ass.getAssociationName() != null) {
-            bag = registerAssociation(ass);
-            logger.info(E.RED_APPLE + E.RED_APPLE + " Fake association on the books! " + E.LEAF);
-            logger.info(E.RED_APPLE + E.RED_APPLE + " Fake association and admin user: " + gson.toJson(bag));
-        } else {
-            logger.severe(E.RED_DOT + " fake Association crashed and burned! " + E.RED_DOT);
-        }
+        bag = registerAssociation(ass);
+        logger.info(XX + " Getting countries from file ... ");
+        Resource resource = resourceLoader.getResource("classpath:users.csv");
+        Resource resource1 = resourceLoader.getResource("classpath:vehicles.csv");
+
+        File userFile = resource.getFile();
+        File carFile = resource1.getFile();
+        List<User> users = userService.importUsersFromCSV(userFile,ass.getAssociationId());
+        List<Vehicle> cars = vehicleService.importVehiclesFromCSV(carFile,ass.getAssociationId());
+
+        logger.info(XX + " Fake association on the books! " + E.LEAF +
+                " users: " + users.size() +
+                " cars: " + cars.size() + " ass: " + associationName);
+        logger.info(XX + " Fake association and admin user: " + gson.toJson(bag));
+
 
         return bag;
     }
+    static final String XX = E.RED_APPLE + E.RED_APPLE ;
 }

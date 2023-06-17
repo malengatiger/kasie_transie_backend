@@ -26,10 +26,10 @@ public class Landmark {
     double longitude;
     double distance;
     String landmarkName;
+    String geoHash;
     List<RouteInfo> routeDetails = new ArrayList<>();
     List<City> cities = new ArrayList<>();
     Position position;
-    List<RoutePoint> routePoints = new ArrayList<>();
 
     private static final Logger logger = Logger.getLogger(Vehicle.class.getSimpleName());
     private static final String XX = E.COFFEE + E.COFFEE + E.COFFEE;

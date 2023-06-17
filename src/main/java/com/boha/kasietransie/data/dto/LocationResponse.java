@@ -22,6 +22,8 @@ public class LocationResponse {
     String userId;
     String userName;
     Position position;
+    private String geoHash;
+
 
     private static final Logger logger = Logger.getLogger(Vehicle.class.getSimpleName());
     private static final String XX = E.COFFEE + E.COFFEE + E.COFFEE;

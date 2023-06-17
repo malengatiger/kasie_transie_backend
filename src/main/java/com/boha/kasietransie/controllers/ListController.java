@@ -1,7 +1,6 @@
 package com.boha.kasietransie.controllers;
 
-import com.boha.kasietransie.data.dto.City;
-import com.boha.kasietransie.data.dto.Country;
+import com.boha.kasietransie.data.dto.*;
 import com.boha.kasietransie.services.*;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -32,6 +31,154 @@ public class ListController {
     private final UserGeofenceService userGeofenceService;
     private final DispatchService dispatchService;
     private final CityService cityService;
+    private final RouteService routeService;
+    private final HeartbeatService heartbeatService;
+
+    @GetMapping("/getUserById")
+    public ResponseEntity<Object> getUserById(@RequestParam String userId) {
+        try {
+            User user = userService.getUserById(userId);
+            return ResponseEntity.ok(user);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(
+                    new CustomErrorResponse(400,
+                            "getUserById failed: " + e.getMessage(),
+                            new DateTime().toDateTimeISO().toString()));
+        }
+    }
+    @GetMapping("/getAssociationById")
+    public ResponseEntity<Object> getAssociationById(@RequestParam String associationId) {
+        try {
+            Association ass = associationService.getAssociationById(associationId);
+            return ResponseEntity.ok(ass);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(
+                    new CustomErrorResponse(400,
+                            "getAssociationById failed: " + e.getMessage(),
+                            new DateTime().toDateTimeISO().toString()));
+        }
+    }
+    @GetMapping("/getAssociationSettings")
+    public ResponseEntity<Object> getAssociationSettingsModels(@RequestParam String associationId) {
+        try {
+            List<SettingsModel> ass = associationService
+                    .getAssociationSettingsModels(associationId);
+            return ResponseEntity.ok(ass);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(
+                    new CustomErrorResponse(400,
+                            "getAssociationSettingsModels failed: " + e.getMessage(),
+                            new DateTime().toDateTimeISO().toString()));
+        }
+    }
+
+    @GetMapping("/getAssociationUsers")
+    public ResponseEntity<Object> getAssociationUsers(@RequestParam String associationId) {
+        try {
+            List<User> ass = userService
+                    .getAssociationUsers(associationId);
+            return ResponseEntity.ok(ass);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(
+                    new CustomErrorResponse(400,
+                            "getAssociationRoutes failed: " + e.getMessage(),
+                            new DateTime().toDateTimeISO().toString()));
+        }
+    }
+    @GetMapping("/getAssociationRoutes")
+    public ResponseEntity<Object> getAssociationRoutes(@RequestParam String associationId) {
+        try {
+            List<Route> ass = routeService
+                    .getAssociationRoutes(associationId);
+            return ResponseEntity.ok(ass);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(
+                    new CustomErrorResponse(400,
+                            "getAssociationRoutes failed: " + e.getMessage(),
+                            new DateTime().toDateTimeISO().toString()));
+        }
+    }
+    @GetMapping("/getAssociationVehicles")
+    public ResponseEntity<Object> getAssociationVehicles(@RequestParam String associationId) {
+        try {
+            List<Vehicle> ass = vehicleService
+                    .getAssociationVehicles(associationId);
+            return ResponseEntity.ok(ass);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(
+                    new CustomErrorResponse(400,
+                            "getAssociationVehicles failed: " + e.getMessage(),
+                            new DateTime().toDateTimeISO().toString()));
+        }
+    }
+    @GetMapping("/getAssociationVehicleHeartbeats")
+    public ResponseEntity<Object> getAssociationVehicleHeartbeats(@RequestParam String associationId,
+                                                                  @RequestParam int cutoffHours) {
+        try {
+            List<VehicleHeartbeat> ass = heartbeatService
+                    .getAssociationVehicleHeartbeats(associationId, cutoffHours);
+            return ResponseEntity.ok(ass);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(
+                    new CustomErrorResponse(400,
+                            "getAssociationVehicleHeartbeats failed: " + e.getMessage(),
+                            new DateTime().toDateTimeISO().toString()));
+        }
+    }
+    @GetMapping("/getVehicleHeartbeats")
+    public ResponseEntity<Object> getVehicleHeartbeats(@RequestParam String associationId,
+                                                                  @RequestParam int cutoffHours) {
+        try {
+            List<VehicleHeartbeat> ass = heartbeatService
+                    .getVehicleHeartbeats(associationId, cutoffHours);
+            return ResponseEntity.ok(ass);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(
+                    new CustomErrorResponse(400,
+                            "getVehicleHeartbeats failed: " + e.getMessage(),
+                            new DateTime().toDateTimeISO().toString()));
+        }
+    }
+    @GetMapping("/getOwnerVehicleHeartbeats")
+    public ResponseEntity<Object> getOwnerVehicleHeartbeats(@RequestParam String associationId,
+                                                       @RequestParam int cutoffHours) {
+        try {
+            List<VehicleHeartbeat> ass = heartbeatService
+                    .getOwnerVehicleHeartbeats(associationId, cutoffHours);
+            return ResponseEntity.ok(ass);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(
+                    new CustomErrorResponse(400,
+                            "getOwnerVehicleHeartbeats failed: " + e.getMessage(),
+                            new DateTime().toDateTimeISO().toString()));
+        }
+    }
+    @GetMapping("/getAssociationAppErrors")
+    public ResponseEntity<Object> getAssociationAppErrors(@RequestParam String associationId) {
+        try {
+            List<AppError> ass = associationService
+                    .getAssociationAppErrors(associationId);
+            return ResponseEntity.ok(ass);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(
+                    new CustomErrorResponse(400,
+                            "getAssociationAppErrors failed: " + e.getMessage(),
+                            new DateTime().toDateTimeISO().toString()));
+        }
+    }
+    @GetMapping("/getRoutePoints")
+    public ResponseEntity<Object> getRoutePoints(@RequestParam String routeId) {
+        try {
+            List<RoutePoint> ass = routeService
+                    .getRoutePoints(routeId);
+            return ResponseEntity.ok(ass);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(
+                    new CustomErrorResponse(400,
+                            "getRoutePoints failed: " + e.getMessage(),
+                            new DateTime().toDateTimeISO().toString()));
+        }
+    }
 
     @GetMapping("/findCitiesByLocation")
     public ResponseEntity<Object> findCitiesByLocation(@RequestParam double latitude,

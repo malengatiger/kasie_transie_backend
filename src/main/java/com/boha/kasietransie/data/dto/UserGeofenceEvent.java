@@ -28,6 +28,7 @@ public class UserGeofenceEvent {
     boolean moving;
     String associationId;
     Position position;
+    String geoHash;
 
     private static final Logger logger = Logger.getLogger(Vehicle.class.getSimpleName());
     private static final String XX = E.COFFEE + E.COFFEE + E.COFFEE;

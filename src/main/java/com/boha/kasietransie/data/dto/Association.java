@@ -26,6 +26,7 @@ public class Association {
     String cityName;
     String dateRegistered;
     Position position;
+    String geoHash;
     String adminUserFirstName;
     String adminUserLastName;
     String userId;

@@ -20,6 +20,7 @@ public class VehicleArrival {
     String landmarkId;
     String landmarkName;
     Position position;
+    String geoHash;
     String created;
     String vehicleId;
     String associationId;
@@ -29,7 +30,7 @@ public class VehicleArrival {
     String model;
     boolean dispatched;
 
-    private static final Logger logger = Logger.getLogger(Vehicle.class.getSimpleName());
+    private static final Logger logger = Logger.getLogger(VehicleArrival.class.getSimpleName());
     private static final String XX = E.COFFEE + E.COFFEE + E.COFFEE;
 
     public static void createIndex(MongoDatabase db) {

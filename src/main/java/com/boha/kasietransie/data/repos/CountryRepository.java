@@ -7,4 +7,5 @@ import java.util.List;
 
 public interface CountryRepository extends MongoRepository<Country, String> {
     List<Country> findByName(String name);
+    List<Country> findByCountryId(String countryId);
 }

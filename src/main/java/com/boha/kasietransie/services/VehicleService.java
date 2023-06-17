@@ -2,24 +2,22 @@ package com.boha.kasietransie.services;
 
 import com.boha.kasietransie.data.dto.Association;
 import com.boha.kasietransie.data.dto.Vehicle;
+import com.boha.kasietransie.data.dto.VehicleHeartbeat;
 import com.boha.kasietransie.data.repos.AssociationRepository;
+import com.boha.kasietransie.data.repos.VehicleHeartbeatRepository;
 import com.boha.kasietransie.data.repos.VehicleRepository;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import org.joda.time.DateTime;
-import org.json.JSONArray;
-import org.json.JSONObject;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
+import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Service;
 import util.E;
 import util.FileToVehicles;
 
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -30,6 +28,7 @@ import java.util.logging.Logger;
 public class VehicleService {
 
     private final VehicleRepository vehicleRepository;
+    private final VehicleHeartbeatRepository vehicleHeartbeatRepository;
     private final AssociationRepository associationRepository;
     private final ResourceLoader resourceLoader;
 
@@ -38,8 +37,12 @@ public class VehicleService {
 
     private static final String MM = "\uD83D\uDC26\uD83D\uDC26\uD83D\uDC26\uD83D\uDC26\uD83D\uDC26\uD83D\uDC26\uD83D\uDC26";
 
-    public VehicleService(VehicleRepository vehicleRepository, AssociationRepository associationRepository, ResourceLoader resourceLoader) {
+    public VehicleService(VehicleRepository vehicleRepository,
+                          VehicleHeartbeatRepository vehicleHeartbeatRepository,
+                          AssociationRepository associationRepository,
+                          ResourceLoader resourceLoader) {
         this.vehicleRepository = vehicleRepository;
+        this.vehicleHeartbeatRepository = vehicleHeartbeatRepository;
         this.associationRepository = associationRepository;
         this.resourceLoader = resourceLoader;
         logger.info(MM + " VehicleService constructed ");
@@ -50,6 +53,10 @@ public class VehicleService {
         Vehicle v = vehicleRepository.insert(vehicle);
         logger.info("Vehicle has been added to database");
         return v;
+    }
+
+    public List<Vehicle> getAssociationVehicles(String associationId) {
+        return vehicleRepository.findByAssociationId(associationId);
     }
 
     public List<Vehicle> importVehiclesFromJSON(File file, String associationId) throws IOException {

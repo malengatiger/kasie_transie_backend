@@ -2,6 +2,7 @@ package com.boha.kasietransie.services;
 
 import com.boha.kasietransie.data.dto.UserGeofenceEvent;
 import com.boha.kasietransie.data.repos.UserGeofenceEventRepository;
+import com.github.davidmoten.geo.GeoHash;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -18,6 +19,9 @@ public class UserGeofenceService {
     }
 
     public UserGeofenceEvent addUserGeofenceEvent(UserGeofenceEvent event) {
+        String geoHash = GeoHash.encodeHash(event.getPosition().getLatitude(),
+                event.getPosition().getLongitude());
+        event.setGeoHash(geoHash);
         UserGeofenceEvent e = userGeofenceEventRepository.insert(event);
         messagingService.sendMessage(e);
         return e;

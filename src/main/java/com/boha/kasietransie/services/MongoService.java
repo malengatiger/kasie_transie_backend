@@ -4,6 +4,7 @@ import com.boha.kasietransie.data.dto.*;
 import com.boha.kasietransie.data.repos.CityRepository;
 import com.boha.kasietransie.data.repos.CountryRepository;
 import com.boha.kasietransie.data.repos.StateRepository;
+import com.github.davidmoten.geo.GeoHash;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.mongodb.bulk.BulkWriteResult;
@@ -78,7 +79,11 @@ public class MongoService {
     private void countriesBulkInsert(List<Country> countries) {
         logger.info("\n\n" + E.RAIN_DROP + E.RAIN_DROP + "Bulk insert of " + countries.size() + " countries starting ... ");
         Instant start = Instant.now();
-
+        for (Country country : countries) {
+            String geoHash = GeoHash.encodeHash(country.getPosition().getLatitude(),
+                    country.getPosition().getLongitude());
+            country.setGeoHash(geoHash);
+        }
         BulkOperations bulkInsertion = mongoTemplate.bulkOps(
                 BulkOperations.BulkMode.UNORDERED, Country.class);
         bulkInsertion.insert(countries);
@@ -117,6 +122,12 @@ public class MongoService {
         logger.info("\n\n" + E.DICE + E.DICE + E.DICE + E.DICE + E.DICE +
                 " Bulk insert of " + cities.size() + " cities starting ... ");
         Instant start = Instant.now();
+
+        for (City city : cities) {
+            String geoHash = GeoHash.encodeHash(city.getPosition().getLatitude(),
+                    city.getPosition().getLongitude());
+            city.setGeoHash(geoHash);
+        }
 
         int inserted = 0;
         BulkWriteResult bulkWriteResult = null;
@@ -500,9 +511,15 @@ public class MongoService {
             DispatchRecord.createIndex(db);
             State.createIndex(db);
             User.createIndex(db);
-            VehicleGeofenceEvent.createIndex(db);
             Association.createIndex(db);
             UserGeofenceEvent.createIndex(db);
+            Route.createIndex(db);
+            RoutePoint.createIndex(db);
+            Landmark.createIndex(db);
+            VehicleArrival.createIndex(db);
+            VehicleDeparture.createIndex(db);
+            VehicleHeartbeat.createIndex(db);
+            City.createIndex(db);
 
             logger.info(XX + " MongoService has completed setup of indexes " + E.BELL + E.BELL);
 

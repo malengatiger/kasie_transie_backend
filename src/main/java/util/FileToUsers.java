@@ -16,6 +16,7 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 public class FileToUsers {
@@ -32,6 +33,9 @@ public class FileToUsers {
             Type listType = new TypeToken<ArrayList<User>>() {
             }.getType();
             users = G.fromJson(json, listType);
+            for (User user : users) {
+                user.setPassword(UUID.randomUUID().toString());
+            }
             LOGGER.info("\uD83C\uDF4E\uD83C\uDF4E\uD83C\uDF4E User objects created: " + users.size());
 
         } catch (Exception e) {
@@ -52,6 +56,9 @@ public class FileToUsers {
             Type listType = new TypeToken<ArrayList<User>>() {
             }.getType();
             users = G.fromJson(json, listType);
+            for (User user : users) {
+                user.setPassword(UUID.randomUUID().toString());
+            }
 
         }
         LOGGER.info("\uD83C\uDF4E\uD83C\uDF4E\uD83C\uDF4E User objects created: " + users.size());

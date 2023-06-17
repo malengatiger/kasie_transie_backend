@@ -30,7 +30,6 @@ import java.util.logging.Logger;
 public class KasieTransieBackendApplication implements ApplicationListener<ApplicationReadyEvent> {
 	private static final Gson gson = new GsonBuilder().setPrettyPrinting().create();
 	private static final Logger logger = Logger.getLogger(KasieTransieBackendApplication.class.getSimpleName());
-
 	private static final String MM = "\uD83D\uDD35\uD83D\uDC26\uD83D\uDD35\uD83D\uDC26\uD83D\uDD35\uD83D\uDC26 ";
 	private final MongoService mongoService;
 	private final FirebaseService firebaseService;

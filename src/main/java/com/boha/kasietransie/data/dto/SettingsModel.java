@@ -11,38 +11,37 @@ import util.E;
 import java.util.logging.Logger;
 
 @Data
-@Document(collection = "VehicleHeartbeat")
-public class VehicleHeartbeat {
+@Document(collection = "SettingsModel")
+public class SettingsModel {
     private String _partitionKey;
     @Id
     private String _id;
-    String vehicleHeartbeatId;
-    String vehicleId;
     String associationId;
-    String ownerId;
-    Position position;
-    String geoHash;
-    String date;
-    long  longDate;
+    String locale;
+    int refreshRateInSeconds;
+    int themeIndex;
+    int geofenceRadius;
+    int commuterGeofenceRadius;
+    int vehicleSearchMinutes;
+    int heartbeatIntervalSeconds;
+    int loiteringDelay;
+    int commuterSearchMinutes;
+    int commuterGeoQueryRadius;
+    int vehicleGeoQueryRadius;
+    int numberOfLandmarksToScan;
+    int distanceFilter;
+    String created;
 
-    private static final Logger logger = Logger.getLogger(VehicleHeartbeat.class.getSimpleName());
+    private static final Logger logger = Logger.getLogger(SettingsModel.class.getSimpleName());
     private static final String XX = E.COFFEE + E.COFFEE + E.COFFEE;
 
     public static void createIndex(MongoDatabase db) {
         MongoCollection<org.bson.Document> dbCollection =
-                db.getCollection(VehicleHeartbeat.class.getSimpleName());
-
-        dbCollection.createIndex(
-                Indexes.ascending("landmarkId"));
-
-        dbCollection.createIndex(
-                Indexes.ascending("vehicleId"));
+                db.getCollection(SettingsModel.class.getSimpleName());
 
         dbCollection.createIndex(
                 Indexes.ascending("associationId"));
 
-        dbCollection.createIndex(Indexes.geo2dsphere("position"));
-
-        logger.info(XX + "VehicleHeartbeat indexes done ");
+        logger.info(XX + "SettingsModel indexes done");
     }
 }

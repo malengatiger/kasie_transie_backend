@@ -269,10 +269,15 @@
 			<version>2.8.2</version>
 		</dependency>
 		<dependency>
-			<groupId>org.projectlombok</groupId>
-			<artifactId>lombok</artifactId>
+			<groupId>com.github.davidmoten</groupId>
+			<artifactId>geo</artifactId>
+			<version>0.8.0</version>
 		</dependency>
-
+		<dependency>
+			<groupId>com.github.davidmoten</groupId>
+			<artifactId>geo-mem</artifactId>
+			<version>0.8.0</version>
+		</dependency>
 
 	</dependencies>
 

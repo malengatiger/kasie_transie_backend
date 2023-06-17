@@ -29,8 +29,9 @@ public class VehicleDeparture {
     String make;
     String model;
     Position position;
+    String geoHash;
 
-    private static final Logger logger = Logger.getLogger(Vehicle.class.getSimpleName());
+    private static final Logger logger = Logger.getLogger(VehicleDeparture.class.getSimpleName());
     private static final String XX = E.COFFEE + E.COFFEE + E.COFFEE;
 
     public static void createIndex(MongoDatabase db) {
@@ -51,6 +52,6 @@ public class VehicleDeparture {
 
         dbCollection.createIndex(Indexes.geo2dsphere("position"));
 
-        logger.info(XX + "VehicleArrival indexes done ");
+        logger.info(XX + "VehicleDeparture indexes done ");
     }
 }

@@ -4,6 +4,7 @@ import com.boha.kasietransie.data.dto.Route;
 import com.boha.kasietransie.data.dto.RoutePoint;
 import com.boha.kasietransie.data.repos.RoutePointRepository;
 import com.boha.kasietransie.data.repos.RouteRepository;
+import com.github.davidmoten.geo.GeoHash;
 import org.springframework.data.geo.Distance;
 import org.springframework.data.geo.GeoResult;
 import org.springframework.data.geo.GeoResults;
@@ -29,11 +30,19 @@ public class RouteService {
     }
 
     public int addRoutePoints(List<RoutePoint> routePoints) {
+        for (RoutePoint rp : routePoints) {
+            String geoHash = GeoHash.encodeHash(rp.getPosition().getLatitude(),
+                    rp.getPosition().getLongitude());
+            rp.setGeoHash(geoHash);
+        }
         List<RoutePoint> list = routePointRepository.insert(routePoints);
         return list.size();
     }
     public List<Route> getAssociationRoutes(String associationId) {
         return routeRepository.findByAssociationId(associationId);
+    }
+    public List<RoutePoint> getRoutePoints(String routeId) {
+        return routePointRepository.findByRouteId(routeId);
     }
     public List<Route> findRoutesByLocation(double latitude, double longitude, double radiusInKM) {
         List<Route> routes = new ArrayList<>();
