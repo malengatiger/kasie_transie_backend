@@ -16,6 +16,7 @@ public class RoutePoint {
     private String _partitionKey;
     @Id
     private String _id;
+    private String routePointId;
     double latitude;
     double longitude;
     double heading;

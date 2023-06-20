@@ -12,4 +12,6 @@ public interface RoutePointRepository extends MongoRepository<RoutePoint, String
     List<RoutePoint> findByRouteId(String countryId);
 
     GeoResults<RoutePoint> findByPositionNear(Point location, Distance distance);
+
+    void deleteByRoutePointId(String routePointId);
 }

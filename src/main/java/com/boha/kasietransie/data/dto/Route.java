@@ -33,6 +33,7 @@ public class Route {
     String activationDate;
     String associationId;
     String associationName;
+    RouteStartEnd routeStartEnd;
     List<String> geoHashes;
     List<CalculatedDistance> calculatedDistances;
     List<String> landmarkIds = new ArrayList<>();
@@ -45,9 +46,16 @@ public class Route {
     public static void createIndex(MongoDatabase db) {
         MongoCollection<org.bson.Document> dbCollection =
                 db.getCollection(Route.class.getSimpleName());
+        dbCollection.createIndex(
+                Indexes.geo2dsphere("routeStartEnd.endCityPosition"));
 
         dbCollection.createIndex(
-                Indexes.ascending("associationId", "name"));
+                Indexes.geo2dsphere("routeStartEnd.startCityPosition"));
+
+        dbCollection.createIndex(
+                Indexes.ascending("associationId", "name"),
+                new IndexOptions().unique(true));
+
         dbCollection.createIndex(
                 Indexes.ascending( "countryId"));
 

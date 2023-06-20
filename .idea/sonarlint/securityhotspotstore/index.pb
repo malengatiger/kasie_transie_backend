@@ -31,8 +31,6 @@ Q
 !src/main/java/util/Constants.java,e/9/e974e9c0ee11a3fbaefcd4b93a7d1eb341dc67ee
 j
 :src/main/java/com/boha/kasietransie/data/dto/Timezone.java,5/9/59f82751240effe962edf58722a1fb4681914a43
-f
-6src/main/java/com/boha/kasietransie/data/dto/User.java,a/4/a4605ef35697f56deca599b3bb413d76a05136a1
 9
 	users.csv,a/c/acf9e7ffd0e7fdc6d0a5bba07664433b363811c4
 V
@@ -44,8 +42,6 @@ r
 Bsrc/main/java/com/boha/kasietransie/data/repos/CityRepository.java,b/6/b6ca32e66ac7911a09c77a8d7ae0b9180b64f819
 s
 Csrc/main/java/com/boha/kasietransie/data/repos/RouteRepository.java,4/f/4f24553f70682fc8543c094a3639aaf7669df611
-x
-Hsrc/main/java/com/boha/kasietransie/data/repos/RoutePointRepository.java,c/6/c6261b6bd67d6eff2b9846681523544d176981a2
 |
 Lsrc/main/java/com/boha/kasietransie/data/repos/DispatchRecordRepository.java,7/0/70714c845fa6ef60c53b8d68abfa58d5a3384b7a
 |

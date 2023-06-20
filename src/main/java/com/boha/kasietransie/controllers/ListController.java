@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import util.CustomErrorResponse;
+import util.E;
 
 import java.util.List;
 
@@ -90,6 +91,7 @@ public class ListController {
         try {
             List<Route> ass = routeService
                     .getAssociationRoutes(associationId);
+            logger.info(E.DOG+E.DOG+" Association Routes found: " + ass.size());
             return ResponseEntity.ok(ass);
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(
@@ -191,6 +193,34 @@ public class ListController {
             return ResponseEntity.badRequest().body(
                     new CustomErrorResponse(400,
                             "findCitiesByLocation failed: " + e.getMessage(),
+                            new DateTime().toDateTimeISO().toString()));
+        }
+    }
+    @GetMapping("/findRoutesByLocation")
+    public ResponseEntity<Object> findRoutesByLocation(@RequestParam double latitude,
+                                                       @RequestParam double longitude,
+                                                       @RequestParam double radiusInKM) {
+        try {
+            List<Route> r = routeService.findRoutesByLocation(latitude, longitude, radiusInKM);
+            return ResponseEntity.ok(r);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(
+                    new CustomErrorResponse(400,
+                            "findRoutesByLocation failed: " + e.getMessage(),
+                            new DateTime().toDateTimeISO().toString()));
+        }
+    }
+    @GetMapping("/findAssociationRoutesByLocation")
+    public ResponseEntity<Object> findAssociationRoutesByLocation(@RequestParam String associationId, @RequestParam double latitude,
+                                                       @RequestParam double longitude,
+                                                       @RequestParam double radiusInKM) {
+        try {
+            List<Route> r = routeService.findAssociationRoutesByLocation(associationId,latitude, longitude, radiusInKM);
+            return ResponseEntity.ok(r);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(
+                    new CustomErrorResponse(400,
+                            "findAssociationRoutesByLocation failed: " + e.getMessage(),
                             new DateTime().toDateTimeISO().toString()));
         }
     }

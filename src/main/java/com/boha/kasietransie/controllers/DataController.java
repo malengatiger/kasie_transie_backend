@@ -37,6 +37,7 @@ public class DataController {
     private final RouteService routeService;
     private final HeartbeatService heartbeatService;
     private final LocationRequestService locationRequestService;
+    final GeoHashFixer geoHashFixer;
 
     @PostMapping("/addVehicle")
     public ResponseEntity<Object> addVehicle(@RequestBody Vehicle vehicle) {
@@ -95,10 +96,10 @@ public class DataController {
 
     }
     @PostMapping("/addRoutePoints")
-    public ResponseEntity<Object> addRoutePoints(@RequestBody List<RoutePoint> routePoints)  {
+    public ResponseEntity<Object> addRoutePoints(@RequestBody RoutePointList routePoints)  {
 
         try {
-            int v = routeService.addRoutePoints(routePoints);
+            int v = routeService.addRoutePoints(routePoints.getRoutePoints());
             return ResponseEntity.ok(v);
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(
@@ -284,6 +285,20 @@ public class DataController {
 
     }
 
+    @GetMapping("/deleteRoutePoint")
+    public ResponseEntity<Object> deleteRoutePoint(@RequestParam String routePointId)  {
+
+        try {
+            return ResponseEntity.ok(routeService.deleteRoutePoint(routePointId));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(
+                    new CustomErrorResponse(400,
+                            "deleteRoutePoint failed: " + e.getMessage(),
+                            new DateTime().toDateTimeISO().toString()));
+        }
+
+    }
+
     @PostMapping("uploadUserFile")
     public ResponseEntity<Object> uploadUserFile(
             @RequestParam String associationId,
@@ -439,6 +454,20 @@ public class DataController {
 
     }
 
+    @GetMapping("/addGeoHashes")
+    public ResponseEntity<Object> addGeoHashes() throws Exception {
+
+        try {
+            return ResponseEntity.ok(geoHashFixer.addGeoHashes());
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(
+                    new CustomErrorResponse(400,
+                            "addGeoHashes failed: " + e.getMessage(),
+                            new DateTime().toDateTimeISO().toString()));
+        }
+
+    }
+
     @GetMapping("/addSouthAfricanCitiesToDB")
     public ResponseEntity<Object> addSouthAfricanCitiesToDB() throws Exception {
 
@@ -458,6 +487,20 @@ public class DataController {
 
         try {
             return ResponseEntity.ok(mongoService.checkDatabaseTotals());
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(
+                    new CustomErrorResponse(400,
+                            "checkDatabaseTotals failed: " + e.getMessage(),
+                            new DateTime().toDateTimeISO().toString()));
+        }
+
+    }
+
+    @GetMapping("/fixRoutePoints")
+    public ResponseEntity<Object> fixRoutePoints() {
+
+        try {
+            return ResponseEntity.ok(routeService.fixRoutePoints());
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(
                     new CustomErrorResponse(400,

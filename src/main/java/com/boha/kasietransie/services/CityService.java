@@ -76,9 +76,9 @@ public class CityService {
         }
         logger.info(E.LEAF + E.LEAF + E.LEAF + E.LEAF + E.LEAF + " Cities found around location with radius: "
                 + radiusInKM + " km; found " + mList.size() + " cities");
-        for (City city : mList) {
-            logger.info(E.LEAF + E.LEAF + " city: " + city.getName() + ", " + E.RED_APPLE + city.getStateName() + " - " + city.getCountryName());
-        }
+//        for (City city : mList) {
+//            logger.info(E.LEAF + E.LEAF + " city: " + city.getName() + ", " + E.RED_APPLE + city.getStateName() + " - " + city.getCountryName());
+//        }
         return mList;
     }
     public List<City> getCitiesNear(double latitude, double longitude,
