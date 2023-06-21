@@ -11,6 +11,7 @@ my-app-secret-1: ${sm://application-secret/latest}
 placesAPIKeyName: places_api_key
 projectId: thermal-effort-366015
 secretsVersion: 2
+requestsPerSecond: 20
 server:
     connection-timeout: 90s
     max-http-header-size: 80KB

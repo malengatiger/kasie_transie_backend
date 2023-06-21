@@ -2,6 +2,8 @@ package com.boha.kasietransie.services;
 
 import com.boha.kasietransie.data.dto.City;
 import com.boha.kasietransie.data.dto.Country;
+import com.boha.kasietransie.data.dto.Landmark;
+import com.boha.kasietransie.data.dto.VehicleArrival;
 import com.boha.kasietransie.data.repos.CityRepository;
 import com.boha.kasietransie.data.repos.CountryRepository;
 import com.boha.kasietransie.data.repos.UserRepository;
@@ -14,16 +16,20 @@ import com.mongodb.client.model.geojson.Point;
 import com.mongodb.client.model.geojson.Position;
 import org.bson.Document;
 import org.bson.conversions.Bson;
+import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.geo.Distance;
 import org.springframework.data.geo.GeoResult;
 import org.springframework.data.geo.GeoResults;
 import org.springframework.data.geo.Metrics;
+import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.NearQuery;
+import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 import util.E;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.logging.Logger;
@@ -40,6 +46,7 @@ public class CityService {
     final MongoClient mongoClient;
     final CityRepository cityRepository;
     final CountryRepository countryRepository;
+    final MongoTemplate mongoTemplate;
 
     @Value("${databaseName}")
     private String databaseName;
@@ -47,12 +54,13 @@ public class CityService {
     public CityService(UserRepository userRepository,
                        MongoClient mongoClient,
                        CityRepository cityRepository,
-                       CountryRepository countryRepository) {
+                       CountryRepository countryRepository, MongoTemplate mongoTemplate) {
 
         this.userRepository = userRepository;
         this.mongoClient = mongoClient;
         this.cityRepository = cityRepository;
         this.countryRepository = countryRepository;
+        this.mongoTemplate = mongoTemplate;
     }
 
     public List<City> getCountryCities(String countryId) {
@@ -61,25 +69,51 @@ public class CityService {
     public List<Country> getCountries() {
         return countryRepository.findAll();
     }
-    public List<City> findCitiesByLocation(double latitude, double longitude, double radiusInKM) {
-        org.springframework.data.geo.Point point = new org.springframework.data.geo.Point(longitude, latitude);
+    public List<City> findCitiesByLocation(double latitude, double longitude, double radiusInKM, int limit) {
+
+        logger.info(E.LEAF + E.LEAF + " lat: " + latitude
+                + " lng: " + longitude + " radius: " + radiusInKM);
+        List<City> list = new ArrayList<>();
+
+
+        int mLimit;
+        if (limit == 0) {
+            mLimit = 10;
+        } else {
+            mLimit = limit;
+        }
+        org.springframework.data.geo.Point searchPoint =
+                new org.springframework.data.geo.Point(latitude, longitude);
+        logger.info(E.COOL_MAN+E.COOL_MAN
+                +" findCitiesByLocation: radius: " + radiusInKM);
+        logger.info(E.COOL_MAN+E.COOL_MAN
+                +" findCitiesByLocation: lat: " + latitude + " lng: " + longitude);
+        org.springframework.data.geo.Point point =
+                new org.springframework.data.geo.Point(longitude, latitude);
+
         Distance distance = new Distance(radiusInKM, Metrics.KILOMETERS);
-        GeoResults<City> cities = cityRepository.findByPositionNear(point, distance);
+        GeoResults<City> citiesGeo = cityRepository.findByPositionNear(point, distance);
 
-        List<City> mList = new ArrayList<>();
-        if (cities == null) {
-            return mList;
+        logger.info(E.COOL_MAN+E.COOL_MAN
+                +" findCitiesByLocation: " + citiesGeo.getContent().size());
+        int count = 0;
+        for (GeoResult<City> result : citiesGeo) {
+            list.add(result.getContent());
+            count++;
+            if (count > limit) {
+                break;
+            }
         }
 
-        for (GeoResult<City> city : cities) {
-            mList.add(city.getContent());
-        }
+        logger.info(E.COOL_MAN+E.COOL_MAN
+                +" findCitiesByLocation: filtered by limit: " + list.size()+ " cities");
+
         logger.info(E.LEAF + E.LEAF + E.LEAF + E.LEAF + E.LEAF + " Cities found around location with radius: "
-                + radiusInKM + " km; found " + mList.size() + " cities");
-//        for (City city : mList) {
-//            logger.info(E.LEAF + E.LEAF + " city: " + city.getName() + ", " + E.RED_APPLE + city.getStateName() + " - " + city.getCountryName());
-//        }
-        return mList;
+                + radiusInKM + " km; found " + list.size() + " cities");
+        for (City city : list) {
+            logger.info(E.LEAF + E.LEAF + " city found by location: " + city.getName() + ", " + E.RED_APPLE + city.getStateName() + " - " + city.getCountryName());
+        }
+        return list;
     }
     public List<City> getCitiesNear(double latitude, double longitude,
                                     double minDistanceInMetres,
@@ -103,7 +137,6 @@ public class CityService {
                 + " cities found with min: " + minDistanceInMetres
                 + " max: " + maxDistanceInMetres);
 
-        Collections.sort(cities);
         HashMap<String, City> map = filter(cities);
         List<City> filteredCities = map.values().stream().toList();
         int count = 0;

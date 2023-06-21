@@ -45,6 +45,6 @@ public class State {
                 Indexes.ascending("countryId","stateName"),
                 new IndexOptions().unique(true));
 
-        logger.info(XX + "DispatchRecord indexes done");
+        logger.info(XX + "State indexes done");
     }
 }

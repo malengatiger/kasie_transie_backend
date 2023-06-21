@@ -380,7 +380,6 @@ public class MongoService {
         }
 
         logger.info(XX + " Found " + cities.size() + " cities in file\n\n");
-        Collections.sort(cities);
         return cities;
     }
 
@@ -497,7 +496,6 @@ public class MongoService {
     public List<City> getCities() {
         List<City> cities = cityRepo.findAll();
         logger.info(E.LEAF + E.LEAF + "Cities found on MongoDB: " + cities.size());
-        Collections.sort(cities);
         return cities;
     }
 
@@ -520,6 +518,8 @@ public class MongoService {
             VehicleDeparture.createIndex(db);
             VehicleHeartbeat.createIndex(db);
             City.createIndex(db);
+            RouteLandmark.createIndex(db);
+            RouteCity.createIndex(db);
 
             logger.info(XX + " MongoService has completed setup of indexes " + E.BELL + E.BELL);
 

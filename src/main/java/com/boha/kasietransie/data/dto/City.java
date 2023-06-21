@@ -13,7 +13,7 @@ import java.util.logging.Logger;
 
 @Data
 @Document(collection = "City")
-public class City implements Comparable<City> {
+public class City  {
 
     private String _partitionKey;
     @Id
@@ -31,10 +31,7 @@ public class City implements Comparable<City> {
     private double latitude;
     private double longitude;
 
-
-    @Override
-    public int compareTo(City o) {
-        return this.name.compareTo(o.name);
+    public City() {
     }
 
     private static final Logger logger = Logger.getLogger(City.class.getSimpleName());

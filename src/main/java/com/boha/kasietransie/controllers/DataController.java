@@ -53,16 +53,46 @@ public class DataController {
         }
 
     }
-    @PostMapping("/addLandmark")
+    @PostMapping("/addBasicLandmark")
     public ResponseEntity<Object> addLandmark(@RequestBody Landmark landmark)  {
 
         try {
-            Landmark v = landmarkService.addLandmark(landmark);
+            logger.info(E.RED_APPLE + " DataController: adding landmark: " + G.toJson(landmark));
+            Landmark v = landmarkService.addBasicLandmark(landmark);
             return ResponseEntity.ok(v);
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(
                     new CustomErrorResponse(400,
                             "addLandmark failed: " + e.getMessage(),
+                            new DateTime().toDateTimeISO().toString()));
+        }
+
+    }
+    @PostMapping("/addRouteLandmark")
+    public ResponseEntity<Object> addRouteLandmark(@RequestBody RouteLandmark landmark)  {
+
+        try {
+            logger.info(E.RED_APPLE + " DataController: adding route landmark: " + G.toJson(landmark));
+            RouteLandmark v = routeService.addRouteLandmark(landmark);
+            return ResponseEntity.ok(v);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(
+                    new CustomErrorResponse(400,
+                            "addRouteLandmark failed: " + e.getMessage(),
+                            new DateTime().toDateTimeISO().toString()));
+        }
+
+    }
+    @PostMapping("/addRouteCity")
+    public ResponseEntity<Object> addRouteCity(@RequestBody RouteCity landmark)  {
+
+        try {
+            RouteCity v = routeService.addRouteCity(landmark);
+            return ResponseEntity.ok(v);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(
+                    new CustomErrorResponse(400,
+                            "addRouteCity failed: " + e.getMessage(),
                             new DateTime().toDateTimeISO().toString()));
         }
 
@@ -294,6 +324,19 @@ public class DataController {
             return ResponseEntity.badRequest().body(
                     new CustomErrorResponse(400,
                             "deleteRoutePoint failed: " + e.getMessage(),
+                            new DateTime().toDateTimeISO().toString()));
+        }
+
+    }
+    @GetMapping("/deleteByLandmarkId")
+    public ResponseEntity<Object> deleteByLandmarkId(@RequestParam String landmarkId)  {
+
+        try {
+            return ResponseEntity.ok(landmarkService.deleteLandmark(landmarkId));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(
+                    new CustomErrorResponse(400,
+                            "deleteByLandmarkId failed: " + e.getMessage(),
                             new DateTime().toDateTimeISO().toString()));
         }
 

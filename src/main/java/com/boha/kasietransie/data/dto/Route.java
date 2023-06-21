@@ -9,7 +9,6 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import util.E;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -34,9 +33,7 @@ public class Route {
     String associationId;
     String associationName;
     RouteStartEnd routeStartEnd;
-    List<String> geoHashes;
     List<CalculatedDistance> calculatedDistances;
-    List<String> landmarkIds = new ArrayList<>();
     double heading;
     int lengthInMetres;
 

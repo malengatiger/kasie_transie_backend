@@ -25,7 +25,7 @@ public class LocationResponse {
     private String geoHash;
 
 
-    private static final Logger logger = Logger.getLogger(Vehicle.class.getSimpleName());
+    private static final Logger logger = Logger.getLogger(LocationResponse.class.getSimpleName());
     private static final String XX = E.COFFEE + E.COFFEE + E.COFFEE;
 
     public static void createIndex(MongoDatabase db) {
@@ -35,6 +35,6 @@ public class LocationResponse {
         dbCollection.createIndex(
                 Indexes.ascending( "associationId", "created"));
 
-        logger.info(XX + "LocationRequest indexes done");
+        logger.info(XX + "LocationResponse indexes done");
     }
 }

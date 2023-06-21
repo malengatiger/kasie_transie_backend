@@ -28,10 +28,9 @@ public class Landmark {
     String landmarkName;
     String geoHash;
     List<RouteInfo> routeDetails = new ArrayList<>();
-    List<City> cities = new ArrayList<>();
     Position position;
 
-    private static final Logger logger = Logger.getLogger(Vehicle.class.getSimpleName());
+    private static final Logger logger = Logger.getLogger(Landmark.class.getSimpleName());
     private static final String XX = E.COFFEE + E.COFFEE + E.COFFEE;
 
     public static void createIndex(MongoDatabase db) {
@@ -39,17 +38,12 @@ public class Landmark {
                 db.getCollection(Landmark.class.getSimpleName());
 
         dbCollection.createIndex(
-                Indexes.ascending("associationId", "landmarkName"));
-        dbCollection.createIndex(
                 Indexes.ascending("landmarkId"));
 
         dbCollection.createIndex(
                 Indexes.geo2dsphere("position"));
 
-        dbCollection.createIndex(
-                Indexes.ascending("associationId", "associationName"),
-                new IndexOptions().unique(true));
 
-        logger.info(XX + "DispatchRecord indexes done");
+        logger.info(XX + "Landmark indexes done");
     }
 }

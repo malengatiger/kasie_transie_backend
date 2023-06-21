@@ -22,7 +22,7 @@ public class LocationRequest {
     String userId;
     String userName;
 
-    private static final Logger logger = Logger.getLogger(Vehicle.class.getSimpleName());
+    private static final Logger logger = Logger.getLogger(LocationRequest.class.getSimpleName());
     private static final String XX = E.COFFEE + E.COFFEE + E.COFFEE;
 
     public static void createIndex(MongoDatabase db) {

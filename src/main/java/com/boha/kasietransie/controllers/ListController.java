@@ -34,6 +34,7 @@ public class ListController {
     private final CityService cityService;
     private final RouteService routeService;
     private final HeartbeatService heartbeatService;
+    private final LandmarkService landmarkService;
 
     @GetMapping("/getUserById")
     public ResponseEntity<Object> getUserById(@RequestParam String userId) {
@@ -185,14 +186,17 @@ public class ListController {
     @GetMapping("/findCitiesByLocation")
     public ResponseEntity<Object> findCitiesByLocation(@RequestParam double latitude,
                                                        @RequestParam double longitude,
+                                                       @RequestParam int limit,
                                                        @RequestParam double radiusInKM) {
         try {
-            List<City> cities = cityService.findCitiesByLocation(latitude, longitude, radiusInKM);
+            List<City> cities = cityService.findCitiesByLocation(
+                    latitude, longitude, radiusInKM, limit);
             return ResponseEntity.ok(cities);
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(
-                    new CustomErrorResponse(400,
-                            "findCitiesByLocation failed: " + e.getMessage(),
+                    new CustomErrorResponse(500,
+                            "findCitiesByLocation failed: "
+                                    + e.getMessage(),
                             new DateTime().toDateTimeISO().toString()));
         }
     }
@@ -207,6 +211,32 @@ public class ListController {
             return ResponseEntity.badRequest().body(
                     new CustomErrorResponse(400,
                             "findRoutesByLocation failed: " + e.getMessage(),
+                            new DateTime().toDateTimeISO().toString()));
+        }
+    }
+    @GetMapping("/findLandmarksByLocation")
+    public ResponseEntity<Object> findLandmarksByLocation(@RequestParam double latitude,
+                                                       @RequestParam double longitude,
+                                                       @RequestParam double radiusInKM) {
+        try {
+            List<Landmark> r = landmarkService.findLandmarksByLocation(latitude, longitude, radiusInKM);
+            return ResponseEntity.ok(r);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(
+                    new CustomErrorResponse(400,
+                            "findLandmarksByLocation failed: " + e.getMessage(),
+                            new DateTime().toDateTimeISO().toString()));
+        }
+    }
+    @GetMapping("/getRouteLandmarks")
+    public ResponseEntity<Object> getRouteLandmarks(@RequestParam String routeId) {
+        try {
+            List<RouteLandmark> r = routeService.getRouteLandmarks(routeId);
+            return ResponseEntity.ok(r);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(
+                    new CustomErrorResponse(400,
+                            "getRouteLandmarks failed: " + e.getMessage(),
                             new DateTime().toDateTimeISO().toString()));
         }
     }

@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface RouteRepository extends MongoRepository<Route, String> {
 
-    List<Route> findByRouteId(String associationId);
+    List<Route> findByRouteId(String routeId);
     List<Route> findByAssociationId(String associationId);
 
 

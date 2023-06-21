@@ -4,11 +4,7 @@ import lombok.Data;
 
 @Data
 public class RouteInfo {
-    String name;
-    String number;
-    String color;
+    String routeName;
     String routeId;
-    String associationId;
-    String associationName;
 
 }

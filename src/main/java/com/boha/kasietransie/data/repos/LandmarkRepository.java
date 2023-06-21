@@ -9,8 +9,10 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 import java.util.List;
 
 public interface LandmarkRepository extends MongoRepository<Landmark, String> {
+    List<Landmark> findByLandmarkId(String landmarkId);
     List<Landmark> findByAssociationId(String associationId);
 
+    int deleteByLandmarkId(String landmarkId);
     GeoResults<Landmark> findByPositionNear(Point location, Distance distance);
 
 

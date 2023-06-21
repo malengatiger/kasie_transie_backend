@@ -1,7 +1,11 @@
 package com.boha.kasietransie.services;
 
 import com.boha.kasietransie.data.dto.Route;
+import com.boha.kasietransie.data.dto.RouteCity;
+import com.boha.kasietransie.data.dto.RouteLandmark;
 import com.boha.kasietransie.data.dto.RoutePoint;
+import com.boha.kasietransie.data.repos.RouteCityRepository;
+import com.boha.kasietransie.data.repos.RouteLandmarkRepository;
 import com.boha.kasietransie.data.repos.RoutePointRepository;
 import com.boha.kasietransie.data.repos.RouteRepository;
 import com.github.davidmoten.geo.GeoHash;
@@ -30,13 +34,18 @@ import java.util.logging.Logger;
 public class RouteService {
     private final RouteRepository routeRepository;
     final RoutePointRepository routePointRepository;
+    final RouteLandmarkRepository routeLandmarkRepository;
+    final RouteCityRepository routeCityRepository;
     final MongoTemplate mongoTemplate;
 
     public RouteService(RouteRepository routeRepository,
                         RoutePointRepository routePointRepository,
-                        MongoTemplate mongoTemplate) {
+                        RouteLandmarkRepository routeLandmarkRepository,
+                        RouteCityRepository routeCityRepository, MongoTemplate mongoTemplate) {
         this.routeRepository = routeRepository;
         this.routePointRepository = routePointRepository;
+        this.routeLandmarkRepository = routeLandmarkRepository;
+        this.routeCityRepository = routeCityRepository;
         this.mongoTemplate = mongoTemplate;
     }
 
@@ -85,12 +94,25 @@ public class RouteService {
         return inserted;
     }
 
+    public RouteLandmark addRouteLandmark(RouteLandmark routeLandmark) {
+        return routeLandmarkRepository.insert(routeLandmark);
+    }
+    public RouteCity addRouteCity(RouteCity routeCity) {
+        return routeCityRepository.insert(routeCity);
+    }
+
     public List<Route> getAssociationRoutes(String associationId) {
         return routeRepository.findByAssociationId(associationId);
     }
 
     public List<RoutePoint> getRoutePoints(String routeId) {
         return routePointRepository.findByRouteId(routeId);
+    }
+    public List<RouteCity> getRouteCities(String routeId) {
+        return routeCityRepository.findByRouteId(routeId);
+    }
+    public List<RouteLandmark> getRouteLandmarks(String routeId) {
+        return routeLandmarkRepository.findByRouteId(routeId);
     }
 
     public List<Route> findRoutesByLocation(double latitude, double longitude, double radiusInKM) {
