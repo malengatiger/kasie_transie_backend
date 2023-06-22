@@ -38,6 +38,23 @@ public class DataController {
     private final HeartbeatService heartbeatService;
     private final LocationRequestService locationRequestService;
     final GeoHashFixer geoHashFixer;
+    @PostMapping("/createUser")
+    public ResponseEntity<Object> createUser(@RequestBody User user) {
+
+        try {
+            User v = userService.createUser(user);
+            return ResponseEntity.ok(v);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(
+                    new CustomErrorResponse(400,
+                            "createUser failed: " + e.getMessage(),
+                            new DateTime().toDateTimeISO().toString()));
+        }
+
+    }
+    /*
+
+     */
 
     @PostMapping("/addVehicle")
     public ResponseEntity<Object> addVehicle(@RequestBody Vehicle vehicle) {
