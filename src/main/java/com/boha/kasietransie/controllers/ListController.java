@@ -183,6 +183,20 @@ public class ListController {
         }
     }
 
+    @GetMapping("/getCountryStates")
+    public ResponseEntity<Object> getCountryStates(@RequestParam String countryId) {
+        try {
+            List<State> ass = cityService
+                    .getCountryStates(countryId);
+            return ResponseEntity.ok(ass);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(
+                    new CustomErrorResponse(400,
+                            "getCountryStates failed: " + e.getMessage(),
+                            new DateTime().toDateTimeISO().toString()));
+        }
+    }
+
     @GetMapping("/findCitiesByLocation")
     public ResponseEntity<Object> findCitiesByLocation(@RequestParam double latitude,
                                                        @RequestParam double longitude,

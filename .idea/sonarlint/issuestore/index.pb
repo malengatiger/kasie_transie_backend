@@ -129,16 +129,10 @@ i
 j
 :src/main/java/com/boha/kasietransie/data/dto/Landmark.java,0/f/0f12af9c7dae1cda9a93f0d1006131aa043f4898
 m
-=src/main/java/com/boha/kasietransie/services/CityService.java,e/a/eaa9e4adcdde02aa61b8867c5239c323c9117b98
-m
 =src/main/java/com/boha/kasietransie/services/UserService.java,0/a/0a22db8a815c67a270ca868202a7770a34c099d1
 n
 >src/main/java/com/boha/kasietransie/services/MongoService.java,d/9/d9adfb7e30f675a6a52faeab607a2b87e0b019ed
 s
 Csrc/main/java/com/boha/kasietransie/data/dto/UserGeofenceEvent.java,3/b/3b637edc7b79cb1cdf2527ceb815fc2f70c6036f
-g
-7src/main/java/com/boha/kasietransie/data/dto/State.java,2/b/2b2c71ca77aaa039db4d95d1f1f575eec97299da
-s
-Csrc/main/java/com/boha/kasietransie/controllers/ListController.java,e/0/e0b24d56630003c11de064f181bd40e8f3c5d07c
 {
 Ksrc/main/java/com/boha/kasietransie/data/repos/RouteLandmarkRepository.java,2/c/2c26681dc869fb471858b1af6c3ece17d955cf06

@@ -2,10 +2,10 @@ package com.boha.kasietransie.services;
 
 import com.boha.kasietransie.data.dto.City;
 import com.boha.kasietransie.data.dto.Country;
-import com.boha.kasietransie.data.dto.Landmark;
-import com.boha.kasietransie.data.dto.VehicleArrival;
+import com.boha.kasietransie.data.dto.State;
 import com.boha.kasietransie.data.repos.CityRepository;
 import com.boha.kasietransie.data.repos.CountryRepository;
+import com.boha.kasietransie.data.repos.StateRepository;
 import com.boha.kasietransie.data.repos.UserRepository;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -16,16 +16,12 @@ import com.mongodb.client.model.geojson.Point;
 import com.mongodb.client.model.geojson.Position;
 import org.bson.Document;
 import org.bson.conversions.Bson;
-import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.geo.Distance;
 import org.springframework.data.geo.GeoResult;
 import org.springframework.data.geo.GeoResults;
 import org.springframework.data.geo.Metrics;
 import org.springframework.data.mongodb.core.MongoTemplate;
-import org.springframework.data.mongodb.core.query.Criteria;
-import org.springframework.data.mongodb.core.query.NearQuery;
-import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 import util.E;
 
@@ -46,6 +42,8 @@ public class CityService {
     final MongoClient mongoClient;
     final CityRepository cityRepository;
     final CountryRepository countryRepository;
+
+    final StateRepository stateRepository;
     final MongoTemplate mongoTemplate;
 
     @Value("${databaseName}")
@@ -54,15 +52,19 @@ public class CityService {
     public CityService(UserRepository userRepository,
                        MongoClient mongoClient,
                        CityRepository cityRepository,
-                       CountryRepository countryRepository, MongoTemplate mongoTemplate) {
+                       CountryRepository countryRepository, StateRepository stateRepository, MongoTemplate mongoTemplate) {
 
         this.userRepository = userRepository;
         this.mongoClient = mongoClient;
         this.cityRepository = cityRepository;
         this.countryRepository = countryRepository;
+        this.stateRepository = stateRepository;
         this.mongoTemplate = mongoTemplate;
     }
 
+    public City addCity(City city) {
+        return cityRepository.insert(city);
+    }
     public List<City> getCountryCities(String countryId) {
         return cityRepository.findByCountryId(countryId);
     }
@@ -158,6 +160,10 @@ public class CityService {
             }
         }
         return map;
+    }
+
+    public List<State> getCountryStates(String countryId) {
+        return stateRepository.findByCountryId(countryId);
     }
 
 }

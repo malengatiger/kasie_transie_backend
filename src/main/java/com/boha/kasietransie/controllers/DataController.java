@@ -37,6 +37,7 @@ public class DataController {
     private final RouteService routeService;
     private final HeartbeatService heartbeatService;
     private final LocationRequestService locationRequestService;
+    final CityService cityService;
     final GeoHashFixer geoHashFixer;
     @PostMapping("/createUser")
     public ResponseEntity<Object> createUser(@RequestBody User user) {
@@ -55,6 +56,20 @@ public class DataController {
     /*
 
      */
+    @PostMapping("/addCity")
+    public ResponseEntity<Object> addCity(@RequestBody City city) {
+
+        try {
+            City v = cityService.addCity(city);
+            return ResponseEntity.ok(v);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(
+                    new CustomErrorResponse(400,
+                            "addCity failed: " + e.getMessage(),
+                            new DateTime().toDateTimeISO().toString()));
+        }
+
+    }
 
     @PostMapping("/addVehicle")
     public ResponseEntity<Object> addVehicle(@RequestBody Vehicle vehicle) {
@@ -70,6 +85,7 @@ public class DataController {
         }
 
     }
+
     @PostMapping("/addBasicLandmark")
     public ResponseEntity<Object> addLandmark(@RequestBody Landmark landmark)  {
 
