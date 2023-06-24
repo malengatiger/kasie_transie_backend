@@ -70,6 +70,20 @@ public class DataController {
         }
 
     }
+    @GetMapping("/updateRouteColor")
+    public ResponseEntity<Object> updateRouteColor(@RequestParam String routeId, @RequestParam String color) {
+
+        try {
+            Route v = routeService.updateRouteColor(routeId,color);
+            return ResponseEntity.ok(v);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(
+                    new CustomErrorResponse(400,
+                            "updateRouteColor failed: " + e.getMessage(),
+                            new DateTime().toDateTimeISO().toString()));
+        }
+
+    }
 
     @PostMapping("/addVehicle")
     public ResponseEntity<Object> addVehicle(@RequestBody Vehicle vehicle) {

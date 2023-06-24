@@ -61,6 +61,16 @@ public class RouteService {
         routePointRepository.deleteByRoutePointId(routePointId);
         return 0;
     }
+    public Route updateRouteColor(String routeId, String color) throws Exception {
+        List<Route> list = routeRepository.findByRouteId(routeId);
+        if (!list.isEmpty()) {
+            Route r = list.get(0);
+            r.setColor(color);
+            routeRepository.save(r);
+            return r;
+        }
+        throw new Exception("color update failed");
+    }
 
     public int addRoutePoints(List<RoutePoint> routePoints) {
         logger.info(XX + " Bulk insert of " + routePoints.size() + " routePoints");

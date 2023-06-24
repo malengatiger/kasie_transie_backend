@@ -112,9 +112,7 @@ public class CityService {
 
         logger.info(E.LEAF + E.LEAF + E.LEAF + E.LEAF + E.LEAF + " Cities found around location with radius: "
                 + radiusInKM + " km; found " + list.size() + " cities");
-        for (City city : list) {
-            logger.info(E.LEAF + E.LEAF + " city found by location: " + city.getName() + ", " + E.RED_APPLE + city.getStateName() + " - " + city.getCountryName());
-        }
+
         return list;
     }
     public List<City> getCitiesNear(double latitude, double longitude,
