@@ -18,12 +18,16 @@ public class VehicleHeartbeat {
     private String _id;
     String vehicleHeartbeatId;
     String vehicleId;
+    String vehicleReg;
     String associationId;
     String ownerId;
+    String ownerName;
     Position position;
     String geoHash;
-    String date;
+    String created;
     long  longDate;
+    String  make;
+    String  model;
 
     private static final Logger logger = Logger.getLogger(VehicleHeartbeat.class.getSimpleName());
     private static final String XX = E.COFFEE + E.COFFEE + E.COFFEE;

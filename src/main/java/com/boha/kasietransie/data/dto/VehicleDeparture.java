@@ -19,8 +19,8 @@ public class VehicleDeparture {
     String vehicleDepartureId;
     String landmarkId;
     String landmarkName;
-    String routeName;
-    String routeId;
+    String ownerId;
+    String ownerName;
     String vehicleId;
     String associationId;
     String associationName;

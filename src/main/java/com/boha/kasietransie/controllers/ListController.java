@@ -114,6 +114,19 @@ public class ListController {
                             new DateTime().toDateTimeISO().toString()));
         }
     }
+    @GetMapping("/getAssociations")
+    public ResponseEntity<Object> getAssociations() {
+        try {
+            List<Association> ass = associationService
+                    .getAssociations();
+            return ResponseEntity.ok(ass);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(
+                    new CustomErrorResponse(400,
+                            "getAssociations failed: " + e.getMessage(),
+                            new DateTime().toDateTimeISO().toString()));
+        }
+    }
     @GetMapping("/getAssociationVehicleHeartbeats")
     public ResponseEntity<Object> getAssociationVehicleHeartbeats(@RequestParam String associationId,
                                                                   @RequestParam int cutoffHours) {

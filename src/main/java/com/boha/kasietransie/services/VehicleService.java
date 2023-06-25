@@ -2,22 +2,27 @@ package com.boha.kasietransie.services;
 
 import com.boha.kasietransie.data.dto.Association;
 import com.boha.kasietransie.data.dto.Vehicle;
-import com.boha.kasietransie.data.dto.VehicleHeartbeat;
 import com.boha.kasietransie.data.repos.AssociationRepository;
 import com.boha.kasietransie.data.repos.VehicleHeartbeatRepository;
 import com.boha.kasietransie.data.repos.VehicleRepository;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.zxing.BarcodeFormat;
+import com.google.zxing.client.j2se.MatrixToImageWriter;
+import com.google.zxing.common.BitMatrix;
+import com.google.zxing.qrcode.QRCodeWriter;
 import org.joda.time.DateTime;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
-import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Service;
 import util.E;
 import util.FileToVehicles;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
 import java.io.File;
-import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -31,6 +36,7 @@ public class VehicleService {
     private final VehicleHeartbeatRepository vehicleHeartbeatRepository;
     private final AssociationRepository associationRepository;
     private final ResourceLoader resourceLoader;
+    final CloudStorageUploaderService cloudStorageUploaderService;
 
     private static final Gson gson = new GsonBuilder().setPrettyPrinting().create();
     private static final Logger logger = Logger.getLogger(VehicleService.class.getSimpleName());
@@ -40,16 +46,18 @@ public class VehicleService {
     public VehicleService(VehicleRepository vehicleRepository,
                           VehicleHeartbeatRepository vehicleHeartbeatRepository,
                           AssociationRepository associationRepository,
-                          ResourceLoader resourceLoader) {
+                          ResourceLoader resourceLoader, CloudStorageUploaderService cloudStorageUploaderService) {
         this.vehicleRepository = vehicleRepository;
         this.vehicleHeartbeatRepository = vehicleHeartbeatRepository;
         this.associationRepository = associationRepository;
         this.resourceLoader = resourceLoader;
+        this.cloudStorageUploaderService = cloudStorageUploaderService;
         logger.info(MM + " VehicleService constructed ");
 
     }
 
-    public Vehicle addVehicle(Vehicle vehicle) {
+    public Vehicle addVehicle(Vehicle vehicle) throws Exception {
+        createVehicleQRCode(vehicle);
         Vehicle v = vehicleRepository.insert(vehicle);
         logger.info("Vehicle has been added to database");
         return v;
@@ -59,7 +67,38 @@ public class VehicleService {
         return vehicleRepository.findByAssociationId(associationId);
     }
 
-    public List<Vehicle> importVehiclesFromJSON(File file, String associationId) throws IOException {
+    public int updateVehicleQRCode(Vehicle vehicle) throws Exception {
+        try {
+            int result = createVehicleQRCode(vehicle);
+            vehicleRepository.save(vehicle);
+            logger.info(E.OK + E.OK + " ... we cool with QRCode for "
+                    + vehicle.getVehicleReg() + " result: " + result);
+
+        } catch (Exception e) {
+            logger.severe("Unable to create QRCode");
+            return 9;
+        }
+        return 0;
+    }
+
+    public int createVehicleQRCode(Vehicle car) throws Exception {
+        String barcodeText = gson.toJson(car);
+        QRCodeWriter barcodeWriter = new QRCodeWriter();
+        BitMatrix bitMatrix =
+                barcodeWriter.encode(barcodeText, BarcodeFormat.QR_CODE, 200, 200);
+
+        BufferedImage img = MatrixToImageWriter.toBufferedImage(bitMatrix);
+        File file = Files.createFile(Path.of("qrcode_" + System.currentTimeMillis() + ".png")).toFile();
+        ImageIO.write(img, "png", file);
+        String url = cloudStorageUploaderService.uploadFile(file.getName(), file);
+        car.setQrCodeUrl(url);
+
+        logger.info(E.LEAF + E.LEAF + E.LEAF +
+                " QRCode generated, url: " + url + " for car: " + gson.toJson(car));
+        return 0;
+    }
+
+    public List<Vehicle> importVehiclesFromJSON(File file, String associationId) throws Exception {
         List<Association> asses = associationRepository.findByAssociationId(associationId);
         List<Vehicle> vehicles = new ArrayList<>();
 
@@ -73,7 +112,7 @@ public class VehicleService {
 
     private List<Vehicle> processVehiclesFromFile(String associationId,
                                                   List<Association> asses,
-                                                  List<Vehicle> vehiclesFromJSONFile) {
+                                                  List<Vehicle> vehiclesFromJSONFile) throws Exception {
         List<Vehicle> vehicles;
         for (Vehicle vehicle : vehiclesFromJSONFile) {
             vehicle.setAssociationId(associationId);
@@ -82,13 +121,24 @@ public class VehicleService {
             vehicle.setCountryId(asses.get(0).getCountryId());
             vehicle.setVehicleId(UUID.randomUUID().toString());
             vehicle.setActive(0);
+
+            int result = createVehicleQRCode(vehicle);
+            if (result == 0) {
+                logger.info(E.OK + E.OK + " ... we cool with QRCode for "
+                        + vehicle.getVehicleReg() + " result: " + result);
+            } else {
+                logger.severe(E.NOT_OK+ " Unable to create QRCode for " + vehicle.getVehicleReg());
+
+            }
+
+
         }
         vehicles = vehicleRepository.insert(vehiclesFromJSONFile);
         logger.info("Vehicles imported from file: " + vehicles.size());
         return vehicles;
     }
 
-    public List<Vehicle> importVehiclesFromCSV(File file, String associationId) throws IOException {
+    public List<Vehicle> importVehiclesFromCSV(File file, String associationId) throws Exception {
         List<Association> asses = associationRepository.findByAssociationId(associationId);
         List<Vehicle> vehicles = new ArrayList<>();
         List<Vehicle> vehiclesFromCSVFile = FileToVehicles.getVehiclesFromCSVFile(file);
@@ -100,7 +150,7 @@ public class VehicleService {
         return vehicles;
     }
 
-    public List<Vehicle> generateFakeVehicles(String associationId, int number) {
+    public List<Vehicle> generateFakeVehicles(String associationId, int number) throws Exception {
         List<Vehicle> list = new ArrayList<>();
         List<Association> asses = associationRepository.findByAssociationId(associationId);
         if (asses.isEmpty()) {
@@ -110,6 +160,7 @@ public class VehicleService {
         for (int i = 0; i < number; i++) {
             Vehicle mVehicle = getBaseVehicle(associationId,
                     asses.get(0).getAssociationName());
+            createVehicleQRCode(mVehicle);
             list.add(mVehicle);
         }
         List<Vehicle> mList = vehicleRepository.insert(list);
@@ -121,7 +172,7 @@ public class VehicleService {
         return mList;
     }
 
-    public List<Vehicle> generateFakeVehiclesFromFile(String associationId) throws IOException {
+    public List<Vehicle> generateFakeVehiclesFromFile(String associationId) throws Exception {
         logger.info(E.BLUE_DOT + " Getting fake vehicles from file ... ");
         Resource resource = resourceLoader.getResource("classpath:vehicles.json");
         File file = resource.getFile();
@@ -142,7 +193,9 @@ public class VehicleService {
             v.setVehicleId(UUID.randomUUID().toString());
             v.setCountryId(asses.get(0).getCountryId());
             v.setVehicleId(UUID.randomUUID().toString());
+            v.setPassengerCapacity(16);
             v.setCreated(DateTime.now().toString());
+            createVehicleQRCode(v);
         }
 
         List<Vehicle> mList = vehicleRepository.insert(vehiclesFromJSONFile);
@@ -155,7 +208,7 @@ public class VehicleService {
     }
 
     private Vehicle getBaseVehicle(String associationId, String associationName) {
-        Vehicle v  = new Vehicle();
+        Vehicle v = new Vehicle();
 
         v.setAssociationId(associationId);
         v.setActive(0);
@@ -174,7 +227,7 @@ public class VehicleService {
 
     }
 
-    String getVehicleReg() {
+    private String getVehicleReg() {
         Random rand = new Random(System.currentTimeMillis());
         String[] alpha = {"V", "B", "F", "D", "K", "G", "H", "R", "P", "Y", "T", "W", "Q", "M", "N", "X", "F", "V", "B", "Z"};
         StringBuilder sb = new StringBuilder();

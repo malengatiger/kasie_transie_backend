@@ -33,6 +33,7 @@ public class Vehicle {
     String created;
     String updated;
     String dateInstalled;
+    String qrCodeUrl;
 
     private static final Logger logger = Logger.getLogger(Vehicle.class.getSimpleName());
     private static final String XX = E.COFFEE + E.COFFEE + E.COFFEE;

@@ -7,7 +7,7 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 import java.util.List;
 
 public interface DispatchRecordRepository extends MongoRepository<DispatchRecord, String> {
-    List<DispatchRecord> findByLandmarkId(String landmarkId);
+    List<DispatchRecord> findByRouteLandmarkId(String landmarkId);
     List<DispatchRecord> findByVehicleId(String vehicleId);
 
     List<DispatchRecord> findByMarshalId(String userId);

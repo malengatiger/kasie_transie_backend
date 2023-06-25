@@ -1,9 +1,9 @@
 application:
     title: KasieTransie Backend
     version: Geo Version 1.0.0
-cloudStorageDirectory: geoMedia
+cloudStorageDirectory: kasieMedia
 email: bryangrant217x@gmail.com
-requestsPerSecond: 5
+requestsPerSecond: 10
 spring:
     mail:
         host: smtp.gmail.com

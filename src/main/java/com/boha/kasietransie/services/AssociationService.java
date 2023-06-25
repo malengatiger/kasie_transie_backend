@@ -148,6 +148,9 @@ public class AssociationService {
     public List<SettingsModel> getAssociationSettingsModels(String associationId) {
         return settingsModelRepository.findByAssociationId(associationId);
     }
+    public List<Association> getAssociations() {
+        return associationRepository.findAll();
+    }
 
     public Association getAssociationById(String associationId) {
         List<Association> list = associationRepository.findByAssociationId(associationId);

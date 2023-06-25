@@ -16,12 +16,13 @@ public class UserGeofenceEvent {
     private String _partitionKey;
     @Id
     private String _id;
+    String userGeofenceId;
     String landmarkId;
     String activityType;
     String action;
     String userId;
     long longDate;
-    String date;
+    String created;
     String landmarkName;
     int confidence;
     double odometer;

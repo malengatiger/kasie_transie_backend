@@ -18,7 +18,7 @@ public class DispatchRecord {
     @Id
     private String _id;
     String dispatchRecordId;
-    String landmarkId;
+    String routeLandmarkId;
     String marshalId;
     int passengers;
     String ownerId;

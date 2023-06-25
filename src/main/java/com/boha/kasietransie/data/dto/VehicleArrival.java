@@ -28,6 +28,8 @@ public class VehicleArrival {
     String vehicleReg;
     String make;
     String model;
+    String ownerId;
+    String ownerName;
     boolean dispatched;
 
     private static final Logger logger = Logger.getLogger(VehicleArrival.class.getSimpleName());

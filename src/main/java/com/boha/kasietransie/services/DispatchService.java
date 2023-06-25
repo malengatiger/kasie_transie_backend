@@ -50,7 +50,7 @@ public class DispatchService {
     }
 
     public List<DispatchRecord> getLandmarkDispatchRecords(String landmarkId) {
-        return dispatchRecordRepository.findByLandmarkId(landmarkId);
+        return dispatchRecordRepository.findByRouteLandmarkId(landmarkId);
     }
 
     public List<DispatchRecord> getVehicleDispatchRecords(String vehicleId) {
