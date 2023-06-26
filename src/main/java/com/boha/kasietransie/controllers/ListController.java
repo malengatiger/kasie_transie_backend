@@ -1,5 +1,6 @@
 package com.boha.kasietransie.controllers;
 
+import com.boha.kasietransie.data.RouteBag;
 import com.boha.kasietransie.data.dto.*;
 import com.boha.kasietransie.services.*;
 import com.google.gson.Gson;
@@ -192,6 +193,20 @@ public class ListController {
             return ResponseEntity.badRequest().body(
                     new CustomErrorResponse(400,
                             "getRoutePoints failed: " + e.getMessage(),
+                            new DateTime().toDateTimeISO().toString()));
+        }
+    }
+
+    @GetMapping("/refreshRoute")
+    public ResponseEntity<Object> refreshRoute(@RequestParam String routeId) {
+        try {
+           RouteBag bag = routeService
+                    .refreshRoute(routeId);
+            return ResponseEntity.ok(bag);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(
+                    new CustomErrorResponse(400,
+                            "refreshRoute failed: " + e.getMessage(),
                             new DateTime().toDateTimeISO().toString()));
         }
     }

@@ -1,5 +1,6 @@
 package com.boha.kasietransie.services;
 
+import com.boha.kasietransie.data.RouteBag;
 import com.boha.kasietransie.data.dto.Route;
 import com.boha.kasietransie.data.dto.RouteCity;
 import com.boha.kasietransie.data.dto.RouteLandmark;
@@ -57,6 +58,25 @@ public class RouteService {
         return routeRepository.insert(route);
     }
 
+    public RouteBag refreshRoute(String routeId) throws Exception {
+        List<Route> list = routeRepository.findByRouteId(routeId);
+        if (!list.isEmpty()) {
+            Route route = list.get(0);
+            List<RouteLandmark> routeLandmarks = routeLandmarkRepository.findByRouteId(routeId);
+            List<RoutePoint> routePoints = routePointRepository.findByRouteId(routeId);
+            List<RouteCity> routeCities = routeCityRepository.findByRouteId(routeId);
+            RouteBag bag = new RouteBag();
+            bag.setRoute(route);
+            bag.setRoutePoints(routePoints);
+            bag.setRouteLandmarks(routeLandmarks);
+            bag.setRouteCities(routeCities);
+
+            logger.info("Route has been refreshed for user. " + E.LEAF+E.LEAF+E.LEAF);
+            return bag;
+        }
+
+        throw new Exception("Route not found");
+    }
     public int deleteRoutePoint(String routePointId) {
         routePointRepository.deleteByRoutePointId(routePointId);
         return 0;

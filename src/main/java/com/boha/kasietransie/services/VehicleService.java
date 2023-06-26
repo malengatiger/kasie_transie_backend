@@ -38,6 +38,7 @@ public class VehicleService {
     private final ResourceLoader resourceLoader;
     final CloudStorageUploaderService cloudStorageUploaderService;
 
+    final MessagingService messagingService;
     private static final Gson gson = new GsonBuilder().setPrettyPrinting().create();
     private static final Logger logger = Logger.getLogger(VehicleService.class.getSimpleName());
 
@@ -46,13 +47,15 @@ public class VehicleService {
     public VehicleService(VehicleRepository vehicleRepository,
                           VehicleHeartbeatRepository vehicleHeartbeatRepository,
                           AssociationRepository associationRepository,
-                          ResourceLoader resourceLoader, CloudStorageUploaderService cloudStorageUploaderService) {
+                          ResourceLoader resourceLoader, CloudStorageUploaderService cloudStorageUploaderService, MessagingService messagingService) {
         this.vehicleRepository = vehicleRepository;
         this.vehicleHeartbeatRepository = vehicleHeartbeatRepository;
         this.associationRepository = associationRepository;
         this.resourceLoader = resourceLoader;
         this.cloudStorageUploaderService = cloudStorageUploaderService;
-        logger.info(MM + " VehicleService constructed ");
+        this.messagingService = messagingService;
+
+        logger.info(MM + " VehicleService constructed and shit injected! ");
 
     }
 
@@ -60,6 +63,7 @@ public class VehicleService {
         createVehicleQRCode(vehicle);
         Vehicle v = vehicleRepository.insert(vehicle);
         logger.info("Vehicle has been added to database");
+        messagingService.sendVehicleUpdateMessage(v.getAssociationId(),v.getVehicleId());
         return v;
     }
 
@@ -88,13 +92,16 @@ public class VehicleService {
                 barcodeWriter.encode(barcodeText, BarcodeFormat.QR_CODE, 200, 200);
 
         BufferedImage img = MatrixToImageWriter.toBufferedImage(bitMatrix);
-        File file = Files.createFile(Path.of("qrcode_" + System.currentTimeMillis() + ".png")).toFile();
+        Path path = Path.of("/qr_codes/qrcode_" + System.currentTimeMillis() + ".png");
+        File file = Files.createFile(path).toFile();
         ImageIO.write(img, "png", file);
         String url = cloudStorageUploaderService.uploadFile(file.getName(), file);
         car.setQrCodeUrl(url);
 
+        boolean delete = Files.deleteIfExists(path);
         logger.info(E.LEAF + E.LEAF + E.LEAF +
-                " QRCode generated, url: " + url + " for car: " + gson.toJson(car));
+                " QRCode generated, url: " + url + " for car: " + gson.toJson(car)
+                + E.RED_APPLE + " - temp file deleted: " + delete);
         return 0;
     }
 
@@ -215,7 +222,7 @@ public class VehicleService {
         v.setMake("Toyota");
         v.setModel("Quantum");
         v.setOwnerId("Not a Real Id");
-        v.setOwnerName("Mr. Transportation III");
+        v.setOwnerName(getOwnerName());
         v.setYear("2018");
         v.setCreated(DateTime.now().toDateTimeISO().toString());
         v.setAssociationName(associationName);
@@ -225,6 +232,26 @@ public class VehicleService {
 
         return v;
 
+    }
+
+    Random random = new Random(System.currentTimeMillis());
+    private String getOwnerName() {
+        String[] firstNames = new String[]{"John", "Nancy", "David", "Eric G", "Thomas A", "George", "Freddie", "Benjamin", "Thabo",
+        "Thabiso", "Mmamothe", "Yvonne", "Brandy G", "Catherine", "Anthony", "Malenga", "Jimmy", "Donnie", "Samuel", "Karina"};
+        String[] lastNames = new String[]{"Smith", "Baloyi", "Donaldson", "van der Merwe", "Battles", "Carpenter", "Moredi",
+                "Benjamin", "Donald", "jackson", "Rostov", "Maringa", "van Wyk", "Damarin", "Phillips", "Hellenic",
+                "Mofokeng", "Maluleke", "Henderson", "Marule", "Nkuna"};
+
+        int index1 = random.nextInt(firstNames.length);
+        int index2 = random.nextInt(lastNames.length);
+
+        String name = firstNames[index1] + " " + lastNames[index2];
+        int x = random.nextInt(100);
+        if (x > 25) {
+            return name;
+        } else {
+            return "Joburg South Taxi Collective Ltd.";
+        }
     }
 
     private String getVehicleReg() {

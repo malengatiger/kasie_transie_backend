@@ -17,6 +17,8 @@ import util.E;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -39,6 +41,8 @@ public class DataController {
     private final LocationRequestService locationRequestService;
     final CityService cityService;
     final GeoHashFixer geoHashFixer;
+    final MessagingService messagingService;
+
     @PostMapping("/createUser")
     public ResponseEntity<Object> createUser(@RequestBody User user) {
 
@@ -188,7 +192,7 @@ public class DataController {
     }
 
     @PostMapping("/addDispatchRecord")
-    public ResponseEntity<Object> addDispatchRecord(@RequestBody DispatchRecord dispatchRecord) throws Exception {
+    public ResponseEntity<Object> addDispatchRecord(@RequestBody DispatchRecord dispatchRecord)  {
 
         try {
             DispatchRecord v = dispatchService.addDispatchRecord(dispatchRecord);
@@ -203,7 +207,7 @@ public class DataController {
     }
 
     @PostMapping("/addVehicleHeartbeat")
-    public ResponseEntity<Object> addVehicleHeartbeat(@RequestBody VehicleHeartbeat vehicleHeartbeat) throws Exception {
+    public ResponseEntity<Object> addVehicleHeartbeat(@RequestBody VehicleHeartbeat vehicleHeartbeat)  {
 
         try {
             int v = heartbeatService.addVehicleHeartbeat(vehicleHeartbeat);
@@ -217,7 +221,7 @@ public class DataController {
 
     }
     @PostMapping("/addVehicleArrival")
-    public ResponseEntity<Object> addVehicleArrival(@RequestBody VehicleArrival vehicleArrival) throws Exception {
+    public ResponseEntity<Object> addVehicleArrival(@RequestBody VehicleArrival vehicleArrival)  {
 
         try {
             VehicleArrival v = dispatchService.addVehicleArrival(vehicleArrival);
@@ -231,7 +235,7 @@ public class DataController {
 
     }
     @PostMapping("/addLocationRequest")
-    public ResponseEntity<Object> addLocationRequest(@RequestBody LocationRequest locationRequest) throws Exception {
+    public ResponseEntity<Object> addLocationRequest(@RequestBody LocationRequest locationRequest)  {
 
         try {
             LocationRequest v = locationRequestService.addLocationRequest(locationRequest);
@@ -244,7 +248,7 @@ public class DataController {
         }
     }
     @PostMapping("/addLocationResponse")
-    public ResponseEntity<Object> addLocationResponse(@RequestBody LocationResponse locationResponse) throws Exception {
+    public ResponseEntity<Object> addLocationResponse(@RequestBody LocationResponse locationResponse) {
 
         try {
             LocationResponse v = locationRequestService.addLocationResponse(locationResponse);
@@ -257,7 +261,7 @@ public class DataController {
         }
     }
     @PostMapping("/addUserGeofenceEvent")
-    public ResponseEntity<Object> addUserGeofenceEvent(@RequestBody UserGeofenceEvent userGeofenceEvent) throws Exception {
+    public ResponseEntity<Object> addUserGeofenceEvent(@RequestBody UserGeofenceEvent userGeofenceEvent) {
 
         try {
             UserGeofenceEvent v = userGeofenceService.addUserGeofenceEvent(userGeofenceEvent);
@@ -272,7 +276,7 @@ public class DataController {
     }
 
     @PostMapping("/addVehicleDeparture")
-    public ResponseEntity<Object> addVehicleDeparture(@RequestBody VehicleDeparture vehicleDeparture) throws Exception {
+    public ResponseEntity<Object> addVehicleDeparture(@RequestBody VehicleDeparture vehicleDeparture) {
 
         try {
             VehicleDeparture v = dispatchService.addVehicleDeparture(vehicleDeparture);
@@ -285,7 +289,7 @@ public class DataController {
         }
     }
     @PostMapping("/addAppError")
-    public ResponseEntity<Object> addAppError(@RequestBody AppError appError) throws Exception {
+    public ResponseEntity<Object> addAppError(@RequestBody AppError appError) {
 
         try {
             AppError v = associationService.addAppError(appError);
@@ -301,7 +305,7 @@ public class DataController {
 
 
     @PostMapping("/registerAssociation")
-    public ResponseEntity<Object> registerAssociation(@RequestBody Association association) throws Exception {
+    public ResponseEntity<Object> registerAssociation(@RequestBody Association association)  {
 
         try {
             return ResponseEntity.ok(associationService.registerAssociation(association));
@@ -314,12 +318,45 @@ public class DataController {
 
     }
 
+    @GetMapping("/sendRouteUpdateMessage")
+    public ResponseEntity<Object> sendRouteUpdateMessage(
+                                                          @RequestParam String associationId,
+                                                          @RequestParam String routeId)  {
+
+        try {
+            return ResponseEntity.ok(messagingService.sendRouteUpdateMessage(
+                    associationId,routeId));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(
+                    new CustomErrorResponse(400,
+                            "sendRouteUpdateMessage failed: " + e.getMessage(),
+                            new DateTime().toDateTimeISO().toString()));
+        }
+
+    }
+    @GetMapping("/sendVehicleUpdateMessage")
+    public ResponseEntity<Object> sendVehicleUpdateMessage(
+            @RequestParam String associationId,
+            @RequestParam String vehicleId)  {
+
+        try {
+            return ResponseEntity.ok(messagingService.sendVehicleUpdateMessage(
+                    associationId,vehicleId));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(
+                    new CustomErrorResponse(400,
+                            "sendVehicleUpdateMessage failed: " + e.getMessage(),
+                            new DateTime().toDateTimeISO().toString()));
+        }
+
+    }
+
     @GetMapping("/generateFakeAssociation")
     public ResponseEntity<Object> generateFakeAssociation(@RequestParam String testCellphoneNumber,
                                                           @RequestParam String firstName,
                                                           @RequestParam String lastName,
                                                           @RequestParam String associationName,
-                                                          @RequestParam String email) throws Exception {
+                                                          @RequestParam String email)  {
 
         try {
             return ResponseEntity.ok(associationService.generateFakeAssociation(
@@ -333,7 +370,7 @@ public class DataController {
 
     }
     @GetMapping("/generateFakeVehiclesFromFile")
-    public ResponseEntity<Object> generateFakeVehiclesFromFile(@RequestParam String associationId) throws Exception {
+    public ResponseEntity<Object> generateFakeVehiclesFromFile(@RequestParam String associationId)  {
 
         try {
             return ResponseEntity.ok(vehicleService.generateFakeVehiclesFromFile(
@@ -446,11 +483,8 @@ public class DataController {
             }
         }
         if (file.exists()) {
-            boolean ok = file.delete();
-            if (ok) {
-                logger.info(E.RED_APPLE + E.RED_APPLE +
-                        " user batch file deleted");
-            }
+            Path path = Paths.get(file.getAbsolutePath());
+            java.nio.file.Files.delete(path);
         }
 
         return ResponseEntity.badRequest().body(
@@ -516,11 +550,9 @@ public class DataController {
             }
         }
         if (file.exists()) {
-            boolean ok = file.delete();
-            if (ok) {
-                logger.info(E.RED_APPLE + E.RED_APPLE +
-                        " user batch file deleted");
-            }
+            Path path = Paths.get(file.getAbsolutePath());
+            java.nio.file.Files.delete(path);
+
         }
 
         return ResponseEntity.badRequest().body(
@@ -531,7 +563,7 @@ public class DataController {
 
 
     @GetMapping("/addCountriesStatesCitiesToDB")
-    public ResponseEntity<Object> addCountriesStatesCitiesToDB() throws Exception {
+    public ResponseEntity<Object> addCountriesStatesCitiesToDB()  {
 
         try {
             return ResponseEntity.ok(mongoService.addCountriesStatesCitiesToDB());
@@ -545,7 +577,7 @@ public class DataController {
     }
 
     @GetMapping("/addGeoHashes")
-    public ResponseEntity<Object> addGeoHashes() throws Exception {
+    public ResponseEntity<Object> addGeoHashes()  {
 
         try {
             return ResponseEntity.ok(geoHashFixer.addGeoHashes());
@@ -559,7 +591,7 @@ public class DataController {
     }
 
     @GetMapping("/addSouthAfricanCitiesToDB")
-    public ResponseEntity<Object> addSouthAfricanCitiesToDB() throws Exception {
+    public ResponseEntity<Object> addSouthAfricanCitiesToDB()  {
 
         try {
             return ResponseEntity.ok(mongoService.addSouthAfricanCitiesToDB());

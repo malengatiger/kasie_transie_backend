@@ -54,7 +54,7 @@ public class Route {
                 new IndexOptions().unique(true));
 
         dbCollection.createIndex(
-                Indexes.ascending( "countryId"));
+                Indexes.ascending( "routeId"));
 
         logger.info(XX + "Route indexes done");
     }

@@ -106,19 +106,34 @@ public class MessagingService {
             e.printStackTrace();
         }
     }
-//    public void sendMessage(VehicleHeartbeat vehicleHeartbeat) {
-//        try {
-//            String topic = "vehicleHeartbeat_" + vehicleHeartbeat.getAssociationId();
-//
-//            Message message = buildMessage("vehicleHeartbeat", topic,
-//                    G.toJson(vehicleHeartbeat));
-//            FirebaseMessaging.getInstance().send(message);
-//
-//        } catch (Exception e) {
-//            LOGGER.error("Failed to send projectPosition FCM message");
-//            e.printStackTrace();
-//        }
-//    }
+    public int sendRouteUpdateMessage(String associationId, String routeId) {
+        try {
+            String topic = "route_changes_" + associationId;
+            Message message = buildMessage("routeChanges", topic,
+                    routeId);
+            FirebaseMessaging.getInstance().send(message);
+            LOGGER.info(E.RED_APPLE + "Route Update Message has been sent: \n associationId: "
+                    + associationId + " routeId: " + routeId);
+        } catch (Exception e) {
+            LOGGER.error("Failed to send RouteUpdateMessage FCM message");
+            e.printStackTrace();
+        }
+        return 0;
+    }
+    public int sendVehicleUpdateMessage(String associationId, String vehicleId) {
+        try {
+            String topic = "vehicle_changes_" + associationId;
+
+            Message message = buildMessage("vehicleChanges", topic,
+                    vehicleId);
+            FirebaseMessaging.getInstance().send(message);
+
+        } catch (Exception e) {
+            LOGGER.error("Failed to send VehicleUpdateMessage FCM message");
+            e.printStackTrace();
+        }
+        return 0;
+    }
     public void sendMessage(DispatchRecord dispatchRecord) {
         try {
             String topic = "dispatchRecord_" + dispatchRecord.getAssociationId();
