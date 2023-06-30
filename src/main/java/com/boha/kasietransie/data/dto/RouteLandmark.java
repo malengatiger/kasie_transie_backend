@@ -18,6 +18,9 @@ public class RouteLandmark {
     @Id
     private String _id;
     String routeId;
+    String routePointId;
+    int index;
+    int routePointIndex;
     String routeName;
     String landmarkId;
     String landmarkName;

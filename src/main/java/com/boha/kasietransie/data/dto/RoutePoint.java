@@ -23,8 +23,8 @@ public class RoutePoint {
     int index;
     String created;
     String routeId;
-    String landmarkId;
-    String landmarkName;
+    String associationId;
+    String routeName;
     Position position;
     String geoHash;
 
@@ -37,11 +37,13 @@ public class RoutePoint {
 
         dbCollection.createIndex(
                 Indexes.ascending("routeId"));
+
         dbCollection.createIndex(
                 Indexes.ascending( "landmarkId"));
+
         dbCollection.createIndex(
                 Indexes.geo2dsphere("position"));
 
-        logger.info(XX + "RoutePoint indexes done");
+        logger.info(XX + "RoutePoint  \uD83D\uDECE indexes done");
     }
 }

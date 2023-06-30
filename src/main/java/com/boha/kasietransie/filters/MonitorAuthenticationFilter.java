@@ -81,9 +81,9 @@ public class MonitorAuthenticationFilter extends OncePerRequestFilter {
         }
         //allow localhost
         if (url.contains("localhost") || url.contains("192.168.86.242")) {
-            LOGGER.info("" + mm + " contextPath: " + httpServletRequest.getContextPath()
+            LOGGER.info(mm + " contextPath: " + httpServletRequest.getContextPath()
                     + E.AMP + " requestURI: " + httpServletRequest.getRequestURI() + "\n\n");
-            LOGGER.info("" + mm + " allowing call from localhost");
+            LOGGER.info(mm + " allowing call from " + url);
 
             doFilter(httpServletRequest, httpServletResponse, filterChain);
             return;

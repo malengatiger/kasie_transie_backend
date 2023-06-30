@@ -520,6 +520,7 @@ public class MongoService {
             City.createIndex(db);
             RouteLandmark.createIndex(db);
             RouteCity.createIndex(db);
+            CalculatedDistance.createIndex(db);
 
             logger.info(XX + " MongoService has completed setup of indexes " + E.BELL + E.BELL);
 

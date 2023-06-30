@@ -2,6 +2,7 @@ package com.boha.kasietransie.services;
 
 import com.boha.kasietransie.data.dto.Landmark;
 import com.boha.kasietransie.data.dto.Route;
+import com.boha.kasietransie.data.dto.RouteLandmark;
 import com.boha.kasietransie.data.repos.LandmarkRepository;
 import com.boha.kasietransie.data.repos.RouteRepository;
 import com.github.davidmoten.geo.GeoHash;
@@ -46,9 +47,7 @@ public class LandmarkService {
         return landmarkRepository.deleteByLandmarkId(landmarkId);
     }
 
-    public List<Landmark> getAssociationLandmarks(String associationId) {
-        return landmarkRepository.findByAssociationId(associationId);
-    }
+
 
     public List<Landmark> findLandmarksByLocation(double latitude,
                                                   double longitude, double radiusInKM) {

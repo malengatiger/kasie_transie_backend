@@ -10,4 +10,8 @@ public interface RouteLandmarkRepository extends MongoRepository<RouteLandmark, 
     List<RouteLandmark> findByRouteId(String routeId);
     List<RouteLandmark> findByAssociationId(String associationId);
 
+    List<RouteLandmark> findByAssociationIdOrderByCreatedAsc(String associationId);
+
+    List<RouteLandmark> findByRouteIdOrderByCreatedAsc(String routeId);
+
 }

@@ -197,6 +197,76 @@ public class ListController {
         }
     }
 
+    @GetMapping("/getAssociationRoutePoints")
+    public ResponseEntity<Object> getAssociationRoutePoints(@RequestParam String associationId) {
+        try {
+            List<RoutePoint> ass = routeService
+                    .getAssociationRoutePoints(associationId);
+            return ResponseEntity.ok(ass);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(
+                    new CustomErrorResponse(400,
+                            "getAssociationRoutePoints failed: " + e.getMessage(),
+                            new DateTime().toDateTimeISO().toString()));
+        }
+    }
+
+    @GetMapping("/getAssociationRouteCities")
+    public ResponseEntity<Object> getAssociationRouteCities(@RequestParam String associationId) {
+        try {
+            List<RouteCity> ass = routeService
+                    .getAssociationRouteCities(associationId);
+            return ResponseEntity.ok(ass);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(
+                    new CustomErrorResponse(400,
+                            "getAssociationRouteCities failed: " + e.getMessage(),
+                            new DateTime().toDateTimeISO().toString()));
+        }
+    }
+
+    @GetMapping("/getAssociationRouteLandmarks")
+    public ResponseEntity<Object> getAssociationRouteLandmarks(@RequestParam String associationId) {
+        try {
+            List<RouteLandmark> ass = routeService
+                    .getAssociationRouteLandmarks(associationId);
+            return ResponseEntity.ok(ass);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(
+                    new CustomErrorResponse(400,
+                            "getAssociationRouteLandmarks failed: " + e.getMessage(),
+                            new DateTime().toDateTimeISO().toString()));
+        }
+    }
+
+    @GetMapping("/getRouteCities")
+    public ResponseEntity<Object> getRouteCities(@RequestParam String routeId) {
+        try {
+            List<RouteCity> ass = routeService
+                    .getRouteCities(routeId);
+            return ResponseEntity.ok(ass);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(
+                    new CustomErrorResponse(400,
+                            "getRouteCities failed: " + e.getMessage(),
+                            new DateTime().toDateTimeISO().toString()));
+        }
+    }
+
+    @GetMapping("/getCalculatedDistances")
+    public ResponseEntity<Object> getCalculatedDistances(@RequestParam String routeId) {
+        try {
+            List<CalculatedDistance> ass = routeService
+                    .getCalculatedDistances(routeId);
+            return ResponseEntity.ok(ass);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(
+                    new CustomErrorResponse(400,
+                            "getCalculatedDistances failed: " + e.getMessage(),
+                            new DateTime().toDateTimeISO().toString()));
+        }
+    }
+
     @GetMapping("/refreshRoute")
     public ResponseEntity<Object> refreshRoute(@RequestParam String routeId) {
         try {

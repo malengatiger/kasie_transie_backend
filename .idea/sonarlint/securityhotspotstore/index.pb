@@ -48,8 +48,6 @@ y
 Isrc/main/java/com/boha/kasietransie/data/repos/AssociationRepository.java,4/2/42f318b2cd0de93868b3e86178cccd19f9694361
 l
 <src/main/java/com/boha/kasietransie/data/dto/CountryBag.java,4/c/4c9ad635135eb9e1efb13b8aa1610b37fb40f067
-t
-Dsrc/main/java/com/boha/kasietransie/data/dto/CalculatedDistance.java,9/8/98193d7c10a5e2651d387e27c9bb3ec423c167c5
 q
 Asrc/main/java/com/boha/kasietransie/data/dto/RegistrationBag.java,e/9/e9bbd2659969dcac76a908befc36c0253ec494f0
 u
@@ -95,16 +93,10 @@ g
 :
 
 .gitignore,a/5/a5cc2925ca8258af241be7e5b0381edf30266302
-p
-@src/main/java/com/boha/kasietransie/data/dto/RoutePointList.java,8/b/8b00cf623372a9c5c5a08fe71b31e0746c6cd04f
-{
-Ksrc/main/java/com/boha/kasietransie/data/repos/RouteLandmarkRepository.java,2/c/2c26681dc869fb471858b1af6c3ece17d955cf06
 m
 =src/main/java/com/boha/kasietransie/services/UserService.java,0/a/0a22db8a815c67a270ca868202a7770a34c099d1
 j
 :src/main/java/com/boha/kasietransie/data/dto/Landmark.java,0/f/0f12af9c7dae1cda9a93f0d1006131aa043f4898
-q
-Asrc/main/java/com/boha/kasietransie/services/LandmarkService.java,a/a/aa8a61ffbdd708483dde36a05471e77b925c6e0a
 7
 cmd.txt,2/8/28656ae4f72dcaedf55911a0fd343965f8373c35
 V
@@ -123,7 +115,3 @@ q
 Asrc/main/java/com/boha/kasietransie/data/dto/LocationRequest.java,6/2/62cf58810937ec6128ca2f126dad54b09f5912ba
 r
 Bsrc/main/java/com/boha/kasietransie/data/dto/LocationResponse.java,e/b/ebce6bc69959ad58054ddb2dc2bd4a0b1be6be07
-l
-<src/main/java/com/boha/kasietransie/data/dto/RoutePoint.java,9/9/990da42eabd5ae4a04011b321f63814395bec7f5
-o
-?src/main/java/com/boha/kasietransie/data/dto/RouteLandmark.java,1/0/1037600cbfe8dcbc960c450ab23f6e1e78a25b5e

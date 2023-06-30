@@ -84,8 +84,7 @@ public class CityService {
         } else {
             mLimit = limit;
         }
-        org.springframework.data.geo.Point searchPoint =
-                new org.springframework.data.geo.Point(latitude, longitude);
+
         logger.info(E.COOL_MAN+E.COOL_MAN
                 +" findCitiesByLocation: radius: " + radiusInKM);
         logger.info(E.COOL_MAN+E.COOL_MAN

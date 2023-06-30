@@ -267,6 +267,13 @@
 			<artifactId>geo-mem</artifactId>
 			<version>0.8.0</version>
 		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.apache.lucene/lucene-spatial -->
+		<dependency>
+			<groupId>org.apache.lucene</groupId>
+			<artifactId>lucene-spatial</artifactId>
+			<version>4.4.0</version>
+		</dependency>
+
 
 	</dependencies>
 
