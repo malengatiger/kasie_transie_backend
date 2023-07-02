@@ -46,6 +46,9 @@ public class Vehicle {
                 Indexes.ascending("countryId"));
 
         dbCollection.createIndex(
+                Indexes.ascending("associationId"));
+
+        dbCollection.createIndex(
                 Indexes.ascending("ownerId"));
 
         dbCollection.createIndex(

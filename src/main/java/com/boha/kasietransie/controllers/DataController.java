@@ -1,6 +1,7 @@
 package com.boha.kasietransie.controllers;
 
 import com.boha.kasietransie.data.CalculatedDistanceList;
+import com.boha.kasietransie.data.DispatchRecordList;
 import com.boha.kasietransie.data.dto.*;
 import com.boha.kasietransie.services.*;
 import com.google.common.io.Files;
@@ -135,34 +136,7 @@ public class DataController {
         }
 
     }
-    @GetMapping("/updateAssociationRouteLandmarks")
-    public ResponseEntity<Object> updateAssociationRouteLandmarks(@RequestParam String associationId)  {
 
-        try {
-            List<RouteLandmark> v = routeService.updateAssociationRouteLandmarks(associationId);
-            return ResponseEntity.ok(v);
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body(
-                    new CustomErrorResponse(400,
-                            "updateAssociationRouteLandmarks failed: " + e.getMessage(),
-                            new DateTime().toDateTimeISO().toString()));
-        }
-
-    }
-    @GetMapping("/updateRouteLandmarks")
-    public ResponseEntity<Object> updateRouteLandmarks(@RequestParam String routeId)  {
-
-        try {
-            List<RouteLandmark> v = routeService.updateRouteLandmarks(routeId);
-            return ResponseEntity.ok(v);
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body(
-                    new CustomErrorResponse(400,
-                            "updateRouteLandmarks failed: " + e.getMessage(),
-                            new DateTime().toDateTimeISO().toString()));
-        }
-
-    }
     @PostMapping("/addRouteCity")
     public ResponseEntity<Object> addRouteCity(@RequestBody RouteCity landmark)  {
 
@@ -243,7 +217,22 @@ public class DataController {
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(
                     new CustomErrorResponse(400,
-                            "addVehicle failed: " + e.getMessage(),
+                            "addDispatchRecord failed: " + e.getMessage(),
+                            new DateTime().toDateTimeISO().toString()));
+        }
+
+    }
+
+    @PostMapping("/addDispatchRecords")
+    public ResponseEntity<Object> addDispatchRecords(@RequestBody DispatchRecordList dispatchRecordList)  {
+
+        try {
+           List<DispatchRecord> v = dispatchService.addDispatchRecords(dispatchRecordList);
+            return ResponseEntity.ok(v);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(
+                    new CustomErrorResponse(400,
+                            "addDispatchRecords failed: " + e.getMessage(),
                             new DateTime().toDateTimeISO().toString()));
         }
 
@@ -662,14 +651,14 @@ public class DataController {
     }
 
     @GetMapping("/fixRoutePoints")
-    public ResponseEntity<Object> fixRoutePoints() {
+    public ResponseEntity<Object> fixRoutePoints(@RequestParam String associationId) {
 
         try {
-            return ResponseEntity.ok(routeService.fixRoutePoints());
+            return ResponseEntity.ok(routeService.fixRoutePoints(associationId));
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(
                     new CustomErrorResponse(400,
-                            "checkDatabaseTotals failed: " + e.getMessage(),
+                            "fixRoutePoints failed: " + e.getMessage(),
                             new DateTime().toDateTimeISO().toString()));
         }
 

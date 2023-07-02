@@ -49,6 +49,7 @@ public class ListController {
                             new DateTime().toDateTimeISO().toString()));
         }
     }
+
     @GetMapping("/getAssociationById")
     public ResponseEntity<Object> getAssociationById(@RequestParam String associationId) {
         try {
@@ -61,6 +62,7 @@ public class ListController {
                             new DateTime().toDateTimeISO().toString()));
         }
     }
+
     @GetMapping("/getAssociationSettings")
     public ResponseEntity<Object> getAssociationSettingsModels(@RequestParam String associationId) {
         try {
@@ -88,12 +90,13 @@ public class ListController {
                             new DateTime().toDateTimeISO().toString()));
         }
     }
+
     @GetMapping("/getAssociationRoutes")
     public ResponseEntity<Object> getAssociationRoutes(@RequestParam String associationId) {
         try {
             List<Route> ass = routeService
                     .getAssociationRoutes(associationId);
-            logger.info(E.DOG+E.DOG+" Association Routes found: " + ass.size());
+            logger.info(E.DOG + E.DOG + " Association Routes found: " + ass.size());
             return ResponseEntity.ok(ass);
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(
@@ -102,6 +105,7 @@ public class ListController {
                             new DateTime().toDateTimeISO().toString()));
         }
     }
+
     @GetMapping("/getAssociationVehicles")
     public ResponseEntity<Object> getAssociationVehicles(@RequestParam String associationId) {
         try {
@@ -115,6 +119,7 @@ public class ListController {
                             new DateTime().toDateTimeISO().toString()));
         }
     }
+
     @GetMapping("/getAssociations")
     public ResponseEntity<Object> getAssociations() {
         try {
@@ -128,6 +133,7 @@ public class ListController {
                             new DateTime().toDateTimeISO().toString()));
         }
     }
+
     @GetMapping("/getAssociationVehicleHeartbeats")
     public ResponseEntity<Object> getAssociationVehicleHeartbeats(@RequestParam String associationId,
                                                                   @RequestParam int cutoffHours) {
@@ -142,9 +148,10 @@ public class ListController {
                             new DateTime().toDateTimeISO().toString()));
         }
     }
+
     @GetMapping("/getVehicleHeartbeats")
     public ResponseEntity<Object> getVehicleHeartbeats(@RequestParam String associationId,
-                                                                  @RequestParam int cutoffHours) {
+                                                       @RequestParam int cutoffHours) {
         try {
             List<VehicleHeartbeat> ass = heartbeatService
                     .getVehicleHeartbeats(associationId, cutoffHours);
@@ -156,9 +163,10 @@ public class ListController {
                             new DateTime().toDateTimeISO().toString()));
         }
     }
+
     @GetMapping("/getOwnerVehicleHeartbeats")
     public ResponseEntity<Object> getOwnerVehicleHeartbeats(@RequestParam String associationId,
-                                                       @RequestParam int cutoffHours) {
+                                                            @RequestParam int cutoffHours) {
         try {
             List<VehicleHeartbeat> ass = heartbeatService
                     .getOwnerVehicleHeartbeats(associationId, cutoffHours);
@@ -170,6 +178,7 @@ public class ListController {
                             new DateTime().toDateTimeISO().toString()));
         }
     }
+
     @GetMapping("/getAssociationAppErrors")
     public ResponseEntity<Object> getAssociationAppErrors(@RequestParam String associationId) {
         try {
@@ -183,6 +192,7 @@ public class ListController {
                             new DateTime().toDateTimeISO().toString()));
         }
     }
+
     @GetMapping("/getRoutePoints")
     public ResponseEntity<Object> getRoutePoints(@RequestParam String routeId) {
         try {
@@ -270,7 +280,7 @@ public class ListController {
     @GetMapping("/refreshRoute")
     public ResponseEntity<Object> refreshRoute(@RequestParam String routeId) {
         try {
-           RouteBag bag = routeService
+            RouteBag bag = routeService
                     .refreshRoute(routeId);
             return ResponseEntity.ok(bag);
         } catch (Exception e) {
@@ -312,6 +322,7 @@ public class ListController {
                             new DateTime().toDateTimeISO().toString()));
         }
     }
+
     @GetMapping("/findRoutesByLocation")
     public ResponseEntity<Object> findRoutesByLocation(@RequestParam double latitude,
                                                        @RequestParam double longitude,
@@ -326,10 +337,31 @@ public class ListController {
                             new DateTime().toDateTimeISO().toString()));
         }
     }
+
+    @GetMapping("/findRouteLandmarksByLocation")
+    public ResponseEntity<Object> findRouteLandmarksByLocation(@RequestParam String associationId, @RequestParam double latitude,
+                                                               @RequestParam double longitude,
+                                                               @RequestParam double radiusInKM) {
+        try {
+            List<RouteLandmark> r = routeService.findRouteLandmarksByLocation(
+                    associationId,
+                    latitude, longitude, radiusInKM);
+
+            return ResponseEntity.ok(r);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(
+                    new CustomErrorResponse(400,
+                            "findRouteLandmarksByLocation failed: " + e.getMessage(),
+                            new DateTime().toDateTimeISO().toString()));
+        }
+    }
+
     @GetMapping("/findLandmarksByLocation")
-    public ResponseEntity<Object> findLandmarksByLocation(@RequestParam double latitude,
-                                                       @RequestParam double longitude,
-                                                       @RequestParam double radiusInKM) {
+    public ResponseEntity<Object> findLandmarksByLocation(
+
+            @RequestParam double latitude,
+            @RequestParam double longitude,
+            @RequestParam double radiusInKM) {
         try {
             List<Landmark> r = landmarkService.findLandmarksByLocation(latitude, longitude, radiusInKM);
             return ResponseEntity.ok(r);
@@ -340,6 +372,7 @@ public class ListController {
                             new DateTime().toDateTimeISO().toString()));
         }
     }
+
     @GetMapping("/getRouteLandmarks")
     public ResponseEntity<Object> getRouteLandmarks(@RequestParam String routeId) {
         try {
@@ -352,12 +385,13 @@ public class ListController {
                             new DateTime().toDateTimeISO().toString()));
         }
     }
+
     @GetMapping("/findAssociationRoutesByLocation")
     public ResponseEntity<Object> findAssociationRoutesByLocation(@RequestParam String associationId, @RequestParam double latitude,
-                                                       @RequestParam double longitude,
-                                                       @RequestParam double radiusInKM) {
+                                                                  @RequestParam double longitude,
+                                                                  @RequestParam double radiusInKM) {
         try {
-            List<Route> r = routeService.findAssociationRoutesByLocation(associationId,latitude, longitude, radiusInKM);
+            List<Route> r = routeService.findAssociationRoutesByLocation(associationId, latitude, longitude, radiusInKM);
             return ResponseEntity.ok(r);
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(
@@ -366,6 +400,7 @@ public class ListController {
                             new DateTime().toDateTimeISO().toString()));
         }
     }
+
     @GetMapping("/getCountryCities")
     public ResponseEntity<Object> getCountryCities(@RequestParam String countryId) {
         try {
@@ -378,6 +413,7 @@ public class ListController {
                             new DateTime().toDateTimeISO().toString()));
         }
     }
+
     @GetMapping("/getCountries")
     public ResponseEntity<Object> getCountries() {
         try {

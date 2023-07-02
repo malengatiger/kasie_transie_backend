@@ -44,8 +44,6 @@ public class DispatchRecord {
                 db.getCollection(DispatchRecord.class.getSimpleName());
 
         dbCollection.createIndex(
-                Indexes.ascending("associationId", "landmarkId", "created"));
-        dbCollection.createIndex(
                 Indexes.ascending( "landmarkId", "created"));
 
         dbCollection.createIndex(
@@ -60,9 +58,6 @@ public class DispatchRecord {
         dbCollection.createIndex(
                 Indexes.geo2dsphere("position"));
 
-        dbCollection.createIndex(
-                Indexes.ascending("countryId","associationName"),
-                new IndexOptions().unique(true));
 
         logger.info(XX + "DispatchRecord indexes done");
     }

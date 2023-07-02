@@ -1,5 +1,6 @@
 package com.boha.kasietransie.services;
 
+import com.boha.kasietransie.data.DispatchRecordList;
 import com.boha.kasietransie.data.dto.DispatchRecord;
 import com.boha.kasietransie.data.dto.VehicleArrival;
 import com.boha.kasietransie.data.dto.VehicleDeparture;
@@ -47,6 +48,16 @@ public class DispatchService {
         DispatchRecord rec = dispatchRecordRepository.insert(dispatchRecord);
         messagingService.sendMessage(rec);
         return rec;
+    }
+
+    public List<DispatchRecord> addDispatchRecords(DispatchRecordList dispatchRecordList) {
+
+        List<DispatchRecord> list = new ArrayList<>();
+        for (DispatchRecord dispatchRecord : dispatchRecordList.getDispatchRecords()) {
+            DispatchRecord rec = addDispatchRecord(dispatchRecord);
+            list.add(rec);
+        }
+        return list;
     }
 
     public List<DispatchRecord> getLandmarkDispatchRecords(String landmarkId) {

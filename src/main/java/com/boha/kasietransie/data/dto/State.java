@@ -33,7 +33,7 @@ public class State {
 
     public static void createIndex(MongoDatabase db) {
         MongoCollection<org.bson.Document> dbCollection =
-                db.getCollection(DispatchRecord.class.getSimpleName());
+                db.getCollection(State.class.getSimpleName());
 
         dbCollection.createIndex(
                 Indexes.ascending( "countryId"));

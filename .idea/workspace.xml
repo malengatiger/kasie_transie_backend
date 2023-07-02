@@ -4,26 +4,19 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a7485aca-7a98-4bda-a4fb-cbb0b1e4b4ad" name="Changes" comment=" 💪refactored new route process">
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/boha/kasietransie/data/CalculatedDistanceList.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/boha/kasietransie/data/RouteDistanceFromSearch.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/boha/kasietransie/data/RouteSearchInfo.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/boha/kasietransie/data/repos/CalculatedDistanceRepository.java" afterDir="false" />
+    <list default="true" id="a7485aca-7a98-4bda-a4fb-cbb0b1e4b4ad" name="Changes" comment="💪smooth map on landmark creation">
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/boha/kasietransie/data/DispatchRecordList.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/sonarlint/issuestore/index.pb" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/sonarlint/issuestore/index.pb" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/sonarlint/securityhotspotstore/index.pb" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/sonarlint/securityhotspotstore/index.pb" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/boha/kasietransie/controllers/DataController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/boha/kasietransie/controllers/DataController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/boha/kasietransie/controllers/ListController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/boha/kasietransie/controllers/ListController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/boha/kasietransie/data/dto/CalculatedDistance.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/boha/kasietransie/data/dto/CalculatedDistance.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/boha/kasietransie/data/dto/RouteLandmark.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/boha/kasietransie/data/dto/RouteLandmark.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/boha/kasietransie/data/dto/RoutePoint.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/boha/kasietransie/data/dto/RoutePoint.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/boha/kasietransie/data/dto/DispatchRecord.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/boha/kasietransie/data/dto/DispatchRecord.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/boha/kasietransie/data/dto/State.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/boha/kasietransie/data/dto/State.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/boha/kasietransie/data/dto/Vehicle.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/boha/kasietransie/data/dto/Vehicle.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/boha/kasietransie/data/repos/RouteLandmarkRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/boha/kasietransie/data/repos/RouteLandmarkRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/boha/kasietransie/data/repos/RoutePointRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/boha/kasietransie/data/repos/RoutePointRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/boha/kasietransie/filters/MonitorAuthenticationFilter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/boha/kasietransie/filters/MonitorAuthenticationFilter.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/boha/kasietransie/services/CityService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/boha/kasietransie/services/CityService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/boha/kasietransie/services/LandmarkService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/boha/kasietransie/services/LandmarkService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/boha/kasietransie/services/MongoService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/boha/kasietransie/services/MongoService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/boha/kasietransie/services/DispatchService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/boha/kasietransie/services/DispatchService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/boha/kasietransie/services/MessagingService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/boha/kasietransie/services/MessagingService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/boha/kasietransie/services/RouteService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/boha/kasietransie/services/RouteService.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -71,7 +64,7 @@
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "SONARLINT_PRECOMMIT_ANALYSIS": "true",
-    "com.google.cloudcode.ide_session_index": "20230628_0000",
+    "com.google.cloudcode.ide_session_index": "20230702_0001",
     "dart.analysis.tool.window.visible": "false",
     "last_opened_file_path": "/Users/aubreymalabie/Work/aftarobot/kasie_transie_backend/src/main/java/com/boha/kasietransie",
     "settings.editor.selected.configurable": "reference.settings.project.maven.repository.indices",
@@ -278,7 +271,14 @@
       <option name="project" value="LOCAL" />
       <updated>1687804365585</updated>
     </task>
-    <option name="localTasksCounter" value="21" />
+    <task id="LOCAL-00021" summary="💪smooth map on landmark creation">
+      <created>1688086239137</created>
+      <option name="number" value="00021" />
+      <option name="presentableId" value="LOCAL-00021" />
+      <option name="project" value="LOCAL" />
+      <updated>1688086239137</updated>
+    </task>
+    <option name="localTasksCounter" value="22" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
@@ -300,7 +300,8 @@
     <MESSAGE value=" refactored new route process" />
     <MESSAGE value=" refactored new route process" />
     <MESSAGE value=" refactored new route process" />
-    <option name="LAST_COMMIT_MESSAGE" value=" refactored new route process" />
+    <MESSAGE value="smooth map on landmark creation" />
+    <option name="LAST_COMMIT_MESSAGE" value="smooth map on landmark creation" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
