@@ -66,8 +66,6 @@ k
 ;src/main/java/com/boha/kasietransie/config/MongoConfig.java,8/8/88ef0a9ad435faadf2d43c7768785f758113fab0
 q
 Asrc/main/java/com/boha/kasietransie/data/dto/RegistrationBag.java,e/9/e9bbd2659969dcac76a908befc36c0253ec494f0
-o
-?src/main/java/com/boha/kasietransie/data/dto/SettingsModel.java,7/a/7ac6ea463a850f8944b1d7b7af3be07c179c7a8d
 {
 Ksrc/main/java/com/boha/kasietransie/data/repos/SettingsModelRepository.java,3/8/386f48d9a5beac3c1319ec570751215cb64d0689
 

@@ -1,5 +1,6 @@
 package com.boha.kasietransie.services;
 
+import com.boha.kasietransie.data.TranslationBag;
 import com.boha.kasietransie.data.dto.*;
 import com.boha.kasietransie.data.repos.CityRepository;
 import com.boha.kasietransie.data.repos.CountryRepository;
@@ -521,6 +522,7 @@ public class MongoService {
             RouteLandmark.createIndex(db);
             RouteCity.createIndex(db);
             CalculatedDistance.createIndex(db);
+            TranslationBag.createIndex(db);
 
             logger.info(XX + " MongoService has completed setup of indexes " + E.BELL + E.BELL);
 

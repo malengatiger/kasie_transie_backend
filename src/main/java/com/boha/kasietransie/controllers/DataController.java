@@ -44,6 +44,7 @@ public class DataController {
     final CityService cityService;
     final GeoHashFixer geoHashFixer;
     final MessagingService messagingService;
+    final TextTranslationService textTranslationService;
 
     @PostMapping("/createUser")
     public ResponseEntity<Object> createUser(@RequestBody User user) {
@@ -650,6 +651,34 @@ public class DataController {
 
     }
 
+    @GetMapping("/generateTranslations")
+    public ResponseEntity<Object> generateTranslations() {
+
+        try {
+            String m = textTranslationService.generateTranslations();
+            return ResponseEntity.ok(m);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(
+                    new CustomErrorResponse(400,
+                            "fixRoutePoints failed: " + e.getMessage(),
+                            new DateTime().toDateTimeISO().toString()));
+        }
+
+    }
+    @GetMapping("/createDartFile")
+    public ResponseEntity<Object> createDartFile() {
+
+        try {
+            String m = textTranslationService.createDartFile(true);
+            return ResponseEntity.ok(m);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(
+                    new CustomErrorResponse(400,
+                            "createDartFile failed: " + e.getMessage(),
+                            new DateTime().toDateTimeISO().toString()));
+        }
+
+    }
     @GetMapping("/fixRoutePoints")
     public ResponseEntity<Object> fixRoutePoints(@RequestParam String associationId) {
 

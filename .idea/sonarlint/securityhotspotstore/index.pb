@@ -52,8 +52,6 @@ q
 Asrc/main/java/com/boha/kasietransie/data/dto/RegistrationBag.java,e/9/e9bbd2659969dcac76a908befc36c0253ec494f0
 u
 Esrc/main/java/com/boha/kasietransie/data/repos/CountryRepository.java,3/0/303911732a88556153498f1532d978f3a4551477
-o
-?src/main/java/com/boha/kasietransie/data/dto/SettingsModel.java,7/a/7ac6ea463a850f8944b1d7b7af3be07c179c7a8d
 x
 Hsrc/main/java/com/boha/kasietransie/services/LocationRequestService.java,4/d/4d0393986beb4e6eacbe5939d1c5f5a492ad953a
 {

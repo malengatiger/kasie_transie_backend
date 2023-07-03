@@ -1,6 +1,5 @@
 package com.boha.kasietransie.data.dto;
 
-import com.boha.kasietransie.services.MongoService;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.IndexOptions;
