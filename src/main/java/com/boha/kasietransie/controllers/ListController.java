@@ -1,5 +1,6 @@
 package com.boha.kasietransie.controllers;
 
+import com.boha.kasietransie.data.CounterBag;
 import com.boha.kasietransie.data.RouteBag;
 import com.boha.kasietransie.data.dto.*;
 import com.boha.kasietransie.services.*;
@@ -276,6 +277,74 @@ public class ListController {
                             new DateTime().toDateTimeISO().toString()));
         }
     }
+
+    @GetMapping("/getVehicleCounts")
+    public ResponseEntity<Object> getVehicleCounts(@RequestParam String vehicleId) {
+        try {
+            List<CounterBag> ass = dispatchService
+                    .getVehicleCounts(vehicleId);
+            return ResponseEntity.ok(ass);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(
+                    new CustomErrorResponse(400,
+                            "getVehicleCounts failed: " + e.getMessage(),
+                            new DateTime().toDateTimeISO().toString()));
+        }
+    }
+    @GetMapping("/countVehicleArrivals")
+    public ResponseEntity<Object> countVehicleArrivals(@RequestParam String vehicleId) {
+        try {
+            long ass = dispatchService
+                    .countVehicleArrivals(vehicleId);
+            return ResponseEntity.ok(ass);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(
+                    new CustomErrorResponse(400,
+                            "countVehicleArrivals failed: " + e.getMessage(),
+                            new DateTime().toDateTimeISO().toString()));
+        }
+    }
+    @GetMapping("/countVehicleDepartures")
+    public ResponseEntity<Object> countVehicleDeparture(@RequestParam String vehicleId) {
+        try {
+            long ass = dispatchService
+                    .countVehicleDepartures(vehicleId);
+            return ResponseEntity.ok(ass);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(
+                    new CustomErrorResponse(400,
+                            "countVehicleDepartures failed: " + e.getMessage(),
+                            new DateTime().toDateTimeISO().toString()));
+        }
+    }
+    @GetMapping("/countVehicleDispatches")
+    public ResponseEntity<Object> countVehicleDispatches(@RequestParam String vehicleId) {
+        try {
+            long ass = dispatchService
+                    .countVehicleDispatches(vehicleId);
+            return ResponseEntity.ok(ass);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(
+                    new CustomErrorResponse(400,
+                            "countVehicleDispatches failed: " + e.getMessage(),
+                            new DateTime().toDateTimeISO().toString()));
+        }
+    }
+    @GetMapping("/countVehicleHeartbeats")
+    public ResponseEntity<Object> countVehicleHeartbeats(@RequestParam String vehicleId) {
+        try {
+            long ass = heartbeatService
+                    .countVehicleHeartbeats(vehicleId);
+            return ResponseEntity.ok(ass);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(
+                    new CustomErrorResponse(400,
+                            "countVehicleHeartbeats failed: " + e.getMessage(),
+                            new DateTime().toDateTimeISO().toString()));
+        }
+    }
+
+
 
     @GetMapping("/getCalculatedDistances")
     public ResponseEntity<Object> getCalculatedDistances(@RequestParam String routeId) {

@@ -1,5 +1,7 @@
 package com.boha.kasietransie.services;
 
+import com.boha.kasietransie.controllers.ListController;
+import com.boha.kasietransie.data.CounterBag;
 import com.boha.kasietransie.data.DispatchRecordList;
 import com.boha.kasietransie.data.dto.DispatchRecord;
 import com.boha.kasietransie.data.dto.VehicleArrival;
@@ -9,6 +11,8 @@ import com.boha.kasietransie.data.repos.VehicleArrivalRepository;
 import com.boha.kasietransie.data.repos.VehicleDepartureRepository;
 import com.github.davidmoten.geo.GeoHash;
 import org.joda.time.DateTime;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.geo.GeoResult;
 import org.springframework.data.geo.GeoResults;
 import org.springframework.data.geo.Point;
@@ -18,6 +22,8 @@ import org.springframework.data.mongodb.core.query.NearQuery;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 
+import java.time.Duration;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,17 +36,21 @@ public class DispatchService {
     private final VehicleArrivalRepository vehicleArrivalRepository;
     private final VehicleDepartureRepository vehicleDepartureRepository;
     private final MessagingService messagingService;
+    final HeartbeatService heartbeatService;
     private final MongoTemplate mongoTemplate;
+    private static final Logger logger = LoggerFactory.getLogger(DispatchService.class);
+
 
     public DispatchService(DispatchRecordRepository dispatchRecordRepository,
                            VehicleArrivalRepository vehicleArrivalRepository,
                            VehicleDepartureRepository vehicleDepartureRepository,
                            MessagingService messagingService,
-                           MongoTemplate mongoTemplate) {
+                           HeartbeatService heartbeatService, MongoTemplate mongoTemplate) {
         this.dispatchRecordRepository = dispatchRecordRepository;
         this.vehicleArrivalRepository = vehicleArrivalRepository;
         this.vehicleDepartureRepository = vehicleDepartureRepository;
         this.messagingService = messagingService;
+        this.heartbeatService = heartbeatService;
         this.mongoTemplate = mongoTemplate;
     }
 
@@ -74,6 +84,7 @@ public class DispatchService {
     public List<DispatchRecord> getMarshalDispatchRecords(String userId) {
         return dispatchRecordRepository.findByMarshalId(userId);
     }
+
     public long countMarshalDispatchRecords(String userId) {
         return mongoTemplate.count(query(where("marshalId").is(userId)), DispatchRecord.class);
 
@@ -104,10 +115,43 @@ public class DispatchService {
         return vehicleArrivalRepository.findByVehicleId(vehicleId);
     }
 
+    public long countVehicleArrivals(String vehicleId) {
+        return mongoTemplate.count(query(where("vehicleId").is(vehicleId)), VehicleArrival.class);
+    }
+    public long countVehicleDepartures(String vehicleId) {
+        return mongoTemplate.count(query(where("vehicleId").is(vehicleId)), VehicleDeparture.class);
+    }
+
+    public long countVehicleDispatches(String vehicleId) {
+        return mongoTemplate.count(query(where("vehicleId").is(vehicleId)), DispatchRecord.class);
+    }
     public List<VehicleArrival> getAssociationVehicleArrivals(String associationId) {
         return vehicleArrivalRepository.findByAssociationId(associationId);
     }
 
+    public List<CounterBag> getVehicleCounts(String vehicleId) {
+        Instant start = Instant.now();
+        long departures = countVehicleDepartures(vehicleId);
+        long dispatches = countVehicleDispatches(vehicleId);
+        long arrivals = countVehicleArrivals(vehicleId);
+        long heartbeats = heartbeatService.countVehicleHeartbeats(vehicleId);
+
+        List<CounterBag> list = new ArrayList<>();
+        CounterBag dep = new CounterBag(departures, "VehicleDeparture");
+        CounterBag dis = new CounterBag(dispatches, "DispatchRecord");
+        CounterBag arr = new CounterBag(arrivals, "VehicleArrival");
+        CounterBag hb = new CounterBag(heartbeats, "VehicleHeartbeat");
+        list.add(dep);
+        list.add(dis);
+        list.add(arr);
+        list.add(hb);
+
+        logger.info("Vehicle counts performed elapsed time: "
+                + Duration.between(start, Instant.now()).toSeconds() + " seconds");
+
+
+        return list;
+    }
     //
     public List<VehicleArrival> findVehicleArrivalsByLocation(String associationId,
                                                               double latitude,

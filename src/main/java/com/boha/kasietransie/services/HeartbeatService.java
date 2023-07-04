@@ -1,5 +1,6 @@
 package com.boha.kasietransie.services;
 
+import com.boha.kasietransie.data.dto.VehicleArrival;
 import com.boha.kasietransie.data.dto.VehicleHeartbeat;
 import com.boha.kasietransie.data.repos.HeartbeatRepository;
 import com.github.davidmoten.geo.GeoHash;
@@ -10,6 +11,9 @@ import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+
+import static org.springframework.data.mongodb.core.query.Criteria.where;
+import static org.springframework.data.mongodb.core.query.Query.query;
 
 @Service
 public class HeartbeatService {
@@ -53,5 +57,9 @@ public class HeartbeatService {
                 .and("date").gte(startDate);
         Query query = new Query(c);
         return mongoTemplate.find(query, VehicleHeartbeat.class);
+    }
+
+    public long countVehicleHeartbeats(String vehicleId) {
+        return mongoTemplate.count(query(where("vehicleId").is(vehicleId)), VehicleHeartbeat.class);
     }
 }

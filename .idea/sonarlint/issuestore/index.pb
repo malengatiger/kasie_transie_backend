@@ -56,8 +56,6 @@ u
 Esrc/main/java/com/boha/kasietransie/data/repos/CountryRepository.java,3/0/303911732a88556153498f1532d978f3a4551477
 S
 #src/main/java/util/FileToUsers.java,0/2/021fdd601cbee0a6962ae0a95a9f056296a4a0ab
-r
-Bsrc/main/java/com/boha/kasietransie/services/HeartbeatService.java,c/e/ceb5bf0ec5e2ecc98d53fa169243204a898b725e
 w
 Gsrc/main/java/com/boha/kasietransie/KasieTransieBackendApplication.java,5/b/5b7359b5f6280adbedfb9ddd15eb63c72f1fbd95
 x
@@ -93,8 +91,6 @@ m
 =src/main/java/com/boha/kasietransie/services/UserService.java,0/a/0a22db8a815c67a270ca868202a7770a34c099d1
 j
 :src/main/java/com/boha/kasietransie/data/dto/Landmark.java,0/f/0f12af9c7dae1cda9a93f0d1006131aa043f4898
-7
-cmd.txt,2/8/28656ae4f72dcaedf55911a0fd343965f8373c35
 V
 &src/main/java/util/FileToVehicles.java,c/4/c466dcb639114cc27a9433a836e3be30b77a635f
 |
@@ -139,8 +135,6 @@ s
 Csrc/main/java/com/boha/kasietransie/data/repos/RouteRepository.java,4/f/4f24553f70682fc8543c094a3639aaf7669df611
 k
 ;src/main/java/com/boha/kasietransie/data/dto/RouteCity.java,c/f/cfb338981a1596c65797b74ddaafc3cae3759935
-m
-=src/main/java/com/boha/kasietransie/data/dto/Association.java,e/2/e27cf339370d431e58256a288f80f375b09604c6
 f
 6src/main/java/com/boha/kasietransie/data/dto/City.java,1/8/181be1f332eae4d54ce117614bb84a19640074b1
 p

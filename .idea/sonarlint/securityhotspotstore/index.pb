@@ -70,8 +70,6 @@ k
 ;src/main/java/com/boha/kasietransie/config/MongoConfig.java,8/8/88ef0a9ad435faadf2d43c7768785f758113fab0
 v
 Fsrc/main/java/com/boha/kasietransie/data/repos/AppErrorRepository.java,5/5/556757118fb7452f93637f28cb48c05d915129f1
-r
-Bsrc/main/java/com/boha/kasietransie/services/HeartbeatService.java,c/e/ceb5bf0ec5e2ecc98d53fa169243204a898b725e
 j
 :src/main/java/com/boha/kasietransie/data/dto/AppError.java,e/1/e170617c821eb54893c4511925c813517f69656c
 r
@@ -93,8 +91,6 @@ m
 =src/main/java/com/boha/kasietransie/services/UserService.java,0/a/0a22db8a815c67a270ca868202a7770a34c099d1
 j
 :src/main/java/com/boha/kasietransie/data/dto/Landmark.java,0/f/0f12af9c7dae1cda9a93f0d1006131aa043f4898
-7
-cmd.txt,2/8/28656ae4f72dcaedf55911a0fd343965f8373c35
 V
 &src/main/java/util/FileToVehicles.java,c/4/c466dcb639114cc27a9433a836e3be30b77a635f
 |
@@ -121,8 +117,6 @@ f
 6src/main/java/com/boha/kasietransie/data/RouteBag.java,f/0/f03a5772e864ebd0858708a9d363041fe6e7718a
 }
 Msrc/main/java/com/boha/kasietransie/services/CloudStorageUploaderService.java,d/8/d8a4bc1abe17ccf1d114a1ec08a9f291de7c970a
-m
-=src/main/java/com/boha/kasietransie/data/dto/Association.java,e/2/e27cf339370d431e58256a288f80f375b09604c6
 p
 @src/main/java/com/boha/kasietransie/data/dto/RoutePointList.java,8/b/8b00cf623372a9c5c5a08fe71b31e0746c6cd04f
 k
