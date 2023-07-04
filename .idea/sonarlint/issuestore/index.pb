@@ -109,8 +109,6 @@ Bsrc/main/java/com/boha/kasietransie/data/dto/LocationResponse.java,e/b/ebce6bc
 Nsrc/main/java/com/boha/kasietransie/data/repos/VehicleDepartureRepository.java,f/c/fc1cb587bfb8802252982dd2b4f13ae585c011e1
 g
 7src/main/java/com/boha/kasietransie/data/dto/Route.java,2/9/2965a4d8b00a7c7464c8c848766ee3045d0a4638
-r
-Bsrc/main/java/com/boha/kasietransie/data/dto/VehicleHeartbeat.java,5/2/52be8c7b9466d4a86ae20c6c50e2e1d43f50c9c9
 s
 Csrc/main/java/com/boha/kasietransie/data/dto/UserGeofenceEvent.java,3/b/3b637edc7b79cb1cdf2527ceb815fc2f70c6036f
 f
@@ -147,3 +145,17 @@ f
 6src/main/java/com/boha/kasietransie/data/dto/City.java,1/8/181be1f332eae4d54ce117614bb84a19640074b1
 p
 @src/main/java/com/boha/kasietransie/services/VehicleService.java,d/7/d771b8114ca6d6cebde4fa5b79cb2a020c139c4a
+l
+<src/main/java/com/boha/kasietransie/data/dto/RoutePoint.java,9/9/990da42eabd5ae4a04011b321f63814395bec7f5
+t
+Dsrc/main/java/com/boha/kasietransie/data/CalculatedDistanceList.java,7/0/703ce08db98e8ed6bc68413676e74f12f4dbdd51
+p
+@src/main/java/com/boha/kasietransie/data/dto/VehicleArrival.java,3/c/3ca70df727dde17f49af82814caec33471d9f0a5
+p
+@src/main/java/com/boha/kasietransie/data/DispatchRecordList.java,0/b/0bafebc76e2c722c400536be2d4d0b2679527b96
+{
+Ksrc/main/java/com/boha/kasietransie/data/repos/RouteLandmarkRepository.java,2/c/2c26681dc869fb471858b1af6c3ece17d955cf06
+g
+7src/main/java/com/boha/kasietransie/data/dto/State.java,2/b/2b2c71ca77aaa039db4d95d1f1f575eec97299da
+o
+?src/main/java/com/boha/kasietransie/data/dto/SettingsModel.java,7/a/7ac6ea463a850f8944b1d7b7af3be07c179c7a8d

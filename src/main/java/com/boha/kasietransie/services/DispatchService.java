@@ -21,6 +21,9 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.springframework.data.mongodb.core.query.Criteria.where;
+import static org.springframework.data.mongodb.core.query.Query.query;
+
 @Service
 public class DispatchService {
     private final DispatchRecordRepository dispatchRecordRepository;
@@ -68,6 +71,14 @@ public class DispatchService {
         return dispatchRecordRepository.findByVehicleId(vehicleId);
     }
 
+    public List<DispatchRecord> getMarshalDispatchRecords(String userId) {
+        return dispatchRecordRepository.findByMarshalId(userId);
+    }
+    public long countMarshalDispatchRecords(String userId) {
+        return mongoTemplate.count(query(where("marshalId").is(userId)), DispatchRecord.class);
+
+    }
+
     public List<DispatchRecord> getAssociationDispatchRecords(String associationId) {
         return dispatchRecordRepository.findByAssociationId(associationId);
     }
@@ -109,9 +120,9 @@ public class DispatchService {
         //calculate start date
         var date = DateTime.now().toDateTimeISO().minusMinutes(minutes);
         String startDate = date.toDateTimeISO().toString();
-        Criteria firstOrCriteria = Criteria.where("associationId")
+        Criteria firstOrCriteria = where("associationId")
                 .is(associationId);
-        Criteria secondOrCriteria = Criteria.where("created")
+        Criteria secondOrCriteria = where("created")
                 .gte(startDate);
         Criteria andCriteria = new Criteria().andOperator(firstOrCriteria, secondOrCriteria);
 
@@ -146,9 +157,9 @@ public class DispatchService {
         //calculate start date
         var date = DateTime.now().toDateTimeISO().minusMinutes(minutes);
         String startDate = date.toDateTimeISO().toString();
-        Criteria firstOrCriteria = Criteria.where("associationId")
+        Criteria firstOrCriteria = where("associationId")
                 .is(associationId);
-        Criteria secondOrCriteria = Criteria.where("created")
+        Criteria secondOrCriteria = where("created")
                 .gte(startDate);
         Criteria andCriteria = new Criteria().andOperator(firstOrCriteria, secondOrCriteria);
 

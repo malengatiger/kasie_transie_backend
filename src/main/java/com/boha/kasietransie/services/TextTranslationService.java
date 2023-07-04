@@ -279,21 +279,43 @@ public class TextTranslationService {
     }
 
     private void setStrings() {
-        hashMap.put("language", "Language");
-        hashMap.put("languageColor", "Language & Colour");
-        hashMap.put("en", "English");
-        hashMap.put("es", "Spanish");
-        hashMap.put("pt", "Portuguese");
-        hashMap.put("zu", "Zulu");
-        hashMap.put("xh", "Xhosa");
-        hashMap.put("sw", "Swahili");
-        hashMap.put("ts", "Tsonga");
-        hashMap.put("st", "Sotho");
-        hashMap.put("yo", "Yoruba");
-        hashMap.put("ig", "Lingala");
-        hashMap.put("zh", "Mandarin");
-        hashMap.put("sn", "Shona");
-        hashMap.put("de", "German");
+        hashMap.put("loading", "Loading Association data");
+        hashMap.put("vehicleQRCode", "Vehicle QR Code");
+        hashMap.put("carQRCode", "Vehicle QR Code");
+        hashMap.put("qrCode", "QR Code");
+        hashMap.put("timeElapsed", "Time Elapsed");
+        hashMap.put("dataLoader", "Data Loader");
+        hashMap.put("sendDispatch", "Send Dispatch");
+        hashMap.put("dispatchError", "Error dispatching taxi. Please try again");
+        hashMap.put("noRoutesFound", "No routes found nearby");
+        hashMap.put("noLandmarks", "No Landmarks found nearby");
+        hashMap.put("newPlace", "New Place");
+        hashMap.put("enterPlace", "Enter the name of the place");
+        hashMap.put("savePlace", "Save Place");
+        hashMap.put("placeMaker", "Place Maker");
+        hashMap.put("routeLandmarks", "Route Landmarks");
+        hashMap.put("landmarkIsPart", "This Landmark is part of the route.");
+        hashMap.put("newLandmark", "New Landmark");
+        hashMap.put("saveLandmark","Save Landmark");
+        hashMap.put("taxiRouteMapper","Taxi Route Mapper");
+        hashMap.put("points","Points");
+        hashMap.put("index","Index");
+        hashMap.put("routeViewer","Route Viewer");
+        hashMap.put("taxiRouteViewer","Taxi Route Viewer");
+        hashMap.put("routeName","Route Name");
+        hashMap.put("saveRoute","Save Route");
+        hashMap.put("routeColour","Route Colour");
+        hashMap.put("enterRouteName","Enter Route Name");
+        hashMap.put("routePointsMapped","Route Points Mapped");
+        hashMap.put("routeDetails","Route Details");
+        hashMap.put("taxiRoutes","Taxi Routes");
+        hashMap.put("routeMaps","Route Maps");
+        hashMap.put("welcome","Welcome");
+        hashMap.put("errorSignIn","Error with sign in");
+        hashMap.put("noLocation","Location not available");
+        hashMap.put("errorServer","Server not available");
+        hashMap.put("errorNetwork","Network not available");
+        hashMap.put("errorScanner","Problem with Scanner");
 
 //        hashMap.put("waitingForGPS", "Waiting for GPS location ...");
 //        hashMap.put("emailSignIn", "Email Sign In");

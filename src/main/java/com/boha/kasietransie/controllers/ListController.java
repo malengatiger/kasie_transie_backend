@@ -263,6 +263,20 @@ public class ListController {
         }
     }
 
+    @GetMapping("/getMarshalDispatchRecords")
+    public ResponseEntity<Object> getMarshalDispatchRecords(@RequestParam String userId) {
+        try {
+            List<DispatchRecord> ass = dispatchService
+                    .getMarshalDispatchRecords(userId);
+            return ResponseEntity.ok(ass);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(
+                    new CustomErrorResponse(400,
+                            "getMarshalDispatchRecords failed: " + e.getMessage(),
+                            new DateTime().toDateTimeISO().toString()));
+        }
+    }
+
     @GetMapping("/getCalculatedDistances")
     public ResponseEntity<Object> getCalculatedDistances(@RequestParam String routeId) {
         try {
