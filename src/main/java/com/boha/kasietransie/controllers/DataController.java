@@ -46,6 +46,8 @@ public class DataController {
     final GeoHashFixer geoHashFixer;
     final MessagingService messagingService;
     final TextTranslationService textTranslationService;
+    final CloudStorageUploaderService cloudStorageUploaderService;
+    final MediaService mediaService;
 
     @PostMapping("/createUser")
     public ResponseEntity<Object> createUser(@RequestBody User user) {
@@ -695,6 +697,63 @@ public class DataController {
         }
 
     }
+    @PostMapping("uploadFile")
+    public ResponseEntity<Object> uploadFile(
+            @RequestParam String objectName,
+            @RequestPart MultipartFile document) throws IOException {
+
+        /* todo - research sending media files zipped from phone */
+
+        try {
+            String doc = document.getOriginalFilename();
+            assert doc != null;
+            File file = new File(doc);
+            byte[] bytes = document.getBytes();
+
+            Files.write(bytes, file);
+            String url = cloudStorageUploaderService.uploadFile(doc, file);
+            boolean ok = file.delete();
+            if (ok) {
+                logger.info(E.RED_APPLE + E.RED_APPLE +
+                        " cloud storage upload file deleted: " + true);
+            }
+            return ResponseEntity.ok(url);
+        } catch (IOException e) {
+            return ResponseEntity.badRequest().body(
+                    new CustomErrorResponse(400,
+                            "uploadFile failed: " + e.getMessage(),
+                            new DateTime().toDateTimeISO().toString()));
+        }
+    }
+    @PostMapping("addVehiclePhoto")
+    public ResponseEntity<Object> addVehiclePhoto(
+            @RequestBody VehiclePhoto vehiclePhoto) {
+        try {
+            VehiclePhoto v = mediaService.addVehiclePhoto(vehiclePhoto);
+            return ResponseEntity.ok(v);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(
+                    new CustomErrorResponse(400,
+                            "addVehiclePhoto failed: " + e.getMessage(),
+                            new DateTime().toDateTimeISO().toString()));
+        }
+
+    }
+    @PostMapping("addVehicleVideo")
+    public ResponseEntity<Object> addVehicleVideo(
+            @RequestBody VehicleVideo vehiclePhoto) {
+        try {
+            VehicleVideo v = mediaService.addVehicleVideo(vehiclePhoto);
+            return ResponseEntity.ok(v);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(
+                    new CustomErrorResponse(400,
+                            "addVehicleVideo failed: " + e.getMessage(),
+                            new DateTime().toDateTimeISO().toString()));
+        }
+
+    }
+
     @GetMapping("/changeFakeVehicleOwner")
     public ResponseEntity<Object> changeFakeVehicleOwner(@RequestParam String userId) {
 

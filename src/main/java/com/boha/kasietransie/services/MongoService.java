@@ -523,6 +523,8 @@ public class MongoService {
             RouteCity.createIndex(db);
             CalculatedDistance.createIndex(db);
             TranslationBag.createIndex(db);
+            VehicleVideo.createIndex(db);
+            VehiclePhoto.createIndex(db);
 
             logger.info(XX + " MongoService has completed setup of indexes " + E.BELL + E.BELL);
 

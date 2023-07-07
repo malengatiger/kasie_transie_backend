@@ -38,6 +38,7 @@ public class ListController {
     private final RouteService routeService;
     private final HeartbeatService heartbeatService;
     private final LandmarkService landmarkService;
+    private final MediaService mediaService;
 
     @GetMapping("/getUserById")
     public ResponseEntity<Object> getUserById(@RequestParam String userId) {
@@ -388,6 +389,32 @@ public class ListController {
             return ResponseEntity.badRequest().body(
                     new CustomErrorResponse(400,
                             "countVehicleHeartbeats failed: " + e.getMessage(),
+                            new DateTime().toDateTimeISO().toString()));
+        }
+    }
+    @GetMapping("/getVehiclePhotos")
+    public ResponseEntity<Object> getVehiclePhotos(@RequestParam String vehicleId) {
+        try {
+            List<VehiclePhoto> ass = mediaService
+                    .getVehiclePhotos(vehicleId);
+            return ResponseEntity.ok(ass);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(
+                    new CustomErrorResponse(400,
+                            "getVehiclePhotos failed: " + e.getMessage(),
+                            new DateTime().toDateTimeISO().toString()));
+        }
+    }
+    @GetMapping("/getVehicleVideos")
+    public ResponseEntity<Object> getVehicleVideos(@RequestParam String vehicleId) {
+        try {
+            List<VehicleVideo> ass = mediaService
+                    .getVehicleVideos(vehicleId);
+            return ResponseEntity.ok(ass);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(
+                    new CustomErrorResponse(400,
+                            "getVehicleVideos failed: " + e.getMessage(),
                             new DateTime().toDateTimeISO().toString()));
         }
     }
