@@ -1,5 +1,6 @@
 package com.boha.kasietransie.services;
 
+import com.boha.kasietransie.data.dto.VehicleMediaRequest;
 import com.boha.kasietransie.data.dto.*;
 import com.google.firebase.messaging.*;
 import com.google.gson.Gson;
@@ -106,17 +107,22 @@ public class MessagingService {
             e.printStackTrace();
         }
     }
-    public int sendRouteUpdateMessage(String associationId, String routeId) {
+    public int sendRouteUpdateMessage(RouteUpdateRequest routeUpdateRequest) throws Exception {
         try {
-            String topic = "route_changes_" + associationId;
+            String topic = "route_changes_" + routeUpdateRequest.getAssociationId();
+            Notification notification = Notification.builder()
+                    .setBody("A Route has changed and you should get the route automatically. Route: "
+                            + routeUpdateRequest.getRouteName())
+                    .setTitle("Route Change Notice")
+                    .build();
             Message message = buildMessage("routeChanges", topic,
-                    routeId);
+                    routeUpdateRequest.getRouteId(), notification);
             FirebaseMessaging.getInstance().send(message);
             LOGGER.info(E.RED_APPLE + "Route Update Message has been sent: \n associationId: "
-                    + associationId + " routeId: " + routeId);
+                    + routeUpdateRequest.getAssociationId() + " routeId: " + routeUpdateRequest.getRouteName());
         } catch (Exception e) {
-            LOGGER.error("Failed to send RouteUpdateMessage FCM message, routeId: " + routeId);
-            e.printStackTrace();
+            LOGGER.error("Failed to send RouteUpdateMessage FCM message, routeId: " + routeUpdateRequest.getRouteId());
+            throw new Exception(e.getMessage());
         }
         return 0;
     }
@@ -134,6 +140,26 @@ public class MessagingService {
         }
         return 0;
     }
+
+    public int sendVehicleMediaRequestMessage(VehicleMediaRequest request) throws Exception {
+        try {
+            String topic = "vehicle_media_request_" + request.getAssociationId();
+            Notification notification = Notification.builder()
+                    .setBody("A Request for Vehicle Photos or Video for: " + request.getVehicleReg())
+                    .setTitle("Vehicle Media Request")
+                    .build();
+            Message message = buildMessage("vehicleMediaRequest", topic,
+                    request.getVehicleId(), notification);
+
+            FirebaseMessaging.getInstance().send(message);
+
+        } catch (Exception e) {
+            LOGGER.error("Failed to send VehicleMediaMessage FCM message");
+            throw new Exception(e.getMessage());
+        }
+        return 0;
+    }
+
     public void sendMessage(DispatchRecord dispatchRecord) {
         try {
             String topic = "dispatchRecord_" + dispatchRecord.getAssociationId();

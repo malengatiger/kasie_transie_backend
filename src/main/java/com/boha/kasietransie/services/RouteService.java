@@ -7,7 +7,6 @@ import com.boha.kasietransie.data.repos.*;
 import com.github.davidmoten.geo.GeoHash;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.mongodb.BasicDBObjectBuilder;
 import com.mongodb.WriteConcern;
 import com.mongodb.bulk.BulkWriteResult;
 import org.springframework.data.geo.Distance;
@@ -16,10 +15,7 @@ import org.springframework.data.geo.GeoResults;
 import org.springframework.data.geo.Metrics;
 import org.springframework.data.mongodb.core.BulkOperations;
 import org.springframework.data.mongodb.core.MongoTemplate;
-import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.NearQuery;
-import org.springframework.data.mongodb.core.query.Query;
-import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Service;
 import util.E;
 
@@ -28,7 +24,6 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.UUID;
 import java.util.logging.Logger;
 
 @Service
@@ -41,18 +36,31 @@ public class RouteService {
     final AssociationRepository associationRepository;
 
     final CalculatedDistanceRepository calculatedDistanceRepository;
+
+    final VehicleMediaRequestRepository vehicleMediaRequestRepository;
+    final RouteUpdateRequestRepository routeUpdateRequestRepository;
+    final MessagingService messagingService;
     final MongoTemplate mongoTemplate;
 
     public RouteService(RouteRepository routeRepository,
                         RoutePointRepository routePointRepository,
                         RouteLandmarkRepository routeLandmarkRepository,
-                        RouteCityRepository routeCityRepository, AssociationRepository associationRepository, CalculatedDistanceRepository calculatedDistanceRepository, MongoTemplate mongoTemplate) {
+                        RouteCityRepository routeCityRepository,
+                        AssociationRepository associationRepository,
+                        CalculatedDistanceRepository calculatedDistanceRepository,
+                        VehicleMediaRequestRepository vehicleMediaRequestRepository,
+                        RouteUpdateRequestRepository routeUpdateRequestRepository,
+                        MessagingService messagingService,
+                        MongoTemplate mongoTemplate) {
         this.routeRepository = routeRepository;
         this.routePointRepository = routePointRepository;
         this.routeLandmarkRepository = routeLandmarkRepository;
         this.routeCityRepository = routeCityRepository;
         this.associationRepository = associationRepository;
         this.calculatedDistanceRepository = calculatedDistanceRepository;
+        this.vehicleMediaRequestRepository = vehicleMediaRequestRepository;
+        this.routeUpdateRequestRepository = routeUpdateRequestRepository;
+        this.messagingService = messagingService;
         this.mongoTemplate = mongoTemplate;
     }
 
@@ -170,6 +178,16 @@ public class RouteService {
         return routeLandmarkRepository.insert(routeLandmark);
     }
 
+    public VehicleMediaRequest addVehicleMediaRequest(VehicleMediaRequest vehicleMediaRequest) throws Exception {
+        messagingService.sendVehicleMediaRequestMessage(vehicleMediaRequest);
+        return vehicleMediaRequestRepository.insert(vehicleMediaRequest);
+    }
+    public RouteUpdateRequest addRouteUpdateRequest(RouteUpdateRequest routeUpdateRequest) throws Exception {
+        messagingService.sendRouteUpdateMessage(routeUpdateRequest);
+        return routeUpdateRequestRepository.insert(routeUpdateRequest);
+    }
+
+
     public RouteLandmark updateRouteLandmark(RouteLandmark routeLandmark) {
         return routeLandmarkRepository.save(routeLandmark);
     }
@@ -180,6 +198,9 @@ public class RouteService {
 
     public List<Route> getAssociationRoutes(String associationId) {
         return routeRepository.findByAssociationId(associationId);
+    }
+    public List<RouteUpdateRequest> getRouteUpdateRequests(String routeId) {
+        return routeUpdateRequestRepository.findByRouteId(routeId);
     }
 
     public List<RoutePoint> getRoutePoints(String routeId) {

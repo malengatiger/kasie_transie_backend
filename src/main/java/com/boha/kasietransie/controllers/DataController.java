@@ -3,6 +3,7 @@ package com.boha.kasietransie.controllers;
 import com.boha.kasietransie.data.CalculatedDistanceList;
 import com.boha.kasietransie.data.DispatchRecordList;
 import com.boha.kasietransie.data.TranslationInput;
+import com.boha.kasietransie.data.dto.VehicleMediaRequest;
 import com.boha.kasietransie.data.dto.*;
 import com.boha.kasietransie.services.*;
 import com.google.common.io.Files;
@@ -354,18 +355,32 @@ public class DataController {
 
     }
 
-    @GetMapping("/sendRouteUpdateMessage")
-    public ResponseEntity<Object> sendRouteUpdateMessage(
-                                                          @RequestParam String associationId,
-                                                          @RequestParam String routeId)  {
+    @PostMapping("/addRouteUpdateRequest")
+    public ResponseEntity<Object> addRouteUpdateRequest(
+                                                          @RequestBody RouteUpdateRequest routeUpdateRequest)  {
 
         try {
-            return ResponseEntity.ok(messagingService.sendRouteUpdateMessage(
-                    associationId,routeId));
+            return ResponseEntity.ok(routeService.addRouteUpdateRequest(
+                    routeUpdateRequest));
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(
                     new CustomErrorResponse(400,
-                            "sendRouteUpdateMessage failed: " + e.getMessage(),
+                            "addRouteUpdateRequest failed: " + e.getMessage(),
+                            new DateTime().toDateTimeISO().toString()));
+        }
+
+    }
+    @PostMapping("/addVehicleMediaRequest")
+    public ResponseEntity<Object> addVehicleMediaRequest(
+            @RequestBody VehicleMediaRequest vehicleMediaRequest)  {
+
+        try {
+            return ResponseEntity.ok(routeService.addVehicleMediaRequest(
+                    vehicleMediaRequest));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(
+                    new CustomErrorResponse(400,
+                            "addVehicleMediaRequest failed: " + e.getMessage(),
                             new DateTime().toDateTimeISO().toString()));
         }
 
@@ -382,6 +397,21 @@ public class DataController {
             return ResponseEntity.badRequest().body(
                     new CustomErrorResponse(400,
                             "sendVehicleUpdateMessage failed: " + e.getMessage(),
+                            new DateTime().toDateTimeISO().toString()));
+        }
+
+    }
+    @PostMapping("/sendVehicleMediaRequestMessage")
+    public ResponseEntity<Object> sendVehicleMediaRequestMessage(
+            @RequestParam VehicleMediaRequest request)  {
+
+        try {
+            return ResponseEntity.ok(messagingService.sendVehicleMediaRequestMessage(
+                    request));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(
+                    new CustomErrorResponse(400,
+                            "sendVehicleMediaRequestMessage failed: " + e.getMessage(),
                             new DateTime().toDateTimeISO().toString()));
         }
 
