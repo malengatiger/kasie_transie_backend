@@ -1,14 +1,16 @@
 package com.boha.kasietransie.services;
 
-import com.boha.kasietransie.controllers.ListController;
 import com.boha.kasietransie.data.CounterBag;
 import com.boha.kasietransie.data.DispatchRecordList;
+import com.boha.kasietransie.data.BigBag;
 import com.boha.kasietransie.data.dto.DispatchRecord;
 import com.boha.kasietransie.data.dto.VehicleArrival;
 import com.boha.kasietransie.data.dto.VehicleDeparture;
+import com.boha.kasietransie.data.dto.VehicleHeartbeat;
 import com.boha.kasietransie.data.repos.DispatchRecordRepository;
 import com.boha.kasietransie.data.repos.VehicleArrivalRepository;
 import com.boha.kasietransie.data.repos.VehicleDepartureRepository;
+import com.boha.kasietransie.data.repos.VehicleHeartbeatRepository;
 import com.github.davidmoten.geo.GeoHash;
 import org.joda.time.DateTime;
 import org.slf4j.Logger;
@@ -35,6 +37,7 @@ public class DispatchService {
     private final DispatchRecordRepository dispatchRecordRepository;
     private final VehicleArrivalRepository vehicleArrivalRepository;
     private final VehicleDepartureRepository vehicleDepartureRepository;
+    final VehicleHeartbeatRepository vehicleHeartbeatRepository;
     private final MessagingService messagingService;
     final HeartbeatService heartbeatService;
     private final MongoTemplate mongoTemplate;
@@ -44,11 +47,12 @@ public class DispatchService {
     public DispatchService(DispatchRecordRepository dispatchRecordRepository,
                            VehicleArrivalRepository vehicleArrivalRepository,
                            VehicleDepartureRepository vehicleDepartureRepository,
-                           MessagingService messagingService,
+                           VehicleHeartbeatRepository vehicleHeartbeatRepository, MessagingService messagingService,
                            HeartbeatService heartbeatService, MongoTemplate mongoTemplate) {
         this.dispatchRecordRepository = dispatchRecordRepository;
         this.vehicleArrivalRepository = vehicleArrivalRepository;
         this.vehicleDepartureRepository = vehicleDepartureRepository;
+        this.vehicleHeartbeatRepository = vehicleHeartbeatRepository;
         this.messagingService = messagingService;
         this.heartbeatService = heartbeatService;
         this.mongoTemplate = mongoTemplate;
@@ -121,14 +125,61 @@ public class DispatchService {
     public long countVehicleDepartures(String vehicleId) {
         return mongoTemplate.count(query(where("vehicleId").is(vehicleId)), VehicleDeparture.class);
     }
+    public long countVehicleDeparturesByDate(String vehicleId, String startDate) {
+        Query query = new Query();
+        query.addCriteria(Criteria.where("vehicleId").is(vehicleId)
+                .andOperator(Criteria.where("created").gte(startDate)));
+        return mongoTemplate.count(query, VehicleDeparture.class);
+    }
 
     public long countVehicleDispatches(String vehicleId) {
         return mongoTemplate.count(query(where("vehicleId").is(vehicleId)), DispatchRecord.class);
+    }
+    public long countVehicleArrivalsByDate(String vehicleId, String startDate) {
+        Query query = new Query();
+        query.addCriteria(Criteria.where("vehicleId").is(vehicleId)
+                .andOperator(Criteria.where("created").gte(startDate)));
+        return mongoTemplate.count(query, VehicleArrival.class);
+    }
+    public long countVehicleHeartbeatsByDate(String vehicleId, String startDate) {
+        Query query = new Query();
+        query.addCriteria(Criteria.where("vehicleId").is(vehicleId)
+                .andOperator(Criteria.where("created").gte(startDate)));
+        return mongoTemplate.count(query, VehicleHeartbeat.class);
+    }
+    public long countDispatchesByDate(String vehicleId, String startDate) {
+        Query query = new Query();
+        query.addCriteria(Criteria.where("vehicleId").is(vehicleId)
+                .andOperator(Criteria.where("created").gte(startDate)));
+        return mongoTemplate.count(query, DispatchRecord.class);
     }
     public List<VehicleArrival> getAssociationVehicleArrivals(String associationId) {
         return vehicleArrivalRepository.findByAssociationId(associationId);
     }
 
+    public List<CounterBag> getVehicleCountsByDate(String vehicleId, String startDate) {
+        Instant start = Instant.now();
+        long departures = countVehicleDeparturesByDate(vehicleId, startDate);
+        long dispatches = countDispatchesByDate(vehicleId, startDate);
+        long arrivals = countVehicleArrivalsByDate(vehicleId, startDate);
+        long heartbeats = countVehicleHeartbeatsByDate(vehicleId, startDate);
+
+        List<CounterBag> list = new ArrayList<>();
+        CounterBag dep = new CounterBag(departures, "VehicleDeparture");
+        CounterBag dis = new CounterBag(dispatches, "DispatchRecord");
+        CounterBag arr = new CounterBag(arrivals, "VehicleArrival");
+        CounterBag hb = new CounterBag(heartbeats, "VehicleHeartbeat");
+        list.add(dep);
+        list.add(dis);
+        list.add(arr);
+        list.add(hb);
+
+        logger.info("Vehicle counts performed elapsed time: "
+                + Duration.between(start, Instant.now()).toSeconds() + " seconds");
+
+
+        return list;
+    }
     public List<CounterBag> getVehicleCounts(String vehicleId) {
         Instant start = Instant.now();
         long departures = countVehicleDepartures(vehicleId);
@@ -230,6 +281,45 @@ public class DispatchService {
 
     public List<VehicleDeparture> getLandmarkVehicleDepartures(String landmarkId) {
         return vehicleDepartureRepository.findByLandmarkId(landmarkId);
+    }
+    public List<VehicleDeparture> getOwnerVehicleDepartures(String userId, String startDate) {
+        Query query = new Query();
+        query.addCriteria(Criteria.where("ownerId").is(userId)
+                .andOperator(Criteria.where("created").gte(startDate)));
+
+        return mongoTemplate.find(query,VehicleDeparture.class);
+
+    }
+    public List<VehicleArrival> getOwnerVehicleArrivals(String userId,  String startDate) {
+        Query query = new Query();
+        query.addCriteria(Criteria.where("ownerId").is(userId)
+                .andOperator(Criteria.where("created").gte(startDate)));
+
+        return mongoTemplate.find(query,VehicleArrival.class);
+    }
+    public List<DispatchRecord> getOwnerDispatchRecords(String userId,  String startDate) {
+        Query query = new Query();
+        query.addCriteria(Criteria.where("ownerId").is(userId)
+                .andOperator(Criteria.where("created").gte(startDate)));
+
+        return mongoTemplate.find(query,DispatchRecord.class);
+    }
+    public List<VehicleHeartbeat> getOwnerVehicleHeartbeats(String userId, String startDate) {
+        Query query = new Query();
+        query.addCriteria(Criteria.where("ownerId").is(userId)
+                .andOperator(Criteria.where("created").gte(startDate)));
+
+        return mongoTemplate.find(query,VehicleHeartbeat.class);
+    }
+    public BigBag getOwnersBag(String userId, String startDate) {
+
+        BigBag bag = new BigBag();
+        bag.setDispatchRecords(getOwnerDispatchRecords(userId,startDate));
+        bag.setVehicleArrivals(getOwnerVehicleArrivals(userId,startDate));
+        bag.setVehicleDepartures(getOwnerVehicleDepartures(userId,startDate));
+        bag.setVehicleHeartbeats(getOwnerVehicleHeartbeats(userId,startDate));
+
+        return bag;
     }
 
     public List<VehicleDeparture> getVehicleDeparture(String vehicleId) {

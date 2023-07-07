@@ -4,14 +4,45 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a7485aca-7a98-4bda-a4fb-cbb0b1e4b4ad" name="Changes" comment="🌎added languages and colors!">
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/boha/kasietransie/data/CounterBag.java" afterDir="false" />
+    <list default="true" id="a7485aca-7a98-4bda-a4fb-cbb0b1e4b4ad" name="Changes" comment=" 🛎added vehicle counts">
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/boha/kasietransie/data/BigBag.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/boha/kasietransie/data/TranslationInput.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/sonarlint/issuestore/index.pb" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/sonarlint/issuestore/index.pb" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/sonarlint/securityhotspotstore/index.pb" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/sonarlint/securityhotspotstore/index.pb" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/boha/kasietransie/controllers/DataController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/boha/kasietransie/controllers/DataController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/boha/kasietransie/controllers/ListController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/boha/kasietransie/controllers/ListController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/boha/kasietransie/data/dto/LocationRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/boha/kasietransie/data/dto/LocationRequest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/boha/kasietransie/data/dto/LocationResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/boha/kasietransie/data/dto/LocationResponse.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/boha/kasietransie/data/dto/State.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/boha/kasietransie/data/dto/State.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/boha/kasietransie/data/repos/DispatchRecordRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/boha/kasietransie/data/repos/DispatchRecordRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/boha/kasietransie/data/repos/VehicleArrivalRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/boha/kasietransie/data/repos/VehicleArrivalRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/boha/kasietransie/data/repos/VehicleDepartureRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/boha/kasietransie/data/repos/VehicleDepartureRepository.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/boha/kasietransie/services/DispatchService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/boha/kasietransie/services/DispatchService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/boha/kasietransie/services/HeartbeatService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/boha/kasietransie/services/HeartbeatService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/boha/kasietransie/services/LocationRequestService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/boha/kasietransie/services/LocationRequestService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/boha/kasietransie/services/RouteService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/boha/kasietransie/services/RouteService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/boha/kasietransie/services/TextTranslationService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/boha/kasietransie/services/TextTranslationService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/boha/kasietransie/services/VehicleService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/boha/kasietransie/services/VehicleService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/application-prod.yml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application-prod.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/application-prod.yml" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/application-prod.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/application.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/translations/af.json" beforeDir="false" afterPath="$PROJECT_DIR$/translations/af.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/translations/de.json" beforeDir="false" afterPath="$PROJECT_DIR$/translations/de.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/translations/en.json" beforeDir="false" afterPath="$PROJECT_DIR$/translations/en.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/translations/es.json" beforeDir="false" afterPath="$PROJECT_DIR$/translations/es.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/translations/fr.json" beforeDir="false" afterPath="$PROJECT_DIR$/translations/fr.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/translations/ig.json" beforeDir="false" afterPath="$PROJECT_DIR$/translations/ig.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/translations/myKeys.txt" beforeDir="false" afterPath="$PROJECT_DIR$/translations/myKeys.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/translations/pt.json" beforeDir="false" afterPath="$PROJECT_DIR$/translations/pt.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/translations/sn.json" beforeDir="false" afterPath="$PROJECT_DIR$/translations/sn.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/translations/st.json" beforeDir="false" afterPath="$PROJECT_DIR$/translations/st.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/translations/sw.json" beforeDir="false" afterPath="$PROJECT_DIR$/translations/sw.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/translations/ts.json" beforeDir="false" afterPath="$PROJECT_DIR$/translations/ts.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/translations/xh.json" beforeDir="false" afterPath="$PROJECT_DIR$/translations/xh.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/translations/yo.json" beforeDir="false" afterPath="$PROJECT_DIR$/translations/yo.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/translations/zh.json" beforeDir="false" afterPath="$PROJECT_DIR$/translations/zh.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/translations/zu.json" beforeDir="false" afterPath="$PROJECT_DIR$/translations/zu.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -58,7 +89,7 @@
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "SONARLINT_PRECOMMIT_ANALYSIS": "true",
-    "com.google.cloudcode.ide_session_index": "20230704_0019",
+    "com.google.cloudcode.ide_session_index": "20230705_0000",
     "dart.analysis.tool.window.visible": "false",
     "last_opened_file_path": "/Users/aubreymalabie/Work/aftarobot/kasie_transie_backend/src/main/java/com/boha/kasietransie",
     "settings.editor.selected.configurable": "reference.settings.project.maven.repository.indices",
@@ -293,7 +324,14 @@
       <option name="project" value="LOCAL" />
       <updated>1688492614811</updated>
     </task>
-    <option name="localTasksCounter" value="25" />
+    <task id="LOCAL-00025" summary=" 🛎added vehicle counts">
+      <created>1688514639365</created>
+      <option name="number" value="00025" />
+      <option name="presentableId" value="LOCAL-00025" />
+      <option name="project" value="LOCAL" />
+      <updated>1688514639365</updated>
+    </task>
+    <option name="localTasksCounter" value="26" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
@@ -319,7 +357,8 @@
     <MESSAGE value="settled couple of bugs with qrcode for vehicle" />
     <MESSAGE value="added languages and colors!" />
     <MESSAGE value="added languages and colors!" />
-    <option name="LAST_COMMIT_MESSAGE" value="added languages and colors!" />
+    <MESSAGE value=" added vehicle counts" />
+    <option name="LAST_COMMIT_MESSAGE" value=" added vehicle counts" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

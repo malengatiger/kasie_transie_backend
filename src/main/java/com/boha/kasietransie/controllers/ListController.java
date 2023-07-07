@@ -1,5 +1,6 @@
 package com.boha.kasietransie.controllers;
 
+import com.boha.kasietransie.data.BigBag;
 import com.boha.kasietransie.data.CounterBag;
 import com.boha.kasietransie.data.RouteBag;
 import com.boha.kasietransie.data.dto.*;
@@ -278,6 +279,21 @@ public class ListController {
         }
     }
 
+    @GetMapping("/getOwnersBag")
+    public ResponseEntity<Object> getOwnersBag(@RequestParam String userId, @RequestParam String startDate) {
+        try {
+            BigBag ass = dispatchService
+                    .getOwnersBag(userId, startDate);
+            return ResponseEntity.ok(ass);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(
+                    new CustomErrorResponse(400,
+                            "getOwnersBag failed: " + e.getMessage(),
+                            new DateTime().toDateTimeISO().toString()));
+        }
+    }
+
+
     @GetMapping("/getVehicleCounts")
     public ResponseEntity<Object> getVehicleCounts(@RequestParam String vehicleId) {
         try {
@@ -291,6 +307,22 @@ public class ListController {
                             new DateTime().toDateTimeISO().toString()));
         }
     }
+
+    @GetMapping("/getVehicleCountsByDate")
+    public ResponseEntity<Object> getVehicleCountsByDate(
+            @RequestParam String vehicleId, @RequestParam String startDate) {
+        try {
+            List<CounterBag> ass = dispatchService
+                    .getVehicleCountsByDate(vehicleId, startDate);
+            return ResponseEntity.ok(ass);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(
+                    new CustomErrorResponse(400,
+                            "getVehicleCountsByDate failed: " + e.getMessage(),
+                            new DateTime().toDateTimeISO().toString()));
+        }
+    }
+
     @GetMapping("/countVehicleArrivals")
     public ResponseEntity<Object> countVehicleArrivals(@RequestParam String vehicleId) {
         try {
@@ -304,6 +336,7 @@ public class ListController {
                             new DateTime().toDateTimeISO().toString()));
         }
     }
+
     @GetMapping("/countVehicleDepartures")
     public ResponseEntity<Object> countVehicleDeparture(@RequestParam String vehicleId) {
         try {
@@ -317,6 +350,7 @@ public class ListController {
                             new DateTime().toDateTimeISO().toString()));
         }
     }
+
     @GetMapping("/countVehicleDispatches")
     public ResponseEntity<Object> countVehicleDispatches(@RequestParam String vehicleId) {
         try {
@@ -330,6 +364,7 @@ public class ListController {
                             new DateTime().toDateTimeISO().toString()));
         }
     }
+
     @GetMapping("/countVehicleHeartbeats")
     public ResponseEntity<Object> countVehicleHeartbeats(@RequestParam String vehicleId) {
         try {
@@ -343,7 +378,19 @@ public class ListController {
                             new DateTime().toDateTimeISO().toString()));
         }
     }
-
+    @GetMapping("/getOwnerVehicles")
+    public ResponseEntity<Object> getOwnerVehicles(@RequestParam String userId) {
+        try {
+            List<Vehicle> ass = vehicleService
+                    .getOwnerVehicles(userId);
+            return ResponseEntity.ok(ass);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(
+                    new CustomErrorResponse(400,
+                            "countVehicleHeartbeats failed: " + e.getMessage(),
+                            new DateTime().toDateTimeISO().toString()));
+        }
+    }
 
 
     @GetMapping("/getCalculatedDistances")

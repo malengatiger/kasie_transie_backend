@@ -17,7 +17,7 @@ spring:
                         enable: true
         username: bryangrant217x@gmail.com
     mongodb:
-        embedded:
+      embedded:
             version: 3.6.5
     profiles:
         active: prod

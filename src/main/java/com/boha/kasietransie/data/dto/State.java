@@ -41,9 +41,9 @@ public class State {
         dbCollection.createIndex(
                 Indexes.geo2dsphere("position"));
 
-        dbCollection.createIndex(
-                Indexes.ascending("countryId","stateName"),
-                new IndexOptions().unique(true));
+//        dbCollection.createIndex(
+//                Indexes.ascending("countryId","stateName"),
+//                new IndexOptions().unique(true));
 
         logger.info(XX + "State indexes done");
     }

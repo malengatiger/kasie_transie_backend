@@ -18,6 +18,7 @@ public class LocationResponse {
     private String _id;
     String associationId;
     String vehicleId;
+    String vehicleReg;
     String created;
     String userId;
     String userName;

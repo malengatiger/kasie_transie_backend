@@ -14,6 +14,8 @@ public interface VehicleArrivalRepository extends MongoRepository<VehicleArrival
 
     List<VehicleArrival> findByVehicleId(String vehicleId);
 
+    List<VehicleArrival> findByOwnerId(String userId);
+
     GeoResults<VehicleArrival> findByPositionNear(Point location, Distance distance);
 
 

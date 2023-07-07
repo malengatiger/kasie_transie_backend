@@ -3,6 +3,7 @@ package com.boha.kasietransie.services;
 // Imports the Google Cloud Translation library.
 
 import com.boha.kasietransie.data.TranslationBag;
+import com.boha.kasietransie.data.TranslationInput;
 import com.boha.kasietransie.data.repos.TranslationBagRepository;
 import com.google.cloud.translate.v3.*;
 import com.google.gson.Gson;
@@ -78,9 +79,11 @@ public class TextTranslationService {
 
     List<TranslationBag> allBags = new ArrayList<>();
 
-    public String generateTranslations() throws Exception {
+    public String generateTranslations(boolean setBaseStrings) throws Exception {
         setLanguageCodes();
-        setStrings();
+        if (setBaseStrings) {
+            setStrings();
+        }
         allBags.clear();
         DateTime start = DateTime.now();
         LOGGER.info(E.PINK + E.PINK + E.PINK + " Number of Languages: " + languageCodes.size());
@@ -127,12 +130,19 @@ public class TextTranslationService {
                 + " strings and saved them to mongo\n\n" + dart;
     }
 
+    public String generateInputStrings(List<TranslationInput> input) throws Exception {
+        for (TranslationInput ti : input) {
+            hashMap.put(ti.getKey(),ti.getText());
+        }
+        return generateTranslations(false);
+    }
     private void writeFile(List<TranslationBag> newBags, String languageCode) {
         JSONObject object = new JSONObject();
         List<TranslationBag> oldBags = translationBagRepository.findByTarget(languageCode);
         LOGGER.info(" oldBags from db: " + oldBags.size());
 
         oldBags.addAll(newBags);
+
         for (TranslationBag bag : oldBags) {
             object.put(bag.getKey(), bag.getTranslatedText());
 
@@ -152,10 +162,12 @@ public class TextTranslationService {
         Path path
                 = Paths.get("translations/" + languageCode + ".json");
         try {
+            LOGGER.info(E.PINK + E.PINK+" writing translationBags to file: " + oldBags.size());
             Files.writeString(path, mJson,
                     StandardCharsets.UTF_8);
-            LOGGER.info(" writing translationBags to db: " + oldBags.size());
-            translationBagRepository.saveAll(oldBags);
+
+            LOGGER.info(E.PINK + E.PINK+" writing translationBags to db: " + newBags.size());
+            translationBagRepository.saveAll(newBags);
             LOGGER.info(E.PINK + E.PINK + E.PINK + " Locale Translations saved for: " + languageCode);
         } catch (IOException ex) {
             LOGGER.error("Invalid Path");

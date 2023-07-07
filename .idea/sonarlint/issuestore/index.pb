@@ -32,8 +32,6 @@ j
 users.json,b/9/b9a3cf24e48e943560b97c62600586fba3ad4f68
 w
 Gsrc/main/java/com/boha/kasietransie/data/repos/HeartbeatRepository.java,7/6/76ba35bb6765411af98da8b6a01c3b4f980fbef5
-|
-Lsrc/main/java/com/boha/kasietransie/data/repos/VehicleArrivalRepository.java,f/2/f225f178711e651863397f6a15f79fc0e1c96983
 }
 Msrc/main/java/com/boha/kasietransie/data/repos/LocationRequestRepository.java,4/7/4704f5bee73379e005695fb5962a86a008670fed
 ~
@@ -58,8 +56,6 @@ S
 #src/main/java/util/FileToUsers.java,0/2/021fdd601cbee0a6962ae0a95a9f056296a4a0ab
 w
 Gsrc/main/java/com/boha/kasietransie/KasieTransieBackendApplication.java,5/b/5b7359b5f6280adbedfb9ddd15eb63c72f1fbd95
-x
-Hsrc/main/java/com/boha/kasietransie/services/LocationRequestService.java,4/d/4d0393986beb4e6eacbe5939d1c5f5a492ad953a
 k
 ;src/main/java/com/boha/kasietransie/config/MongoConfig.java,8/8/88ef0a9ad435faadf2d43c7768785f758113fab0
 q
@@ -70,8 +66,6 @@ Ksrc/main/java/com/boha/kasietransie/data/repos/SettingsModelRepository.java,3/
 Osrc/main/java/com/boha/kasietransie/data/repos/UserGeofenceEventRepository.java,f/4/f409831623ab30bc080a54f611eacf9ec2d0fe22
 r
 Bsrc/main/java/com/boha/kasietransie/data/repos/UserRepository.java,e/0/e089a1f269c73276499b104ae5f329b5eac29071
-~
-Nsrc/main/java/com/boha/kasietransie/data/repos/VehicleHeartbeatRepository.java,6/4/646f6c4329e0f828df3260b95944c96ce0a03c3a
 u
 Esrc/main/java/com/boha/kasietransie/services/UserGeofenceService.java,4/6/46f1dc0d635df82718942b27486070b3633cbc90
 j
@@ -82,8 +76,6 @@ n
 >src/main/java/com/boha/kasietransie/services/GeoHashFixer.java,2/5/25eb6880b5ccdf7d80bfabf03dbe984f42ad72b7
 o
 ?src/main/java/com/boha/kasietransie/data/dto/RouteStartEnd.java,c/7/c7e5cd8ad1ea3f1005726835173f7cae44b8098a
-v
-Fsrc/main/java/com/boha/kasietransie/filters/RequestThrottleFilter.java,1/d/1d73ca7cfcd7f63a077f4ecd5eb9753c2e0a65d0
 :
 
 .gitignore,a/5/a5cc2925ca8258af241be7e5b0381edf30266302
@@ -93,16 +85,6 @@ j
 :src/main/java/com/boha/kasietransie/data/dto/Landmark.java,0/f/0f12af9c7dae1cda9a93f0d1006131aa043f4898
 V
 &src/main/java/util/FileToVehicles.java,c/4/c466dcb639114cc27a9433a836e3be30b77a635f
-|
-Lsrc/main/java/com/boha/kasietransie/data/repos/DispatchRecordRepository.java,7/0/70714c845fa6ef60c53b8d68abfa58d5a3384b7a
-r
-Bsrc/main/java/com/boha/kasietransie/data/dto/VehicleDeparture.java,3/f/3f70081708d53e19db55d836843fa7c0a0f48351
-q
-Asrc/main/java/com/boha/kasietransie/data/dto/LocationRequest.java,6/2/62cf58810937ec6128ca2f126dad54b09f5912ba
-r
-Bsrc/main/java/com/boha/kasietransie/data/dto/LocationResponse.java,e/b/ebce6bc69959ad58054ddb2dc2bd4a0b1be6be07
-~
-Nsrc/main/java/com/boha/kasietransie/data/repos/VehicleDepartureRepository.java,f/c/fc1cb587bfb8802252982dd2b4f13ae585c011e1
 g
 7src/main/java/com/boha/kasietransie/data/dto/Route.java,2/9/2965a4d8b00a7c7464c8c848766ee3045d0a4638
 s
@@ -119,8 +101,6 @@ m
 =src/main/java/com/boha/kasietransie/services/CityService.java,e/a/eaa9e4adcdde02aa61b8867c5239c323c9117b98
 q
 Asrc/main/java/com/boha/kasietransie/services/LandmarkService.java,a/a/aa8a61ffbdd708483dde36a05471e77b925c6e0a
-|
-Lsrc/main/java/com/boha/kasietransie/filters/MonitorAuthenticationFilter.java,d/5/d5283863e48d49fadb90179f79d40741a67a3fd3
 7
 pom.xml,4/4/442292b8a7efeabbe4cc176709b833b1792140ec
 u
@@ -137,8 +117,6 @@ k
 ;src/main/java/com/boha/kasietransie/data/dto/RouteCity.java,c/f/cfb338981a1596c65797b74ddaafc3cae3759935
 f
 6src/main/java/com/boha/kasietransie/data/dto/City.java,1/8/181be1f332eae4d54ce117614bb84a19640074b1
-p
-@src/main/java/com/boha/kasietransie/services/VehicleService.java,d/7/d771b8114ca6d6cebde4fa5b79cb2a020c139c4a
 l
 <src/main/java/com/boha/kasietransie/data/dto/RoutePoint.java,9/9/990da42eabd5ae4a04011b321f63814395bec7f5
 t
@@ -149,7 +127,5 @@ p
 @src/main/java/com/boha/kasietransie/data/DispatchRecordList.java,0/b/0bafebc76e2c722c400536be2d4d0b2679527b96
 {
 Ksrc/main/java/com/boha/kasietransie/data/repos/RouteLandmarkRepository.java,2/c/2c26681dc869fb471858b1af6c3ece17d955cf06
-g
-7src/main/java/com/boha/kasietransie/data/dto/State.java,2/b/2b2c71ca77aaa039db4d95d1f1f575eec97299da
 o
 ?src/main/java/com/boha/kasietransie/data/dto/SettingsModel.java,7/a/7ac6ea463a850f8944b1d7b7af3be07c179c7a8d

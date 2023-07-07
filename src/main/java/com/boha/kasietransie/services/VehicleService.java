@@ -1,8 +1,11 @@
 package com.boha.kasietransie.services;
 
 import com.boha.kasietransie.data.dto.Association;
+import com.boha.kasietransie.data.dto.RoutePoint;
+import com.boha.kasietransie.data.dto.User;
 import com.boha.kasietransie.data.dto.Vehicle;
 import com.boha.kasietransie.data.repos.AssociationRepository;
+import com.boha.kasietransie.data.repos.UserRepository;
 import com.boha.kasietransie.data.repos.VehicleHeartbeatRepository;
 import com.boha.kasietransie.data.repos.VehicleRepository;
 import com.google.gson.Gson;
@@ -11,9 +14,23 @@ import com.google.zxing.BarcodeFormat;
 import com.google.zxing.client.j2se.MatrixToImageWriter;
 import com.google.zxing.common.BitMatrix;
 import com.google.zxing.qrcode.QRCodeWriter;
+import com.mongodb.WriteConcern;
+import com.mongodb.bulk.BulkWriteResult;
+import com.mongodb.client.MongoCollection;
+import com.mongodb.client.model.Filters;
+import com.mongodb.client.model.UpdateManyModel;
+import com.mongodb.client.model.Updates;
+import com.mongodb.client.result.UpdateResult;
+import org.bson.Document;
+import org.bson.conversions.Bson;
 import org.joda.time.DateTime;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
+import org.springframework.data.mongodb.core.BulkOperations;
+import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Service;
 import util.E;
 import util.FileToVehicles;
@@ -23,6 +40,8 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.time.Duration;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -36,23 +55,29 @@ public class VehicleService {
     private final VehicleHeartbeatRepository vehicleHeartbeatRepository;
     private final AssociationRepository associationRepository;
     private final ResourceLoader resourceLoader;
+    final UserRepository userRepository;
     final CloudStorageUploaderService cloudStorageUploaderService;
 
+    final MongoTemplate mongoTemplate;
     final MessagingService messagingService;
     private static final Gson gson = new GsonBuilder().setPrettyPrinting().create();
     private static final Logger logger = Logger.getLogger(VehicleService.class.getSimpleName());
+
+    private static final String XX = E.PRESCRIPTION + E.PRESCRIPTION + E.PRESCRIPTION;
 
     private static final String MM = "\uD83D\uDC26\uD83D\uDC26\uD83D\uDC26\uD83D\uDC26\uD83D\uDC26\uD83D\uDC26\uD83D\uDC26";
 
     public VehicleService(VehicleRepository vehicleRepository,
                           VehicleHeartbeatRepository vehicleHeartbeatRepository,
                           AssociationRepository associationRepository,
-                          ResourceLoader resourceLoader, CloudStorageUploaderService cloudStorageUploaderService, MessagingService messagingService) {
+                          ResourceLoader resourceLoader, UserRepository userRepository, CloudStorageUploaderService cloudStorageUploaderService, MongoTemplate mongoTemplate, MessagingService messagingService) {
         this.vehicleRepository = vehicleRepository;
         this.vehicleHeartbeatRepository = vehicleHeartbeatRepository;
         this.associationRepository = associationRepository;
         this.resourceLoader = resourceLoader;
+        this.userRepository = userRepository;
         this.cloudStorageUploaderService = cloudStorageUploaderService;
+        this.mongoTemplate = mongoTemplate;
         this.messagingService = messagingService;
 
         logger.info(MM + " VehicleService constructed and shit injected! ");
@@ -69,6 +94,10 @@ public class VehicleService {
 
     public List<Vehicle> getAssociationVehicles(String associationId) {
         return vehicleRepository.findByAssociationId(associationId);
+    }
+
+    public List<Vehicle> getOwnerVehicles(String userId) {
+        return vehicleRepository.findByOwnerId(userId);
     }
 
     public int updateVehicleQRCode(Vehicle vehicle) throws Exception {
@@ -214,6 +243,29 @@ public class VehicleService {
         return mList;
     }
 
+    public int changeFakeVehicleOwner(String userId) {
+
+        List<User> users = userRepository.findByUserId(userId);
+        logger.info(XX + " Number of users: " + E.RED_DOT + users.size());
+
+        String oldOwner = "Mr. Transportation III";
+        Query query = new Query();
+        query.addCriteria(Criteria.where("ownerName").is(oldOwner));
+
+         List<Vehicle> cars = mongoTemplate.find(query, Vehicle.class);
+        logger.info(XX + " Number of cars: " + E.RED_DOT + cars.size());
+
+        for (Vehicle car : cars) {
+            car.setOwnerId(userId);
+            car.setOwnerName(users.get(0).getName());
+        }
+        vehicleRepository.saveAll(cars);
+        logger.info(XX + " completed of cars: " + E.RED_DOT + cars.size());
+
+        return cars.size();
+
+
+    }
     private Vehicle getBaseVehicle(String associationId, String associationName) {
         Vehicle v = new Vehicle();
 

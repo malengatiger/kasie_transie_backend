@@ -11,6 +11,7 @@ import com.google.gson.GsonBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import util.E;
 
 @Service
 public class LocationRequestService {
@@ -28,12 +29,15 @@ public class LocationRequestService {
     }
 
     public LocationRequest addLocationRequest(LocationRequest locationRequest) {
+        logger.info(E.GEAR + " addLocationRequest: " + G.toJson(locationRequest));
+
         LocationRequest r = locationRequestRepository.insert(locationRequest);
         messagingService.sendMessage(r);
         return r;
 
     }
     public LocationResponse addLocationResponse(LocationResponse locationResponse) {
+        logger.info(E.GEAR + " addLocationResponse: " + G.toJson(locationResponse));
         String geoHash = GeoHash.encodeHash(locationResponse.getPosition().getLatitude(),
                 locationResponse.getPosition().getLongitude());
         locationResponse.setGeoHash(geoHash);

@@ -2,6 +2,7 @@ package com.boha.kasietransie.controllers;
 
 import com.boha.kasietransie.data.CalculatedDistanceList;
 import com.boha.kasietransie.data.DispatchRecordList;
+import com.boha.kasietransie.data.TranslationInput;
 import com.boha.kasietransie.data.dto.*;
 import com.boha.kasietransie.services.*;
 import com.google.common.io.Files;
@@ -655,12 +656,27 @@ public class DataController {
     public ResponseEntity<Object> generateTranslations() {
 
         try {
-            String m = textTranslationService.generateTranslations();
+            String m = textTranslationService.generateTranslations(true);
             return ResponseEntity.ok(m);
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(
                     new CustomErrorResponse(400,
-                            "fixRoutePoints failed: " + e.getMessage(),
+                            "generateTranslations failed: " + e.getMessage(),
+                            new DateTime().toDateTimeISO().toString()));
+        }
+
+    }
+
+    @PostMapping("/generateInputStrings")
+    public ResponseEntity<Object> generateInputStrings(@RequestBody List<TranslationInput> inputStrings) {
+
+        try {
+            String m = textTranslationService.generateInputStrings(inputStrings);
+            return ResponseEntity.ok(m);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(
+                    new CustomErrorResponse(400,
+                            "generateInputStrings failed: " + e.getMessage(),
                             new DateTime().toDateTimeISO().toString()));
         }
 
@@ -675,6 +691,20 @@ public class DataController {
             return ResponseEntity.badRequest().body(
                     new CustomErrorResponse(400,
                             "createDartFile failed: " + e.getMessage(),
+                            new DateTime().toDateTimeISO().toString()));
+        }
+
+    }
+    @GetMapping("/changeFakeVehicleOwner")
+    public ResponseEntity<Object> changeFakeVehicleOwner(@RequestParam String userId) {
+
+        try {
+            int m = vehicleService.changeFakeVehicleOwner(userId);
+            return ResponseEntity.ok(m);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(
+                    new CustomErrorResponse(400,
+                            "changeFakeVehicleOwner failed: " + e.getMessage(),
                             new DateTime().toDateTimeISO().toString()));
         }
 

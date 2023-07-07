@@ -17,6 +17,8 @@ import org.springframework.data.geo.Metrics;
 import org.springframework.data.mongodb.core.BulkOperations;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.NearQuery;
+import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Service;
 import util.E;
@@ -284,34 +286,64 @@ public class RouteService {
 
 
         logger.info(E.COOL_MAN + E.COOL_MAN
-                + " findAssociationRoutesByLocation: radius: " + radiusInKM + " id: " + associationId);
+                + " findAssociationRoutesByLocation: radius: " + radiusInKM + " associationId: " + associationId);
         logger.info(E.COOL_MAN + E.COOL_MAN
                 + " findAssociationRoutesByLocation: lat: " + latitude + " lng: " + longitude);
+        Instant start = Instant.now();
         org.springframework.data.geo.Point point =
                 new org.springframework.data.geo.Point(longitude, latitude);
 
-        Distance distance = new Distance(radiusInKM, Metrics.KILOMETERS);
-        GeoResults<RoutePoint> geoResults = routePointRepository.findByPositionNear(point, distance);
-
+        final NearQuery nearQuery = NearQuery.near(point).maxDistance(radiusInKM * 1000).spherical(true);
+        GeoResults<RoutePoint> results = mongoTemplate.geoNear(nearQuery, RoutePoint.class);
+//        Query mongoQuery1 = new Query();
+//        mongoQuery1.addCriteria(Criteria.where("position.coordinates").near(point));
+//        List<RoutePoint> rPoints = mongoTemplate.find(mongoQuery1, RoutePoint.class,"RoutePoint");
+//        Instant end0 = Instant.now();
+        Instant end0 = Instant.now();
         logger.info(E.COOL_MAN + E.COOL_MAN
-                + " findAssociationRoutesByLocation, points: " + geoResults.getContent().size());
+                + " findAssociationRoutesByLocation, mongoTemplate points: "
+                + results.getContent().size() + E.RED_APPLE + " Elapsed: " +  Duration.between(start, end0).toSeconds() + " seconds");
 
-        HashMap<String, RoutePoint> map = new HashMap<>();
-        for (GeoResult<RoutePoint> routePoint : geoResults) {
-            map.put(routePoint.getContent().getRouteId(), routePoint.getContent());
+//        Distance distance = new Distance(radiusInKM, Metrics.KILOMETERS);
+//        GeoResults<RoutePoint> geoResults = routePointRepository.findByPositionNear(point, distance);
+//
+//        Instant end1 = Instant.now();
+//        logger.info(E.COOL_MAN + E.COOL_MAN
+//                + " findAssociationRoutesByLocation, points: "
+//                + geoResults.getContent().size() + " Elapsed: " +  Duration.between(start, end1).toSeconds() + " seconds");
+//
+        List<RoutePoint> rPoints = new ArrayList<>();
+        for (GeoResult<RoutePoint> result : results) {
+            rPoints.add(result.getContent());
         }
+        HashMap<String, RoutePoint> map = new HashMap<>();
+        for (RoutePoint routePoint : rPoints) {
+            map.put(routePoint.getRouteId(), routePoint);
+        }
+
         List<Route> routes = new ArrayList<>();
         List<RoutePoint> mPoints = map.values().stream().toList();
+        logger.info(E.COOL_MAN + E.COOL_MAN
+                + " route points after filter: " + E.LEAF
+                + " " +  mPoints.size());
+
         for (RoutePoint mPoint : mPoints) {
             List<Route> rs = routeRepository.findByRouteId(mPoint.getRouteId());
             routes.addAll(rs);
         }
+        Instant end2 = Instant.now();
+
+        logger.info(E.COOL_MAN + E.COOL_MAN
+                + " data retrieval complete: "
+                + " Elapsed: " +  Duration.between(start, end2).toSeconds() + " seconds");
 
         logger.info(E.COOL_MAN + E.COOL_MAN
                 + " findAssociationRoutesByLocation, routes: " + routes.size());
 
         List<Route> filteredRoutes = new ArrayList<>();
         for (Route route : routes) {
+            logger.info(E.COFFEE+" associationId : " + associationId);
+            logger.info(E.COFFEE+" filter associationId : " + route.getAssociationId());
             if (route.getAssociationId().equalsIgnoreCase(associationId)) {
                 filteredRoutes.add(route);
             }
@@ -322,6 +354,9 @@ public class RouteService {
             logger.info(E.BASKET_BALL + "Nearest Route: " + filteredRoute.getName()
                     + E.HAND1 + " color: " + filteredRoute.getColor());
         }
+        logger.info(E.COOL_MAN + E.COOL_MAN
+                + " search complete: " + E.FERN
+                + " Elapsed: " +  Duration.between(start, Instant.now()).toSeconds() + " seconds\n\n");
 
         return filteredRoutes;
     }

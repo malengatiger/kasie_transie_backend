@@ -13,6 +13,9 @@ public interface VehicleDepartureRepository extends MongoRepository<VehicleDepar
     List<VehicleDeparture> findByAssociationId(String associationId);
     List<VehicleDeparture> findByLandmarkId(String landmarkId);
 
+    List<VehicleDeparture> findByOwnerId(String userId);
+
+
     List<VehicleDeparture> findByVehicleId(String vehicleId);
 
     GeoResults<VehicleDeparture> findByPositionNear(Point location, Distance distance);
