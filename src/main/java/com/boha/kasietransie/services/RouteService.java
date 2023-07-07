@@ -72,6 +72,10 @@ public class RouteService {
         return routeRepository.insert(route);
     }
 
+    public List<RouteUpdateRequest> getRouteUpdateRequests(String routeId) {
+        return routeUpdateRequestRepository.findByRouteId(routeId);
+    }
+
     public RouteBag refreshRoute(String routeId) throws Exception {
         List<Route> list = routeRepository.findByRouteId(routeId);
         if (!list.isEmpty()) {
@@ -199,9 +203,9 @@ public class RouteService {
     public List<Route> getAssociationRoutes(String associationId) {
         return routeRepository.findByAssociationId(associationId);
     }
-    public List<RouteUpdateRequest> getRouteUpdateRequests(String routeId) {
-        return routeUpdateRequestRepository.findByRouteId(routeId);
-    }
+//    public List<RouteUpdateRequest> getRouteUpdateRequests(String routeId) {
+//        return routeUpdateRequestRepository.findByRouteId(routeId);
+//    }
 
     public List<RoutePoint> getRoutePoints(String routeId) {
         return routePointRepository.findByRouteId(routeId);

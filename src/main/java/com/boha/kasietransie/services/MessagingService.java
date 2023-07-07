@@ -107,7 +107,7 @@ public class MessagingService {
             e.printStackTrace();
         }
     }
-    public int sendRouteUpdateMessage(RouteUpdateRequest routeUpdateRequest) throws Exception {
+    public void sendRouteUpdateMessage(RouteUpdateRequest routeUpdateRequest) throws Exception {
         try {
             String topic = "route_changes_" + routeUpdateRequest.getAssociationId();
             Notification notification = Notification.builder()
@@ -124,7 +124,6 @@ public class MessagingService {
             LOGGER.error("Failed to send RouteUpdateMessage FCM message, routeId: " + routeUpdateRequest.getRouteId());
             throw new Exception(e.getMessage());
         }
-        return 0;
     }
     public int sendVehicleUpdateMessage(String associationId, String vehicleId) {
         try {

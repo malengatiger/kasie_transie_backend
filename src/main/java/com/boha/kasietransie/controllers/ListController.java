@@ -392,6 +392,19 @@ public class ListController {
                             new DateTime().toDateTimeISO().toString()));
         }
     }
+    @GetMapping("/getVehicleMediaRequests")
+    public ResponseEntity<Object> getVehicleMediaRequests(@RequestParam String vehicleId) {
+        try {
+            List<VehicleMediaRequest> ass = mediaService
+                    .getVehicleMediaRequests(vehicleId);
+            return ResponseEntity.ok(ass);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(
+                    new CustomErrorResponse(400,
+                            "getVehicleMediaRequests failed: " + e.getMessage(),
+                            new DateTime().toDateTimeISO().toString()));
+        }
+    }
     @GetMapping("/getVehiclePhotos")
     public ResponseEntity<Object> getVehiclePhotos(@RequestParam String vehicleId) {
         try {
@@ -539,6 +552,18 @@ public class ListController {
             return ResponseEntity.badRequest().body(
                     new CustomErrorResponse(400,
                             "getRouteLandmarks failed: " + e.getMessage(),
+                            new DateTime().toDateTimeISO().toString()));
+        }
+    }
+    @GetMapping("/getRouteUpdateRequests")
+    public ResponseEntity<Object> getRouteUpdateRequests(@RequestParam String routeId) {
+        try {
+            List<RouteUpdateRequest> r = routeService.getRouteUpdateRequests(routeId);
+            return ResponseEntity.ok(r);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(
+                    new CustomErrorResponse(400,
+                            "getRouteUpdateRequests failed: " + e.getMessage(),
                             new DateTime().toDateTimeISO().toString()));
         }
     }
