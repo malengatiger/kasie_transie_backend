@@ -405,6 +405,21 @@ public class ListController {
                             new DateTime().toDateTimeISO().toString()));
         }
     }
+    @GetMapping("/getAssociationVehicleMediaRequests")
+    public ResponseEntity<Object> getAssociationVehicleMediaRequests(
+            @RequestParam String associationId, @RequestParam String startDate) {
+        try {
+            List<VehicleMediaRequest> ass = mediaService
+                    .getAssociationVehicleMediaRequests(associationId, startDate);
+            return ResponseEntity.ok(ass);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(
+                    new CustomErrorResponse(400,
+                            "getAssociationVehicleMediaRequests failed: " + e.getMessage(),
+                            new DateTime().toDateTimeISO().toString()));
+        }
+    }
+
     @GetMapping("/getVehiclePhotos")
     public ResponseEntity<Object> getVehiclePhotos(@RequestParam String vehicleId) {
         try {

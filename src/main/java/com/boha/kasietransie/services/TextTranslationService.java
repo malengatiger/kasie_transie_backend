@@ -115,7 +115,7 @@ public class TextTranslationService {
             writeFile(translationBags,languageCode);
         }
 
-        String dart = createDartFile(false);
+        String dart = createDartFile(true);
         LOGGER.info(E.PINK + E.PINK + E.PINK + " Number of Translations done: " + cnt);
 
         DateTime end = DateTime.now();
