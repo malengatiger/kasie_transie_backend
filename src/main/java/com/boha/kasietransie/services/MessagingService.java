@@ -147,8 +147,9 @@ public class MessagingService {
                     .setBody("A Request for Vehicle Photos or Video for: " + request.getVehicleReg())
                     .setTitle("Vehicle Media Request")
                     .build();
+            String data = G.toJson(request);
             Message message = buildMessage("vehicleMediaRequest", topic,
-                    request.getVehicleId(), notification);
+                    data, notification);
 
             FirebaseMessaging.getInstance().send(message);
 

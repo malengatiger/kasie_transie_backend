@@ -4,6 +4,7 @@ import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.Indexes;
 import lombok.Data;
+import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import util.E;
 
@@ -12,11 +13,15 @@ import java.util.logging.Logger;
 @Data
 @Document(collection = "VehicleMediaRequest")
 public class VehicleMediaRequest {
+    private String _partitionKey;
+    @Id
+    private String _id;
     String userId;
     String vehicleId;
     String vehicleReg;
     String created;
-    String requesterId, associationId;
+    String requesterId;
+    String associationId;
     String requesterName;
     boolean addVideo;
 

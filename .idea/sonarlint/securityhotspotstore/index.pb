@@ -127,8 +127,6 @@ p
 Ksrc/main/java/com/boha/kasietransie/data/repos/RouteLandmarkRepository.java,2/c/2c26681dc869fb471858b1af6c3ece17d955cf06
 o
 ?src/main/java/com/boha/kasietransie/data/dto/SettingsModel.java,7/a/7ac6ea463a850f8944b1d7b7af3be07c179c7a8d
-i
-9src/main/java/com/boha/kasietransie/data/dto/Vehicle.java,3/4/34dbc632c9f662ab0e4f5b35f411e6a0931aa33d
 r
 Bsrc/main/java/com/boha/kasietransie/data/dto/VehicleHeartbeat.java,5/2/52be8c7b9466d4a86ae20c6c50e2e1d43f50c9c9
 €
@@ -173,5 +171,3 @@ n
 >src/main/java/com/boha/kasietransie/data/TranslationInput.java,7/6/76523239a43d11806a16fa2a9eafcfac8004d265
 t
 Dsrc/main/java/com/boha/kasietransie/data/dto/RouteUpdateRequest.java,3/3/33b3e015bb14dd5c02e8a69a3be9bb970b060ef1
-u
-Esrc/main/java/com/boha/kasietransie/data/dto/VehicleMediaRequest.java,4/3/43d04b0a05e0e77641ff0f9852c3a4c7189eb633

@@ -147,8 +147,6 @@ h
 Nsrc/main/java/com/boha/kasietransie/data/repos/VehicleHeartbeatRepository.java,6/4/646f6c4329e0f828df3260b95944c96ce0a03c3a
 p
 @src/main/java/com/boha/kasietransie/data/dto/DispatchRecord.java,a/8/a89afe31898e1be3ba61d4d6ec440818be90ed4f
-i
-9src/main/java/com/boha/kasietransie/data/dto/Vehicle.java,3/4/34dbc632c9f662ab0e4f5b35f411e6a0931aa33d
 r
 Bsrc/main/java/com/boha/kasietransie/data/dto/VehicleDeparture.java,3/f/3f70081708d53e19db55d836843fa7c0a0f48351
 v
@@ -169,8 +167,6 @@ n
 Lsrc/main/java/com/boha/kasietransie/data/repos/VehicleArrivalRepository.java,f/2/f225f178711e651863397f6a15f79fc0e1c96983
 ~
 Nsrc/main/java/com/boha/kasietransie/data/repos/VehicleDepartureRepository.java,f/c/fc1cb587bfb8802252982dd2b4f13ae585c011e1
-u
-Esrc/main/java/com/boha/kasietransie/data/dto/VehicleMediaRequest.java,4/3/43d04b0a05e0e77641ff0f9852c3a4c7189eb633
 t
 Dsrc/main/java/com/boha/kasietransie/data/dto/RouteUpdateRequest.java,3/3/33b3e015bb14dd5c02e8a69a3be9bb970b060ef1
 x
