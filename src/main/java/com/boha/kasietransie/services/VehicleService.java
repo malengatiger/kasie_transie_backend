@@ -1,7 +1,6 @@
 package com.boha.kasietransie.services;
 
 import com.boha.kasietransie.data.dto.Association;
-import com.boha.kasietransie.data.dto.RoutePoint;
 import com.boha.kasietransie.data.dto.User;
 import com.boha.kasietransie.data.dto.Vehicle;
 import com.boha.kasietransie.data.repos.AssociationRepository;
@@ -11,26 +10,16 @@ import com.boha.kasietransie.data.repos.VehicleRepository;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.zxing.BarcodeFormat;
+import com.google.zxing.WriterException;
 import com.google.zxing.client.j2se.MatrixToImageWriter;
 import com.google.zxing.common.BitMatrix;
 import com.google.zxing.qrcode.QRCodeWriter;
-import com.mongodb.WriteConcern;
-import com.mongodb.bulk.BulkWriteResult;
-import com.mongodb.client.MongoCollection;
-import com.mongodb.client.model.Filters;
-import com.mongodb.client.model.UpdateManyModel;
-import com.mongodb.client.model.Updates;
-import com.mongodb.client.result.UpdateResult;
-import org.bson.Document;
-import org.bson.conversions.Bson;
 import org.joda.time.DateTime;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
-import org.springframework.data.mongodb.core.BulkOperations;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
-import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Service;
 import util.E;
 import util.FileToVehicles;
@@ -38,10 +27,9 @@ import util.FileToVehicles;
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.time.Duration;
-import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -88,7 +76,7 @@ public class VehicleService {
         createVehicleQRCode(vehicle);
         Vehicle v = vehicleRepository.insert(vehicle);
         logger.info("Vehicle has been added to database");
-        messagingService.sendVehicleUpdateMessage(v.getAssociationId(),v.getVehicleId());
+        messagingService.sendVehicleUpdateMessage(v.getAssociationId(), v.getVehicleId());
         return v;
     }
 
@@ -115,23 +103,62 @@ public class VehicleService {
     }
 
     public int createVehicleQRCode(Vehicle car) throws Exception {
-        String barcodeText = gson.toJson(car);
-        QRCodeWriter barcodeWriter = new QRCodeWriter();
-        BitMatrix bitMatrix =
-                barcodeWriter.encode(barcodeText, BarcodeFormat.QR_CODE, 200, 200);
+        try {
+            String barcodeText = gson.toJson(car);
+            QRCodeWriter barcodeWriter = new QRCodeWriter();
+            BitMatrix bitMatrix =
+                    barcodeWriter.encode(barcodeText, BarcodeFormat.QR_CODE, 800, 800);
 
-        BufferedImage img = MatrixToImageWriter.toBufferedImage(bitMatrix);
-        Path path = Path.of("/qr_codes/qrcode_" + System.currentTimeMillis() + ".png");
-        File file = Files.createFile(path).toFile();
-        ImageIO.write(img, "png", file);
-        String url = cloudStorageUploaderService.uploadFile(file.getName(), file);
-        car.setQrCodeUrl(url);
+            BufferedImage img = MatrixToImageWriter.toBufferedImage(bitMatrix);
 
-        boolean delete = Files.deleteIfExists(path);
-        logger.info(E.LEAF + E.LEAF + E.LEAF +
-                " QRCode generated, url: " + url + " for car: " + gson.toJson(car)
-                + E.RED_APPLE + " - temp file deleted: " + delete);
+            String reg = car.getVehicleReg().replace(" ", "");
+
+            Path path = Path.of("qrcodes/qrcode_" + reg
+                    + "_" + System.currentTimeMillis() + ".png");
+
+            String p = "qrcodes/qrcode_" + reg
+                    + "_" + System.currentTimeMillis() + ".png";
+            File file = new File(p);
+            ImageIO.write(img, "png", file);
+            logger.info(E.COFFEE + "File created and qrCode ready for uploading");
+            String url = cloudStorageUploaderService.uploadFile(file.getName(), file);
+            car.setQrCodeUrl(url);
+
+            boolean delete = Files.deleteIfExists(path);
+            logger.info(E.LEAF + E.LEAF + E.LEAF +
+                    " QRCode generated, url: " + url + " for car: " + gson.toJson(car)
+                    + E.RED_APPLE + " - temp file deleted: " + delete);
+        } catch (WriterException | IOException e) {
+            e.printStackTrace();
+            throw new RuntimeException(e);
+        }
         return 0;
+    }
+
+    public int recreateAllQRCodes(String associationId) throws Exception {
+        logger.info(E.LEAF + E.LEAF + E.LEAF + " ... recreateAllQRCodes starting ...");
+        List<Vehicle> list = vehicleRepository.findByAssociationId(associationId);
+        File tmpDir = new File("qrcodes");
+        if (!tmpDir.isDirectory()) {
+            try {
+                Path p = Files.createDirectory(tmpDir.toPath());
+                logger.info(E.LEAF + E.LEAF + E.LEAF + " ... recreateAllQRCodes dir for files: "
+                        + p.toFile().getAbsolutePath());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        } else {
+            logger.info(E.LEAF + E.LEAF + E.LEAF + " ... recreateAllQRCodes dir already exists ");
+        }
+        int count = 0;
+        for (Vehicle vehicle : list) {
+            createVehicleQRCode(vehicle);
+            vehicleRepository.save(vehicle);
+            count++;
+            logger.info(E.BLUE_DOT + E.BLUE_DOT +
+                    " Changed qrCode for car#" + count + " " + E.RED_APPLE + " " + vehicle.getVehicleReg());
+        }
+        return count;
     }
 
     public List<Vehicle> importVehiclesFromJSON(File file, String associationId) throws Exception {
@@ -163,7 +190,7 @@ public class VehicleService {
                 logger.info(E.OK + E.OK + " ... we cool with QRCode for "
                         + vehicle.getVehicleReg() + " result: " + result);
             } else {
-                logger.severe(E.NOT_OK+ " Unable to create QRCode for " + vehicle.getVehicleReg());
+                logger.severe(E.NOT_OK + " Unable to create QRCode for " + vehicle.getVehicleReg());
 
             }
 
@@ -252,7 +279,7 @@ public class VehicleService {
         Query query = new Query();
         query.addCriteria(Criteria.where("ownerName").is(oldOwner));
 
-         List<Vehicle> cars = mongoTemplate.find(query, Vehicle.class);
+        List<Vehicle> cars = mongoTemplate.find(query, Vehicle.class);
         logger.info(XX + " Number of cars: " + E.RED_DOT + cars.size());
 
         for (Vehicle car : cars) {
@@ -266,6 +293,7 @@ public class VehicleService {
 
 
     }
+
     private Vehicle getBaseVehicle(String associationId, String associationName) {
         Vehicle v = new Vehicle();
 
@@ -287,9 +315,10 @@ public class VehicleService {
     }
 
     Random random = new Random(System.currentTimeMillis());
+
     private String getOwnerName() {
         String[] firstNames = new String[]{"John", "Nancy", "David", "Eric G", "Thomas A", "George", "Freddie", "Benjamin", "Thabo",
-        "Thabiso", "Mmamothe", "Yvonne", "Brandy G", "Catherine", "Anthony", "Malenga", "Jimmy", "Donnie", "Samuel", "Karina"};
+                "Thabiso", "Mmamothe", "Yvonne", "Brandy G", "Catherine", "Anthony", "Malenga", "Jimmy", "Donnie", "Samuel", "Karina"};
         String[] lastNames = new String[]{"Smith", "Baloyi", "Donaldson", "van der Merwe", "Battles", "Carpenter", "Moredi",
                 "Benjamin", "Donald", "jackson", "Rostov", "Maringa", "van Wyk", "Damarin", "Phillips", "Hellenic",
                 "Mofokeng", "Maluleke", "Henderson", "Marule", "Nkuna"};

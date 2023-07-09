@@ -812,6 +812,20 @@ public class DataController {
 
     }
 
+    @GetMapping("/recreateAllQRCodes")
+    public ResponseEntity<Object> recreateAllQRCodes(@RequestParam String associationId) {
+
+        try {
+            return ResponseEntity.ok(vehicleService.recreateAllQRCodes(associationId));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(
+                    new CustomErrorResponse(400,
+                            "recreateAllQRCodes failed: " + e.getMessage(),
+                            new DateTime().toDateTimeISO().toString()));
+        }
+
+    }
+
     @GetMapping("/")
 
     public String ping() {
