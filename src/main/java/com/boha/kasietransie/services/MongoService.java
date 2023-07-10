@@ -527,6 +527,8 @@ public class MongoService {
             VehiclePhoto.createIndex(db);
             RouteUpdateRequest.createIndex(db);
             VehicleMediaRequest.createIndex(db);
+            AmbassadorPassengerCount.createIndex(db);
+            AmbassadorCheckIn.createIndex(db);
 
             logger.info(XX + " MongoService has completed setup of indexes " + E.BELL + E.BELL);
 

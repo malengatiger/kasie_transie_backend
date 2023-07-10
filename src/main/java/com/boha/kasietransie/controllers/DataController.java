@@ -49,6 +49,7 @@ public class DataController {
     final TextTranslationService textTranslationService;
     final CloudStorageUploaderService cloudStorageUploaderService;
     final MediaService mediaService;
+    final AmbassadorService ambassadorService;
 
     @PostMapping("/createUser")
     public ResponseEntity<Object> createUser(@RequestBody User user) {
@@ -779,6 +780,35 @@ public class DataController {
             return ResponseEntity.badRequest().body(
                     new CustomErrorResponse(400,
                             "addVehicleVideo failed: " + e.getMessage(),
+                            new DateTime().toDateTimeISO().toString()));
+        }
+
+    }
+
+    @PostMapping("addAmbassadorCheckIn")
+    public ResponseEntity<Object> addAmbassadorCheckIn(
+            @RequestBody AmbassadorCheckIn checkIn) {
+        try {
+            AmbassadorCheckIn v = ambassadorService.addAmbassadorCheckIn(checkIn);
+            return ResponseEntity.ok(v);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(
+                    new CustomErrorResponse(400,
+                            "addAmbassadorCheckIn failed: " + e.getMessage(),
+                            new DateTime().toDateTimeISO().toString()));
+        }
+
+    }
+    @PostMapping("addAmbassadorPassengerCount")
+    public ResponseEntity<Object> addAmbassadorPassengerCount(
+            @RequestBody AmbassadorPassengerCount count) {
+        try {
+            AmbassadorPassengerCount v = ambassadorService.addAmbassadorPassengerCount(count);
+            return ResponseEntity.ok(v);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(
+                    new CustomErrorResponse(400,
+                            "addAmbassadorPassengerCount failed: " + e.getMessage(),
                             new DateTime().toDateTimeISO().toString()));
         }
 

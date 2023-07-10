@@ -85,8 +85,11 @@ public class DispatchService {
         return dispatchRecordRepository.findByVehicleId(vehicleId);
     }
 
-    public List<DispatchRecord> getMarshalDispatchRecords(String userId) {
-        return dispatchRecordRepository.findByMarshalId(userId);
+    public List<DispatchRecord> getMarshalDispatchRecords(String userId, String startDate) {
+        Criteria c = Criteria.where("marshalId").is(userId)
+                .and("created").gte(startDate);
+        Query query = new Query(c);
+        return mongoTemplate.find(query, DispatchRecord.class);
     }
 
     public long countMarshalDispatchRecords(String userId) {

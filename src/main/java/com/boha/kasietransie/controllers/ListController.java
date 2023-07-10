@@ -39,6 +39,7 @@ public class ListController {
     private final HeartbeatService heartbeatService;
     private final LandmarkService landmarkService;
     private final MediaService mediaService;
+    final AmbassadorService ambassadorService;
 
     @GetMapping("/getUserById")
     public ResponseEntity<Object> getUserById(@RequestParam String userId) {
@@ -267,10 +268,10 @@ public class ListController {
     }
 
     @GetMapping("/getMarshalDispatchRecords")
-    public ResponseEntity<Object> getMarshalDispatchRecords(@RequestParam String userId) {
+    public ResponseEntity<Object> getMarshalDispatchRecords(@RequestParam String userId, @RequestParam String startDate) {
         try {
             List<DispatchRecord> ass = dispatchService
-                    .getMarshalDispatchRecords(userId);
+                    .getMarshalDispatchRecords(userId, startDate);
             return ResponseEntity.ok(ass);
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(
@@ -279,7 +280,85 @@ public class ListController {
                             new DateTime().toDateTimeISO().toString()));
         }
     }
+    @GetMapping("/getAssociationAmbassadorCheckIn")
+    public ResponseEntity<Object> getAssociationAmbassadorCheckIn(@RequestParam String associationId, @RequestParam String startDate) {
+        try {
+            List<AmbassadorCheckIn> ass = ambassadorService
+                    .getAssociationAmbassadorCheckIn(associationId, startDate);
+            return ResponseEntity.ok(ass);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(
+                    new CustomErrorResponse(400,
+                            "getAssociationAmbassadorCheckIn failed: " + e.getMessage(),
+                            new DateTime().toDateTimeISO().toString()));
+        }
+    }
+    @GetMapping("/getVehicleAmbassadorCheckIn")
+    public ResponseEntity<Object> getVehicleAmbassadorCheckIn(@RequestParam String vehicleId, @RequestParam String startDate) {
+        try {
+            List<AmbassadorCheckIn> ass = ambassadorService
+                    .getVehicleAmbassadorCheckIn(vehicleId, startDate);
+            return ResponseEntity.ok(ass);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(
+                    new CustomErrorResponse(400,
+                            "getVehicleAmbassadorCheckIn failed: " + e.getMessage(),
+                            new DateTime().toDateTimeISO().toString()));
+        }
+    }
+    @GetMapping("/getUserAmbassadorCheckIn")
+    public ResponseEntity<Object> getUserAmbassadorCheckIn(@RequestParam String userId, @RequestParam String startDate) {
+        try {
+            List<AmbassadorCheckIn> ass = ambassadorService
+                    .getUserAmbassadorCheckIn(userId, startDate);
+            return ResponseEntity.ok(ass);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(
+                    new CustomErrorResponse(400,
+                            "getUserAmbassadorCheckIn failed: " + e.getMessage(),
+                            new DateTime().toDateTimeISO().toString()));
+        }
+    }
 
+    @GetMapping("/getAssociationAmbassadorPassengerCounts")
+    public ResponseEntity<Object> getAssociationAmbassadorPassengerCounts(@RequestParam String associationId, @RequestParam String startDate) {
+        try {
+            List<AmbassadorPassengerCount> ass = ambassadorService
+                    .getAssociationAmbassadorPassengerCounts(associationId, startDate);
+            return ResponseEntity.ok(ass);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(
+                    new CustomErrorResponse(400,
+                            "getAssociationAmbassadorPassengerCounts failed: " + e.getMessage(),
+                            new DateTime().toDateTimeISO().toString()));
+        }
+    }
+    @GetMapping("/getUserAmbassadorPassengerCounts")
+    public ResponseEntity<Object> getUserAmbassadorPassengerCounts(@RequestParam String userId, @RequestParam String startDate) {
+        try {
+            List<AmbassadorPassengerCount> ass = ambassadorService
+                    .getUserAmbassadorPassengerCounts(userId, startDate);
+            return ResponseEntity.ok(ass);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(
+                    new CustomErrorResponse(400,
+                            "getUserAmbassadorPassengerCounts failed: " + e.getMessage(),
+                            new DateTime().toDateTimeISO().toString()));
+        }
+    }
+    @GetMapping("/getVehicleAmbassadorPassengerCounts")
+    public ResponseEntity<Object> getVehicleAmbassadorPassengerCounts(@RequestParam String vehicleId, @RequestParam String startDate) {
+        try {
+            List<AmbassadorPassengerCount> ass = ambassadorService
+                    .getVehicleAmbassadorPassengerCounts(vehicleId, startDate);
+            return ResponseEntity.ok(ass);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(
+                    new CustomErrorResponse(400,
+                            "getVehicleAmbassadorPassengerCounts failed: " + e.getMessage(),
+                            new DateTime().toDateTimeISO().toString()));
+        }
+    }
     @GetMapping("/getOwnersBag")
     public ResponseEntity<Object> getOwnersBag(@RequestParam String userId, @RequestParam String startDate) {
         try {
