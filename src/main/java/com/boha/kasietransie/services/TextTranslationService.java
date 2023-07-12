@@ -4,6 +4,7 @@ package com.boha.kasietransie.services;
 
 import com.boha.kasietransie.data.TranslationBag;
 import com.boha.kasietransie.data.TranslationInput;
+import com.boha.kasietransie.data.dto.AmbassadorCheckIn;
 import com.boha.kasietransie.data.repos.TranslationBagRepository;
 import com.google.cloud.translate.v3.*;
 import com.google.gson.Gson;
@@ -13,6 +14,10 @@ import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 import util.E;
 
@@ -23,6 +28,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
@@ -36,9 +42,11 @@ public class TextTranslationService {
 
     TranslationServiceClient translationServiceClient;
     final TranslationBagRepository translationBagRepository;
+    final MongoTemplate mongoTemplate;
 
-    public TextTranslationService(TranslationBagRepository translationBagRepository) {
+    public TextTranslationService(TranslationBagRepository translationBagRepository, MongoTemplate mongoTemplate) {
         this.translationBagRepository = translationBagRepository;
+        this.mongoTemplate = mongoTemplate;
     }
 
     private void initialize() throws Exception {
@@ -120,7 +128,7 @@ public class TextTranslationService {
 
         DateTime end = DateTime.now();
         long ms = end.getMillis() - start.getMillis();
-        double delta = Double.parseDouble("" + ms) / Double.parseDouble("1000");
+        double delta = Double.parseDouble(String.valueOf(ms)) / Double.parseDouble("1000");
 
         LOGGER.info(E.PINK + E.PINK + E.PINK + " Number of TranslationBags: " + bags.size() +
                 " elapsed time: " + delta + " seconds");
@@ -131,10 +139,18 @@ public class TextTranslationService {
     }
 
     public String generateInputStrings(List<TranslationInput> input) throws Exception {
-        for (TranslationInput ti : input) {
-            hashMap.put(ti.getKey(),ti.getText());
+        try {
+            hashMap.clear();
+            for (TranslationInput ti : input) {
+                hashMap.put(ti.getKey(),ti.getText());
+            }
+            String res = generateTranslations(false);
+            String res1 = createDartFile(true);
+            return res + "\n" + res1;
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new RuntimeException(e);
         }
-        return generateTranslations(false);
     }
     private void writeFile(List<TranslationBag> newBags, String languageCode) {
         JSONObject object = new JSONObject();
@@ -178,16 +194,21 @@ public class TextTranslationService {
 
     public String createDartFile(boolean fromDB) {
         //
-        LOGGER.info(E.RED_APPLE+ " Process translated strings for Dart: " + allBags.size());
-
         if (fromDB) {
             allBags = translationBagRepository.findAll();
         }
+
+        LOGGER.info(E.RED_APPLE+ " Process translated strings for Dart: " + allBags.size());
+
         HashMap<String,TranslationBag> hash = new HashMap<>();
         for (TranslationBag bag : allBags) {
             hash.put(bag.getKey(),bag);
         }
-        List<TranslationBag> mList = hash.values().stream().toList();
+        List<TranslationBag> mList = new ArrayList<>(hash.values().stream().toList());
+        Collections.sort(mList);
+
+        LOGGER.info(E.RED_APPLE+ " Process filtered strings: " + mList.size());
+
         StringBuilder sb = new StringBuilder();
         for (TranslationBag bag : mList) {
             String bagLine = "\t hashMap['" + bag.getKey() + "'] = '" + bag.getKey() + "';";

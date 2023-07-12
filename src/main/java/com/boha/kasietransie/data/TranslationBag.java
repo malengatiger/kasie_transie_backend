@@ -14,7 +14,7 @@ import java.util.logging.Logger;
 
 @Data
 @Document("TranslationBag")
-public class TranslationBag {
+public class TranslationBag implements Comparable<TranslationBag>{
     private String _partitionKey;
     @Id
     private String _id;
@@ -37,5 +37,12 @@ public class TranslationBag {
         dbCollection.createIndex(
                 Indexes.ascending("source"));
 
+    }
+
+    @Override
+    public int compareTo(TranslationBag translationBag) {
+        String myThis = getTarget() + getKey();
+        String them = translationBag.getTarget() + translationBag.getKey();
+        return myThis.compareTo(them);
     }
 }

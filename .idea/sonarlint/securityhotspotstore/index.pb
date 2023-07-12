@@ -135,8 +135,6 @@ t
 Dsrc/main/java/com/boha/kasietransie/data/dto/CalculatedDistance.java,9/8/98193d7c10a5e2651d387e27c9bb3ec423c167c5
 w
 Gsrc/main/java/com/boha/kasietransie/data/repos/RouteCityRepository.java,c/3/c32c7ff36004404d78e1b3368c41e1a61bff0a22
-l
-<src/main/java/com/boha/kasietransie/data/TranslationBag.java,7/3/739f0c0e711dcc0f7161c3b46aa61ca3f74e24c9
 7
 cmd.txt,2/8/28656ae4f72dcaedf55911a0fd343965f8373c35
 m

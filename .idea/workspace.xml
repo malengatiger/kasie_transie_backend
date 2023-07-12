@@ -4,19 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a7485aca-7a98-4bda-a4fb-cbb0b1e4b4ad" name="Changes" comment="🔷refactored fcm comms + scan">
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/boha/kasietransie/data/dto/AmbassadorCheckIn.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/boha/kasietransie/data/dto/AmbassadorPassengerCount.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/boha/kasietransie/data/repos/AmbassadorCheckInRepository.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/boha/kasietransie/data/repos/AmbassadorPassengerCountRepository.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/boha/kasietransie/services/AmbassadorService.java" afterDir="false" />
+    <list default="true" id="a7485aca-7a98-4bda-a4fb-cbb0b1e4b4ad" name="Changes" comment="ambassador features added🍟">
       <change beforePath="$PROJECT_DIR$/.idea/sonarlint/issuestore/index.pb" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/sonarlint/issuestore/index.pb" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/sonarlint/securityhotspotstore/index.pb" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/sonarlint/securityhotspotstore/index.pb" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/boha/kasietransie/controllers/DataController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/boha/kasietransie/controllers/DataController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/boha/kasietransie/controllers/ListController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/boha/kasietransie/controllers/ListController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/boha/kasietransie/services/DispatchService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/boha/kasietransie/services/DispatchService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/boha/kasietransie/services/MongoService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/boha/kasietransie/services/MongoService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/boha/kasietransie/data/TranslationBag.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/boha/kasietransie/data/TranslationBag.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/boha/kasietransie/services/TextTranslationService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/boha/kasietransie/services/TextTranslationService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/translations/af.json" beforeDir="false" afterPath="$PROJECT_DIR$/translations/af.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/translations/de.json" beforeDir="false" afterPath="$PROJECT_DIR$/translations/de.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/translations/en.json" beforeDir="false" afterPath="$PROJECT_DIR$/translations/en.json" afterDir="false" />
@@ -79,7 +72,7 @@
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "SONARLINT_PRECOMMIT_ANALYSIS": "true",
-    "com.google.cloudcode.ide_session_index": "20230710_0001",
+    "com.google.cloudcode.ide_session_index": "20230711_0000",
     "dart.analysis.tool.window.visible": "false",
     "last_opened_file_path": "/Users/aubreymalabie/Work/aftarobot/kasie_transie_backend/src/main/java/com/boha/kasietransie",
     "settings.editor.selected.configurable": "reference.settings.project.maven.repository.indices",
@@ -373,12 +366,18 @@
       <option name="project" value="LOCAL" />
       <updated>1688944352285</updated>
     </task>
-    <option name="localTasksCounter" value="33" />
+    <task id="LOCAL-00033" summary="ambassador features added🍟">
+      <created>1688989932129</created>
+      <option name="number" value="00033" />
+      <option name="presentableId" value="LOCAL-00033" />
+      <option name="project" value="LOCAL" />
+      <updated>1688989932129</updated>
+    </task>
+    <option name="localTasksCounter" value="34" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
-    <MESSAGE value="services added" />
     <MESSAGE value="added more services and controller api" />
     <MESSAGE value="basic services refactored and running good!" />
     <MESSAGE value="backend ready to rumble!" />
@@ -403,7 +402,8 @@
     <MESSAGE value=" added more strings" />
     <MESSAGE value="refactored request response for vehicle media" />
     <MESSAGE value="refactored fcm comms + scan" />
-    <option name="LAST_COMMIT_MESSAGE" value="refactored fcm comms + scan" />
+    <MESSAGE value="ambassador features added" />
+    <option name="LAST_COMMIT_MESSAGE" value="ambassador features added" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
