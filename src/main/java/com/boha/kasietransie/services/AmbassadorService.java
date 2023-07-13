@@ -17,11 +17,13 @@ public class AmbassadorService {
     final AmbassadorCheckInRepository ambassadorCheckInRepository;
     final AmbassadorPassengerCountRepository ambassadorPassengerCountRepository;
     final MongoTemplate mongoTemplate;
+    final MessagingService messagingService;
 
-    public AmbassadorService(AmbassadorCheckInRepository ambassadorCheckInRepository, AmbassadorPassengerCountRepository ambassadorPassengerCountRepository, MongoTemplate mongoTemplate) {
+    public AmbassadorService(AmbassadorCheckInRepository ambassadorCheckInRepository, AmbassadorPassengerCountRepository ambassadorPassengerCountRepository, MongoTemplate mongoTemplate, MessagingService messagingService) {
         this.ambassadorCheckInRepository = ambassadorCheckInRepository;
         this.ambassadorPassengerCountRepository = ambassadorPassengerCountRepository;
         this.mongoTemplate = mongoTemplate;
+        this.messagingService = messagingService;
     }
 
     public List<AmbassadorCheckIn> getAssociationAmbassadorCheckIn(String associationId, String startDate) {
@@ -78,6 +80,7 @@ public class AmbassadorService {
 
     public AmbassadorPassengerCount addAmbassadorPassengerCount(AmbassadorPassengerCount count) {
         ambassadorPassengerCountRepository.insert(count);
+        messagingService.sendMessage(count);
         return count;
     }
 }

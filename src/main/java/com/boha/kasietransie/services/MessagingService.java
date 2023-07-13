@@ -173,6 +173,19 @@ public class MessagingService {
             e.printStackTrace();
         }
     }
+    public void sendMessage(AmbassadorPassengerCount passengerCount) {
+        try {
+            String topic = "passengerCount_" + passengerCount.getAssociationId();
+            Message message = buildMessage("passengerCount", topic,
+                    G.toJson(passengerCount));
+            FirebaseMessaging.getInstance().send(message);
+            LOGGER.info(MM + "AmbassadorPassengerCount message sent via FCM: " + G.toJson(passengerCount));
+
+        } catch (Exception e) {
+            LOGGER.error("Failed to send passengerCount FCM message");
+            e.printStackTrace();
+        }
+    }
     private Message buildMessage(String dataName, String topic, String payload) {
         return Message.builder()
                 .putData(dataName, payload)

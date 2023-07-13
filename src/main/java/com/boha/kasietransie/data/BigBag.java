@@ -1,9 +1,6 @@
 package com.boha.kasietransie.data;
 
-import com.boha.kasietransie.data.dto.DispatchRecord;
-import com.boha.kasietransie.data.dto.VehicleArrival;
-import com.boha.kasietransie.data.dto.VehicleDeparture;
-import com.boha.kasietransie.data.dto.VehicleHeartbeat;
+import com.boha.kasietransie.data.dto.*;
 import lombok.Data;
 
 import java.util.List;
@@ -14,4 +11,5 @@ public class BigBag {
     List<DispatchRecord> dispatchRecords;
     List<VehicleHeartbeat> vehicleHeartbeats;
     List<VehicleDeparture> vehicleDepartures;
+    List<AmbassadorPassengerCount> passengerCounts;
 }

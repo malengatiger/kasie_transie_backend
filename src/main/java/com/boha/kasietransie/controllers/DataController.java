@@ -828,6 +828,24 @@ public class DataController {
         }
 
     }
+
+    @GetMapping("/fixOwnerToPassengerCounts")
+    public ResponseEntity<Object> fixOwnerToPassengerCounts(@RequestParam String userId,
+                                                            @RequestParam String ownerId,
+                                                            @RequestParam String ownerName) {
+
+        try {
+            String m = dispatchService.fixOwnerToPassengerCounts(userId, ownerId, ownerName);
+            return ResponseEntity.ok(m);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(
+                    new CustomErrorResponse(400,
+                            "fixOwnerToPassengerCounts failed: " + e.getMessage(),
+                            new DateTime().toDateTimeISO().toString()));
+        }
+
+    }
+
     @GetMapping("/fixRoutePoints")
     public ResponseEntity<Object> fixRoutePoints(@RequestParam String associationId) {
 

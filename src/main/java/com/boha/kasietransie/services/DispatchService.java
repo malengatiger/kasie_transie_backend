@@ -3,14 +3,8 @@ package com.boha.kasietransie.services;
 import com.boha.kasietransie.data.CounterBag;
 import com.boha.kasietransie.data.DispatchRecordList;
 import com.boha.kasietransie.data.BigBag;
-import com.boha.kasietransie.data.dto.DispatchRecord;
-import com.boha.kasietransie.data.dto.VehicleArrival;
-import com.boha.kasietransie.data.dto.VehicleDeparture;
-import com.boha.kasietransie.data.dto.VehicleHeartbeat;
-import com.boha.kasietransie.data.repos.DispatchRecordRepository;
-import com.boha.kasietransie.data.repos.VehicleArrivalRepository;
-import com.boha.kasietransie.data.repos.VehicleDepartureRepository;
-import com.boha.kasietransie.data.repos.VehicleHeartbeatRepository;
+import com.boha.kasietransie.data.dto.*;
+import com.boha.kasietransie.data.repos.*;
 import com.github.davidmoten.geo.GeoHash;
 import org.joda.time.DateTime;
 import org.slf4j.Logger;
@@ -41,6 +35,7 @@ public class DispatchService {
     private final MessagingService messagingService;
     final HeartbeatService heartbeatService;
     private final MongoTemplate mongoTemplate;
+    final AmbassadorPassengerCountRepository ambassadorPassengerCountRepository;
     private static final Logger logger = LoggerFactory.getLogger(DispatchService.class);
 
 
@@ -48,7 +43,7 @@ public class DispatchService {
                            VehicleArrivalRepository vehicleArrivalRepository,
                            VehicleDepartureRepository vehicleDepartureRepository,
                            VehicleHeartbeatRepository vehicleHeartbeatRepository, MessagingService messagingService,
-                           HeartbeatService heartbeatService, MongoTemplate mongoTemplate) {
+                           HeartbeatService heartbeatService, MongoTemplate mongoTemplate, AmbassadorPassengerCountRepository ambassadorPassengerCountRepository) {
         this.dispatchRecordRepository = dispatchRecordRepository;
         this.vehicleArrivalRepository = vehicleArrivalRepository;
         this.vehicleDepartureRepository = vehicleDepartureRepository;
@@ -56,6 +51,7 @@ public class DispatchService {
         this.messagingService = messagingService;
         this.heartbeatService = heartbeatService;
         this.mongoTemplate = mongoTemplate;
+        this.ambassadorPassengerCountRepository = ambassadorPassengerCountRepository;
     }
 
     public DispatchRecord addDispatchRecord(DispatchRecord dispatchRecord) {
@@ -125,6 +121,9 @@ public class DispatchService {
     public long countVehicleArrivals(String vehicleId) {
         return mongoTemplate.count(query(where("vehicleId").is(vehicleId)), VehicleArrival.class);
     }
+    public long countVehiclePassengerCounts(String vehicleId) {
+        return mongoTemplate.count(query(where("vehicleId").is(vehicleId)), AmbassadorPassengerCount.class);
+    }
     public long countVehicleDepartures(String vehicleId) {
         return mongoTemplate.count(query(where("vehicleId").is(vehicleId)), VehicleDeparture.class);
     }
@@ -150,6 +149,12 @@ public class DispatchService {
                 .andOperator(Criteria.where("created").gte(startDate)));
         return mongoTemplate.count(query, VehicleHeartbeat.class);
     }
+    public long countPassengerCountsByDate(String vehicleId, String startDate) {
+        Query query = new Query();
+        query.addCriteria(Criteria.where("vehicleId").is(vehicleId)
+                .andOperator(Criteria.where("created").gte(startDate)));
+        return mongoTemplate.count(query, AmbassadorPassengerCount.class);
+    }
     public long countDispatchesByDate(String vehicleId, String startDate) {
         Query query = new Query();
         query.addCriteria(Criteria.where("vehicleId").is(vehicleId)
@@ -166,16 +171,20 @@ public class DispatchService {
         long dispatches = countDispatchesByDate(vehicleId, startDate);
         long arrivals = countVehicleArrivalsByDate(vehicleId, startDate);
         long heartbeats = countVehicleHeartbeatsByDate(vehicleId, startDate);
+        long passCounts = countPassengerCountsByDate(vehicleId, startDate);
 
         List<CounterBag> list = new ArrayList<>();
         CounterBag dep = new CounterBag(departures, "VehicleDeparture");
         CounterBag dis = new CounterBag(dispatches, "DispatchRecord");
         CounterBag arr = new CounterBag(arrivals, "VehicleArrival");
         CounterBag hb = new CounterBag(heartbeats, "VehicleHeartbeat");
+        CounterBag cc = new CounterBag(passCounts, "AmbassadorPassengerCount");
+
         list.add(dep);
         list.add(dis);
         list.add(arr);
         list.add(hb);
+        list.add(cc);
 
         logger.info("Vehicle counts performed elapsed time: "
                 + Duration.between(start, Instant.now()).toSeconds() + " seconds");
@@ -189,16 +198,20 @@ public class DispatchService {
         long dispatches = countVehicleDispatches(vehicleId);
         long arrivals = countVehicleArrivals(vehicleId);
         long heartbeats = heartbeatService.countVehicleHeartbeats(vehicleId);
+        long passCounts = countVehiclePassengerCounts(vehicleId);
 
         List<CounterBag> list = new ArrayList<>();
         CounterBag dep = new CounterBag(departures, "VehicleDeparture");
         CounterBag dis = new CounterBag(dispatches, "DispatchRecord");
         CounterBag arr = new CounterBag(arrivals, "VehicleArrival");
         CounterBag hb = new CounterBag(heartbeats, "VehicleHeartbeat");
+        CounterBag cc = new CounterBag(passCounts, "AmbassadorPassengerCount");
+
         list.add(dep);
         list.add(dis);
         list.add(arr);
         list.add(hb);
+        list.add(cc);
 
         logger.info("Vehicle counts performed elapsed time: "
                 + Duration.between(start, Instant.now()).toSeconds() + " seconds");
@@ -314,6 +327,13 @@ public class DispatchService {
 
         return mongoTemplate.find(query,VehicleHeartbeat.class);
     }
+    public List<AmbassadorPassengerCount> getOwnerPassengerCounts(String userId, String startDate) {
+        Query query = new Query();
+        query.addCriteria(Criteria.where("ownerId").is(userId)
+                .andOperator(Criteria.where("created").gte(startDate)));
+
+        return mongoTemplate.find(query,AmbassadorPassengerCount.class);
+    }
     public BigBag getOwnersBag(String userId, String startDate) {
 
         BigBag bag = new BigBag();
@@ -321,16 +341,28 @@ public class DispatchService {
         bag.setVehicleArrivals(getOwnerVehicleArrivals(userId,startDate));
         bag.setVehicleDepartures(getOwnerVehicleDepartures(userId,startDate));
         bag.setVehicleHeartbeats(getOwnerVehicleHeartbeats(userId,startDate));
-
+        bag.setPassengerCounts(getOwnerPassengerCounts(userId,startDate));
         return bag;
     }
 
-    public List<VehicleDeparture> getVehicleDeparture(String vehicleId) {
+    public List<VehicleDeparture> getVehicleDepartures(String vehicleId) {
         return vehicleDepartureRepository.findByVehicleId(vehicleId);
     }
 
     public List<VehicleDeparture> getAssociationVehicleDepartures(String associationId) {
         return vehicleDepartureRepository.findByAssociationId(associationId);
+    }
+
+    public String fixOwnerToPassengerCounts(String userId, String ownerId, String ownerName) {
+        List<AmbassadorPassengerCount> counts = ambassadorPassengerCountRepository.findByUserId(userId);
+        for (AmbassadorPassengerCount count : counts) {
+            count.setOwnerId(ownerId);
+            count.setOwnerName(ownerName);
+        }
+        ambassadorPassengerCountRepository.saveAll(counts);
+
+        return  "Passenger counts fixed: " + counts.size();
+
     }
 
 }
