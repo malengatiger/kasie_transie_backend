@@ -19,9 +19,8 @@ public class UserGeofenceService {
     }
 
     public UserGeofenceEvent addUserGeofenceEvent(UserGeofenceEvent event) {
-        String geoHash = GeoHash.encodeHash(event.getPosition().getLatitude(),
-                event.getPosition().getLongitude());
-        event.setGeoHash(geoHash);
+        //String geoHash = GeoHash.encodeHash(event.getPosition().getLatitude(),
+
         UserGeofenceEvent e = userGeofenceEventRepository.insert(event);
         messagingService.sendMessage(e);
         return e;

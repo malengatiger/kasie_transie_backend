@@ -16,8 +16,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import util.CustomErrorResponse;
-import util.E;
+import com.boha.kasietransie.util.CustomErrorResponse;
+import com.boha.kasietransie.util.E;
 
 import java.io.File;
 import java.io.IOException;
@@ -581,7 +581,7 @@ public class DataController {
             try {
                 vehicles = vehicleService.importVehiclesFromCSV(file, associationId);
                 if (vehicles.isEmpty()) {
-                    logger.info("\uD83C\uDF3C\uD83C\uDF3C no vehicles created ... wtfObject ");
+                    logger.info("\uD83C\uDF3C\uD83C\uDF3C no vehicles created ... wtf?");
                     return ResponseEntity.badRequest().body(
                             new CustomErrorResponse(400,
                                     "Failed to create vehicles; no vehicles in file or file is not .json or .csv ",
@@ -638,20 +638,6 @@ public class DataController {
             return ResponseEntity.badRequest().body(
                     new CustomErrorResponse(400,
                             "addCountriesStatesCitiesToDB failed: " + e.getMessage(),
-                            new DateTime().toDateTimeISO().toString()));
-        }
-
-    }
-
-    @GetMapping("/addGeoHashes")
-    public ResponseEntity<Object> addGeoHashes()  {
-
-        try {
-            return ResponseEntity.ok(geoHashFixer.addGeoHashes());
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body(
-                    new CustomErrorResponse(400,
-                            "addGeoHashes failed: " + e.getMessage(),
                             new DateTime().toDateTimeISO().toString()));
         }
 

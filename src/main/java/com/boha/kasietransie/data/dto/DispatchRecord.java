@@ -2,12 +2,11 @@ package com.boha.kasietransie.data.dto;
 
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
-import com.mongodb.client.model.IndexOptions;
 import com.mongodb.client.model.Indexes;
 import lombok.Data;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
-import util.E;
+import com.boha.kasietransie.util.E;
 
 import java.util.logging.Logger;
 
@@ -24,7 +23,7 @@ public class DispatchRecord {
     String ownerId;
     String created;
     Position position;
-    String geoHash;
+    //String geoHash;
     String landmarkName;
     String marshalName;
     String routeName;

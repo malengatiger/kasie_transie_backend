@@ -1,17 +1,15 @@
 package com.boha.kasietransie.services;
 
-import com.boha.kasietransie.controllers.DataController;
 import com.boha.kasietransie.data.dto.LocationRequest;
 import com.boha.kasietransie.data.dto.LocationResponse;
 import com.boha.kasietransie.data.repos.LocationRequestRepository;
 import com.boha.kasietransie.data.repos.LocationResponseRepository;
-import com.github.davidmoten.geo.GeoHash;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
-import util.E;
+import com.boha.kasietransie.util.E;
 
 @Service
 public class LocationRequestService {
@@ -38,9 +36,6 @@ public class LocationRequestService {
     }
     public LocationResponse addLocationResponse(LocationResponse locationResponse) {
         logger.info(E.GEAR + " addLocationResponse: " + G.toJson(locationResponse));
-        String geoHash = GeoHash.encodeHash(locationResponse.getPosition().getLatitude(),
-                locationResponse.getPosition().getLongitude());
-        locationResponse.setGeoHash(geoHash);
         LocationResponse r = locationResponseRepository.insert(locationResponse);
         messagingService.sendMessage(r);
         return r;

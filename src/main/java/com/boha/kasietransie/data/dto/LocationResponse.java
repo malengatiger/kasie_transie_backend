@@ -6,7 +6,7 @@ import com.mongodb.client.model.Indexes;
 import lombok.Data;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
-import util.E;
+import com.boha.kasietransie.util.E;
 
 import java.util.logging.Logger;
 
@@ -23,7 +23,7 @@ public class LocationResponse {
     String userId;
     String userName;
     Position position;
-    private String geoHash;
+    //private //String geoHash;
 
 
     private static final Logger logger = Logger.getLogger(LocationResponse.class.getSimpleName());

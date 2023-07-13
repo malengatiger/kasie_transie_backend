@@ -5,7 +5,7 @@ mongoSecretsVersion: 1
 realmSecretsName: realm
 realmSecretsVersion: 2
 databaseName: kasie_transie_db
-doIndex: 1
+doIndex: 0
 mongoString: mongodb://localhost:27017
 my-app-secret-1: ${sm://application-secret/latest}
 placesAPIKeyName: places_api_key

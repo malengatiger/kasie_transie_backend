@@ -6,7 +6,7 @@ import com.mongodb.client.model.Indexes;
 import lombok.Data;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
-import util.E;
+import com.boha.kasietransie.util.E;
 
 import java.util.logging.Logger;
 
@@ -26,7 +26,7 @@ public class VehiclePhoto {
     private String userId;
     private String url;
     private String thumbNailUrl;
-    private String geoHash;
+    //private //String geoHash;
     private String landmarkId;
     private Position position;
     //

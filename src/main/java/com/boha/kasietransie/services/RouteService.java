@@ -4,7 +4,6 @@ import com.boha.kasietransie.data.CalculatedDistanceList;
 import com.boha.kasietransie.data.RouteBag;
 import com.boha.kasietransie.data.dto.*;
 import com.boha.kasietransie.data.repos.*;
-import com.github.davidmoten.geo.GeoHash;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.mongodb.WriteConcern;
@@ -17,7 +16,7 @@ import org.springframework.data.mongodb.core.BulkOperations;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.NearQuery;
 import org.springframework.stereotype.Service;
-import util.E;
+import com.boha.kasietransie.util.E;
 
 import java.time.Duration;
 import java.time.Instant;
@@ -114,11 +113,7 @@ public class RouteService {
 
     public int addRoutePoints(List<RoutePoint> routePoints) {
         logger.info(XX + " Bulk insert of " + routePoints.size() + " routePoints");
-        for (RoutePoint rp : routePoints) {
-            String geoHash = GeoHash.encodeHash(rp.getPosition().getLatitude(),
-                    rp.getPosition().getLongitude());
-            rp.setGeoHash(geoHash);
-        }
+
         int inserted = 0;
         try {
             Instant start = Instant.now();

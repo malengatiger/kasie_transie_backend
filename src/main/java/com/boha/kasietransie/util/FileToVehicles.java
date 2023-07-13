@@ -1,4 +1,4 @@
-package util;
+package com.boha.kasietransie.util;
 
 import com.boha.kasietransie.data.dto.User;
 import com.boha.kasietransie.data.dto.Vehicle;
@@ -58,5 +58,22 @@ public class FileToVehicles {
         }
         LOGGER.info("\uD83C\uDF4E\uD83C\uDF4E\uD83C\uDF4E Vehicle objects created: " + vehicles.size());
         return vehicles;
+    }
+    public static List<User> getOwnersFromCSVFile(File file) throws IOException {
+        List<User> users;
+        try (FileInputStream is = new FileInputStream(file)) {
+            String csv = new BufferedReader(
+                    new InputStreamReader(Objects.requireNonNull(is), StandardCharsets.UTF_8))
+                    .lines()
+                    .collect(Collectors.joining("\n"));
+
+            String json = CDL.toJSONArray(csv).toString(2);
+            Type listType = new TypeToken<ArrayList<User>>() {
+            }.getType();
+            users = G.fromJson(json, listType);
+
+        }
+        LOGGER.info("\uD83C\uDF4E\uD83C\uDF4E\uD83C\uDF4E Vehicle objects created: " + users.size());
+        return users;
     }
 }

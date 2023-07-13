@@ -10,11 +10,12 @@ import com.google.firebase.auth.UserRecord;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import org.springframework.stereotype.Service;
-import util.FileToUsers;
+import com.boha.kasietransie.util.FileToUsers;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.NoSuchElementException;
 import java.util.logging.Logger;
 
@@ -47,9 +48,17 @@ public class UserService {
             createRequest.setPhoneNumber(user.getCellphone());
             createRequest.setDisplayName(user.getName());
             createRequest.setPassword(user.getPassword());
-            createRequest.setEmail(user.getEmail());
+            if (user.getEmail() == null) {
+                String name = user.getName();
+                String mName = name.replace(" ","").toLowerCase(Locale.getDefault());
+                String email = mName+System.currentTimeMillis()+"@kasietransie.com";
+                user.setEmail(email);
+                createRequest.setEmail(email);
+                logger.info("\uD83E\uDDE1\uD83E\uDDE1 createUserAsync  .... email: " + email);
 
-            logger.info("\uD83E\uDDE1\uD83E\uDDE1 createUserAsync  .... ");
+            } else {
+                createRequest.setEmail(user.getEmail());
+            }
 
             ApiFuture<UserRecord> userRecordFuture = firebaseAuth.createUserAsync(createRequest);
             UserRecord userRecord = userRecordFuture.get();
@@ -59,6 +68,7 @@ public class UserService {
                 user.setUserId(uid);
                 user.setPassword(null);
                 userRepository.insert(user);
+                //
                 user.setPassword(storedPassword);
                 String message = "Dear " + user.getName() +
                         "      ,\n\nYou have been registered with KasieTransie and the team is happy to send you the first time login password. '\n" +
@@ -69,7 +79,7 @@ public class UserService {
                 mailService.sendHtmlEmail(user.getEmail(), message, "Welcome to KasieTransie");
                 logger.info("\uD83E\uDDE1\uD83E\uDDE1 KasieTransie user created. ");
             } else {
-                throw new Exception("We have a problem with Firebase, Jack! ... or maybe MongoDB?");
+                throw new Exception("userRecord.getUid() == null. We have a problem with Firebase, Jack!");
             }
 
         } catch (InterruptedException e) {

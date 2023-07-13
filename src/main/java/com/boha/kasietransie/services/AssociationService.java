@@ -2,7 +2,6 @@ package com.boha.kasietransie.services;
 
 import com.boha.kasietransie.data.dto.*;
 import com.boha.kasietransie.data.repos.*;
-import com.github.davidmoten.geo.GeoHash;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -11,10 +10,11 @@ import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Service;
-import util.Constants;
-import util.E;
+import com.boha.kasietransie.util.Constants;
+import com.boha.kasietransie.util.E;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -137,9 +137,6 @@ public class AssociationService {
         return settingsModelRepository.insert(model);
     }
     public AppError addAppError(AppError error) {
-        String geoHash = GeoHash.encodeHash(error.getErrorPosition().getLatitude(),
-                error.getErrorPosition().getLongitude());
-        error.setGeoHash(geoHash);
         return appErrorRepository.insert(error);
     }
     public List<AppError> getAssociationAppErrors(String associationId) {
@@ -160,6 +157,15 @@ public class AssociationService {
         return list.get(0);
     }
 
+    public File downloadExampleUsersFile() throws IOException {
+        Resource resource = resourceLoader.getResource("classpath:users.csv");
+
+        return resource.getFile();
+    }
+    public File downloadExampleVehiclesFile() throws IOException {
+        Resource resource1 = resourceLoader.getResource("classpath:vehicles.csv");
+        return resource1.getFile();
+    }
     public RegistrationBag generateFakeAssociation(String associationName,
                                                    String email,
                                                    String testCellphoneNumber,
@@ -187,17 +193,15 @@ public class AssociationService {
             ass.setDateRegistered(DateTime.now().toDateTimeISO().toString());
             final double lat = -26.195246;
             final double lng = 28.034088;
-            String geoHash = GeoHash.encodeHash(lat,lng);
-            ass.setGeoHash(geoHash);
             List<Double> coords = new ArrayList<>();
             coords.add(lng);
             coords.add(lat);
             ass.setPosition(new Position(
-                    "Point", coords, lat, lng, geoHash
+                    "Point", coords
             ));
         }
         bag = registerAssociation(ass);
-        logger.info(XX + " Getting countries from file ... ");
+        logger.info(XX + " Getting users and vehicles from files ... ");
         Resource resource = resourceLoader.getResource("classpath:users.csv");
         Resource resource1 = resourceLoader.getResource("classpath:vehicles.csv");
 

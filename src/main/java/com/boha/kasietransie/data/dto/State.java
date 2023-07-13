@@ -3,12 +3,11 @@ package com.boha.kasietransie.data.dto;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
-import com.mongodb.client.model.IndexOptions;
 import com.mongodb.client.model.Indexes;
 import lombok.Data;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
-import util.E;
+import com.boha.kasietransie.util.E;
 
 import java.util.logging.Logger;
 
@@ -26,7 +25,7 @@ public class State {
     private String stateCode;
     private double latitude;
     private double longitude;
-    private String geoHash;
+    //private //String geoHash;
 
     private static final Logger logger = Logger.getLogger(State.class.getSimpleName());
     private static final String XX = E.COFFEE + E.COFFEE + E.COFFEE;

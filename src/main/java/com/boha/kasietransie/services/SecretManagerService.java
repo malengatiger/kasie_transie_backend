@@ -8,7 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
-import util.E;
+import com.boha.kasietransie.util.E;
 
 import java.util.logging.Logger;
 import java.util.zip.CRC32C;

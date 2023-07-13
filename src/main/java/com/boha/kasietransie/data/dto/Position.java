@@ -8,18 +8,16 @@ import java.util.List;
 public class Position {
     String type;
     List<Double> coordinates;
-    double latitude;
-    double longitude;
-    String geoHash;
-
-    public Position(String type, List<Double> coordinates, double latitude, double longitude, String geoHash) {
-        this.type = type;
-        this.coordinates = coordinates;
-        this.latitude = latitude;
-        this.longitude = longitude;
-        this.geoHash = geoHash;
-    }
 
     public Position() {
     }
+
+    public Position(String point, List<Double> coords) {
+
+    }
+//    double latitude;
+//    double longitude;
+//    //String geoHash;
+
+
 }

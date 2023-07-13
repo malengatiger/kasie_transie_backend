@@ -5,6 +5,25 @@
     "model": "Quantum",
     "make": "Toyota",
     "year": "2021",
+    "cellphone": "+27729990001",
+    "passengerCapacity": 16
+  },
+  {
+    "ownerName": "Big John Tate",
+    "vehicleReg": "DBK 53 GP",
+    "model": "Quantum",
+    "make": "Toyota",
+    "year": "2021",
+    "cellphone": "+27729990001",
+    "passengerCapacity": 16
+  },
+  {
+    "ownerName": "Big John Tate",
+    "vehicleReg": "DBK 54 GP",
+    "model": "Quantum",
+    "make": "Toyota",
+    "year": "2021",
+    "cellphone": "+27729990001",
     "passengerCapacity": 16
   },
   {
@@ -13,6 +32,7 @@
     "model": "Quantum",
     "make": "Toyota",
     "year": "2020",
+    "cellphone": "+27729990002",
     "passengerCapacity": 16
   },
   {
@@ -21,6 +41,7 @@
     "model": "Quantum",
     "make": "Toyota",
     "year": "2018",
+    "cellphone": "+27729990003",
     "passengerCapacity": 16
   },
   {
@@ -29,6 +50,7 @@
     "model": "Quantum",
     "make": "Toyota",
     "year": "2014",
+    "cellphone": "+27729990003",
     "passengerCapacity": 16
   },
   {
@@ -37,14 +59,16 @@
     "model": "Quantum",
     "make": "Toyota",
     "year": "2019",
+    "cellphone": "+27729990003",
     "passengerCapacity": 16
   },
   {
-    "ownerName": "Florence Deepfake",
+    "ownerName": "Florence Peters",
     "vehicleReg": "DXV 98 GP",
     "model": "Quantum",
     "make": "Toyota",
     "year": "2019",
+    "cellphone": "+27729990004",
     "passengerCapacity": 16
   },
   {
@@ -53,6 +77,7 @@
     "model": "Quantum",
     "make": "Toyota",
     "year": "2017",
+    "cellphone": "+27729990005",
     "passengerCapacity": 16
   }
 ]

@@ -23,7 +23,7 @@ import org.springframework.data.geo.GeoResults;
 import org.springframework.data.geo.Metrics;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Service;
-import util.E;
+import com.boha.kasietransie.util.E;
 
 import java.util.ArrayList;
 import java.util.HashMap;

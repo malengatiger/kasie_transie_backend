@@ -19,8 +19,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
-import util.CustomErrorResponse;
-import util.E;
+import com.boha.kasietransie.util.CustomErrorResponse;
+import com.boha.kasietransie.util.E;
 
 import java.io.IOException;
 import java.util.Enumeration;

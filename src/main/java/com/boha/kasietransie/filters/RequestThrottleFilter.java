@@ -12,7 +12,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Profile;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
-import util.E;
+import com.boha.kasietransie.util.E;
 
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;

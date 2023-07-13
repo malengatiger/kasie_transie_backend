@@ -1,4 +1,4 @@
-package util;
+package com.boha.kasietransie.util;
 
 import com.boha.kasietransie.data.dto.User;
 import com.google.gson.Gson;

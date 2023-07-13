@@ -16,7 +16,7 @@ public class AppError {
     String associationId;
     String userName;
     Position errorPosition;
-    String geoHash;
+    //String geoHash;
     String iosName;
     String versionCodeName;
     String baseOS;

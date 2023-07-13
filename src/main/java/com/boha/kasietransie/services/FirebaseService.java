@@ -6,7 +6,7 @@ import com.google.firebase.FirebaseOptions;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import util.E;
+import com.boha.kasietransie.util.E;
 
 import java.io.IOException;
 import java.util.logging.Logger;

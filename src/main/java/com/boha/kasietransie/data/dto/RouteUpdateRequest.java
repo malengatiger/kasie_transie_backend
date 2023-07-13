@@ -5,7 +5,7 @@ import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.Indexes;
 import lombok.Data;
 import org.springframework.data.mongodb.core.mapping.Document;
-import util.E;
+import com.boha.kasietransie.util.E;
 
 import java.util.logging.Logger;
 

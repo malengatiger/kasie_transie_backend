@@ -1,11 +1,8 @@
 package com.boha.kasietransie.services;
 
 import com.boha.kasietransie.data.dto.Landmark;
-import com.boha.kasietransie.data.dto.Route;
-import com.boha.kasietransie.data.dto.RouteLandmark;
 import com.boha.kasietransie.data.repos.LandmarkRepository;
 import com.boha.kasietransie.data.repos.RouteRepository;
-import com.github.davidmoten.geo.GeoHash;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import org.springframework.data.geo.Distance;
@@ -13,7 +10,7 @@ import org.springframework.data.geo.GeoResult;
 import org.springframework.data.geo.GeoResults;
 import org.springframework.data.geo.Metrics;
 import org.springframework.stereotype.Service;
-import util.E;
+import com.boha.kasietransie.util.E;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,9 +30,6 @@ public class LandmarkService {
     }
 
     public Landmark addBasicLandmark(Landmark landmark) {
-        String geoHash = GeoHash.encodeHash(landmark.getPosition().getLatitude(),
-                landmark.getPosition().getLongitude());
-        landmark.setGeoHash(geoHash);
         logger.info(".... about to insert landmark ...");
         Landmark m = landmarkRepository.insert(landmark);
         logger.info(".... inserted landmark ..." + gson.toJson(m));

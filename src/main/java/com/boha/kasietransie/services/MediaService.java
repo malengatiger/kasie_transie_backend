@@ -1,7 +1,5 @@
 package com.boha.kasietransie.services;
 
-import com.boha.kasietransie.controllers.ListController;
-import com.boha.kasietransie.data.dto.VehicleDeparture;
 import com.boha.kasietransie.data.dto.VehicleMediaRequest;
 import com.boha.kasietransie.data.dto.VehiclePhoto;
 import com.boha.kasietransie.data.dto.VehicleVideo;
@@ -14,9 +12,8 @@ import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
-import util.E;
+import com.boha.kasietransie.util.E;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 

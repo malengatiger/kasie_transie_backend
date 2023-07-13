@@ -7,7 +7,7 @@ import com.mongodb.client.model.Indexes;
 import lombok.Data;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
-import util.E;
+import com.boha.kasietransie.util.E;
 
 import java.util.logging.Logger;
 
@@ -26,7 +26,7 @@ public class City  {
     private String stateName;
     private String countryName;
     private String province;
-    private String geoHash;
+    //private //String geoHash;
     private Position position;
     private double latitude;
     private double longitude;

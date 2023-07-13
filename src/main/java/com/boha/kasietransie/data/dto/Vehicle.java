@@ -7,7 +7,7 @@ import com.mongodb.client.model.Indexes;
 import lombok.Data;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
-import util.E;
+import com.boha.kasietransie.util.E;
 
 import java.util.logging.Logger;
 
@@ -18,6 +18,7 @@ public class Vehicle {
     @Id
     private String _id;
     String ownerId;
+    String cellphone;
     String vehicleId;
     String associationId;
     String countryId;

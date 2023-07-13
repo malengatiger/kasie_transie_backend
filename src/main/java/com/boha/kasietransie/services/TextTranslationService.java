@@ -4,7 +4,6 @@ package com.boha.kasietransie.services;
 
 import com.boha.kasietransie.data.TranslationBag;
 import com.boha.kasietransie.data.TranslationInput;
-import com.boha.kasietransie.data.dto.AmbassadorCheckIn;
 import com.boha.kasietransie.data.repos.TranslationBagRepository;
 import com.google.cloud.translate.v3.*;
 import com.google.gson.Gson;
@@ -14,12 +13,9 @@ import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
-import org.springframework.data.mongodb.core.query.Criteria;
-import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
-import util.E;
+import com.boha.kasietransie.util.E;
 
 import java.io.File;
 import java.io.IOException;

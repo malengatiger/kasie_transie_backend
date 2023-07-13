@@ -55,9 +55,6 @@ public class DispatchService {
     }
 
     public DispatchRecord addDispatchRecord(DispatchRecord dispatchRecord) {
-        String geoHash = GeoHash.encodeHash(dispatchRecord.getPosition().getLatitude(),
-                dispatchRecord.getPosition().getLongitude());
-        dispatchRecord.setGeoHash(geoHash);
         DispatchRecord rec = dispatchRecordRepository.insert(dispatchRecord);
         messagingService.sendMessage(rec);
         return rec;

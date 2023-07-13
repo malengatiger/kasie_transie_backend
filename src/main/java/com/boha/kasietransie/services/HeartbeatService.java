@@ -28,9 +28,6 @@ public class HeartbeatService {
     }
 
     public int addVehicleHeartbeat(VehicleHeartbeat heartbeat) {
-        String geoHash = GeoHash.encodeHash(heartbeat.getPosition().getLatitude(),
-                heartbeat.getPosition().getLongitude());
-        heartbeat.setGeoHash(geoHash);
         heartbeatRepository.insert(heartbeat);
        return 0;
     }

@@ -1,8 +1,11 @@
-ownerName,vehicleReg,model,make,year,passengerCapacity
-Big John Tate,DBK 52 GP,Quantum,Toyota,2021,16
-Frederick Johnson,BVD 50 GP,Quantum,Toyota,2020,16
-David J Tate,PVF 17 GP,Quantum,Toyota,2018,16
-Mary Ferreira,VTR 65 GP,Quantum,Toyota,2014,16
-Samuel Nkosi,DGV 18 GP,Quantum,Toyota,2019,16
-Florence Deepfake,DXV 98 GP,Quantum,Toyota,2019,16
-Taboo Josephs,PTB 18 GP,Quantum,Toyota,2017,16
+ownerName,cellphone,vehicleReg,model,make,year,passengerCapacity
+Big John Tate,+27729990011,DBK 52 GP,Quantum,Toyota,2021,16
+Big John Tate,+27729990011,DFR 89 GP,Quantum,Toyota,2022,16
+Big John Tate,+27729990011,RDF 55 GP,Quantum,Toyota,2022,16
+Big John Tate,+27729990011,DBB 77 GP,Quantum,Toyota,2023,16
+Frederick Johnson,+27729990012,BVD 50 GP,Quantum,Toyota,2020,16
+David J Tate,+27729990013,PVF 17 GP,Quantum,Toyota,2018,16
+Mary Ferreira,+27729990014,VTR 65 GP,Quantum,Toyota,2014,16
+Samuel Nkosi,+27729990015,DGV 18 GP,Quantum,Toyota,2019,16
+Florence Peters,+27729990016,DXV 98 GP,Quantum,Toyota,2019,16
+Taboo Joe Josephs,+27729990017,PTB 18 GP,Quantum,Toyota,2017,16

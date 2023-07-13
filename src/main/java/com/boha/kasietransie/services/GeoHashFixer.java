@@ -30,42 +30,6 @@ public class GeoHashFixer {
         this.stateRepository = stateRepository;
         this.cityRepository = cityRepository;
     }
-
-    public String addGeoHashes() {
-        DateTime start = DateTime.now();
-        var countries = countryRepository.findAll();
-        for (Country country : countries) {
-            String geoHash = GeoHash.encodeHash(country.getPosition().getLatitude(),
-                    country.getPosition().getLongitude());
-            country.setGeoHash(geoHash);
-        }
-        logger.info(MM + " start saving countries ... : " + countries.size());
-        countryRepository.saveAll(countries);
-        logger.info(MM + "countries saved: " + countries.size());
-
-        var cities = fixCities();
-        DateTime end = DateTime.now();
-        long d = end.getMillis() - start.getMillis();
-        long elapsed = d/1000;
-        String sb = MM + " countries updated: " + countries.size() + "\n" +
-                MM + " cities updated: " + cities + "\n" +
-                MM + " elapsed time: " + elapsed + " seconds" + "\n";
-        logger.info(sb);
-        return sb;
-    }
-    public int fixCities() {
-        var cities = cityRepository.findAll();
-        for (City city : cities) {
-            String geoHash = GeoHash.encodeHash(city.getPosition().getLatitude(),
-                    city.getPosition().getLongitude());
-            city.setGeoHash(geoHash);
-        }
-        logger.info(MM + "start saving cities in bulk ....");
-
-        cityRepository.saveAll(cities);
-        logger.info(MM + "cities saved: " + cities.size());
-
-        return cities.size();
-    }
 }
+
 

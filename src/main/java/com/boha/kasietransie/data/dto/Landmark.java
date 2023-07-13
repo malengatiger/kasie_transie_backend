@@ -2,12 +2,11 @@ package com.boha.kasietransie.data.dto;
 
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
-import com.mongodb.client.model.IndexOptions;
 import com.mongodb.client.model.Indexes;
 import lombok.Data;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
-import util.E;
+import com.boha.kasietransie.util.E;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,7 +25,7 @@ public class Landmark {
     double longitude;
     double distance;
     String landmarkName;
-    String geoHash;
+    //String geoHash;
     List<RouteInfo> routeDetails = new ArrayList<>();
     Position position;
 

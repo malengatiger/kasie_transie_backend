@@ -6,7 +6,7 @@ import com.mongodb.client.model.Indexes;
 import lombok.Data;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
-import util.E;
+import com.boha.kasietransie.util.E;
 
 import java.util.logging.Logger;
 
@@ -20,7 +20,7 @@ public class VehicleArrival {
     String landmarkId;
     String landmarkName;
     Position position;
-    String geoHash;
+    //String geoHash;
     String created;
     String vehicleId;
     String associationId;

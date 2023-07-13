@@ -7,18 +7,25 @@ import com.boha.kasietransie.data.dto.*;
 import com.boha.kasietransie.services.*;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import util.CustomErrorResponse;
-import util.E;
+import com.boha.kasietransie.util.CustomErrorResponse;
+import com.boha.kasietransie.util.E;
 
+import java.io.BufferedInputStream;
+import java.io.File;
+import java.io.FileInputStream;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -467,10 +474,52 @@ public class ListController {
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(
                     new CustomErrorResponse(400,
-                            "countVehicleHeartbeats failed: " + e.getMessage(),
+                            "getOwnerVehicles failed: " + e.getMessage(),
                             new DateTime().toDateTimeISO().toString()));
         }
     }
+    @GetMapping("/downloadExampleVehiclesFile")
+    public ResponseEntity<Object> downloadExampleVehiclesFile(HttpServletRequest request, final HttpServletResponse response) {
+        try {
+            File file = associationService
+                    .downloadExampleVehiclesFile();
+            response.setHeader("Cache-Control", "must-revalidate");
+            response.setHeader("Pragma", "public");
+            response.setHeader("Content-Transfer-Encoding", "binary");
+            response.setHeader("Content-disposition", "attachment; ");
+
+            BufferedInputStream bufferedInputStream = new BufferedInputStream(new FileInputStream(file));
+            FileCopyUtils.copy(bufferedInputStream, response.getOutputStream());
+            return ResponseEntity.ok(file);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(
+                    new CustomErrorResponse(400,
+                            "downloadExampleVehiclesFile failed: " + e.getMessage(),
+                            new DateTime().toDateTimeISO().toString()));
+        }
+    }
+
+    @GetMapping("/downloadExampleUsersFile")
+    public ResponseEntity<Object> downloadExampleUsersFile(HttpServletRequest request, final HttpServletResponse response) {
+        try {
+            File file = associationService
+                    .downloadExampleUsersFile();
+            response.setHeader("Cache-Control", "must-revalidate");
+            response.setHeader("Pragma", "public");
+            response.setHeader("Content-Transfer-Encoding", "binary");
+            response.setHeader("Content-disposition", "attachment; ");
+
+            BufferedInputStream bufferedInputStream = new BufferedInputStream(new FileInputStream(file));
+            FileCopyUtils.copy(bufferedInputStream, response.getOutputStream());
+            return ResponseEntity.ok(file);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(
+                    new CustomErrorResponse(400,
+                            "downloadExampleVehiclesFile failed: " + e.getMessage(),
+                            new DateTime().toDateTimeISO().toString()));
+        }
+    }
+
     @GetMapping("/getVehicleMediaRequests")
     public ResponseEntity<Object> getVehicleMediaRequests(@RequestParam String vehicleId) {
         try {

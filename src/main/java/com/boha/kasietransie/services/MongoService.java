@@ -5,16 +5,11 @@ import com.boha.kasietransie.data.dto.*;
 import com.boha.kasietransie.data.repos.CityRepository;
 import com.boha.kasietransie.data.repos.CountryRepository;
 import com.boha.kasietransie.data.repos.StateRepository;
-import com.github.davidmoten.geo.GeoHash;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.mongodb.bulk.BulkWriteResult;
 import com.mongodb.client.MongoClient;
-import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
-import com.mongodb.client.model.IndexOptions;
-import com.mongodb.client.model.Indexes;
-import org.bson.Document;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.core.io.Resource;
@@ -22,7 +17,7 @@ import org.springframework.core.io.ResourceLoader;
 import org.springframework.data.mongodb.core.BulkOperations;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Service;
-import util.E;
+import com.boha.kasietransie.util.E;
 
 import java.io.File;
 import java.io.IOException;
@@ -32,7 +27,6 @@ import java.nio.file.Paths;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 import java.util.logging.Logger;
@@ -80,11 +74,7 @@ public class MongoService {
     private void countriesBulkInsert(List<Country> countries) {
         logger.info("\n\n" + E.RAIN_DROP + E.RAIN_DROP + "Bulk insert of " + countries.size() + " countries starting ... ");
         Instant start = Instant.now();
-        for (Country country : countries) {
-            String geoHash = GeoHash.encodeHash(country.getPosition().getLatitude(),
-                    country.getPosition().getLongitude());
-            country.setGeoHash(geoHash);
-        }
+
         BulkOperations bulkInsertion = mongoTemplate.bulkOps(
                 BulkOperations.BulkMode.UNORDERED, Country.class);
         bulkInsertion.insert(countries);
@@ -124,11 +114,6 @@ public class MongoService {
                 " Bulk insert of " + cities.size() + " cities starting ... ");
         Instant start = Instant.now();
 
-        for (City city : cities) {
-            String geoHash = GeoHash.encodeHash(city.getPosition().getLatitude(),
-                    city.getPosition().getLongitude());
-            city.setGeoHash(geoHash);
-        }
 
         int inserted = 0;
         BulkWriteResult bulkWriteResult = null;
@@ -219,8 +204,7 @@ public class MongoService {
                 List<Double> list = new ArrayList<>();
                 list.add(longitude);
                 list.add(latitude);
-                countryPosition.setLatitude(latitude);
-                countryPosition.setLongitude(longitude);
+
                 countryPosition.setCoordinates(list);
                 //
                 country.setPosition(countryPosition);
@@ -272,8 +256,6 @@ public class MongoService {
                             List<Double> coords = new ArrayList<>();
                             coords.add(lng);
                             coords.add(lat);
-                            cityPos.setLatitude(lat);
-                            cityPos.setLongitude(lng);
                             cityPos.setCoordinates(coords);
                             //
                             city.setPosition(cityPos);
@@ -353,8 +335,6 @@ public class MongoService {
             List<Double> list = new ArrayList<>();
             list.add(longitude);
             list.add(latitude);
-            position.setLatitude(latitude);
-            position.setLongitude(longitude);
             position.setCoordinates(list);
             //
             city.setPosition(position);
