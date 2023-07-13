@@ -2,6 +2,8 @@ package com.boha.kasietransie.services;
 
 import com.boha.kasietransie.data.dto.*;
 import com.boha.kasietransie.data.repos.*;
+import com.boha.kasietransie.util.Constants;
+import com.boha.kasietransie.util.E;
 import com.boha.kasietransie.util.VehicleUploadResponse;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.gson.Gson;
@@ -11,8 +13,6 @@ import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Service;
-import com.boha.kasietransie.util.Constants;
-import com.boha.kasietransie.util.E;
 
 import java.io.File;
 import java.io.IOException;
@@ -42,7 +42,6 @@ public class AssociationService {
     private final MongoTemplate mongoTemplate;
 
 
-
     public AssociationService(AppErrorRepository appErrorRepository,
                               AssociationRepository associationRepository,
                               UserService userService,
@@ -64,21 +63,37 @@ public class AssociationService {
         logger.info(MM + " AssociationService constructed ");
 
     }
-//    @Transactional
+
+    //    @Transactional
     public RegistrationBag registerAssociation(Association association) throws Exception {
         logger.info(E.LEAF + E.LEAF + " registerAssociation starting ........... ");
         association.setDateRegistered(DateTime.now().toDateTimeISO().toString());
 
         User u = new User();
-        u.setAssociationId(association.getAssociationId());
+        if (association.getAssociationId() == null) {
+            association.setAssociationId(UUID.randomUUID().toString());
+            u.setAssociationId(association.getAssociationId());
+        } else {
+            u.setAssociationId(association.getAssociationId());
+        }
         u.setFirstName(association.getAdminUserFirstName());
         u.setLastName(association.getAdminUserLastName());
         u.setCellphone(association.getAdminCellphone());
         u.setPassword(UUID.randomUUID().toString());
         u.setEmail(association.getAdminEmail());
         u.setAssociationName(association.getAssociationName());
-        u.setCountryId(association.getCountryId());
-        u.setCountryName(association.getCountryName());
+        if (association.getCountryId() == null) {
+            List<Country> countries = countryRepository.findByName(association.getCountryName());
+            if (!countries.isEmpty()) {
+                u.setCountryId(countries.get(0).getCountryId());
+                association.setCountryId(countries.get(0).getCountryId());
+                association.setCountryName(countries.get(0).getName());
+            }
+        } else {
+            u.setCountryId(association.getCountryId());
+            u.setCountryName(association.getCountryName());
+
+        }
         u.setDateRegistered(DateTime.now().toDateTimeISO().toString());
         u.setUserType(Constants.ASSOCIATION_OFFICIAL);
 
@@ -97,12 +112,13 @@ public class AssociationService {
             settingsModel.setCommuterGeoQueryRadius(50);
             settingsModel.setGeofenceRadius(200);
             settingsModel.setHeartbeatIntervalSeconds(300);
-            settingsModel.setLoiteringDelay(30);
+            settingsModel.setLoiteringDelay(60);
             settingsModel.setNumberOfLandmarksToScan(100);
             settingsModel.setRefreshRateInSeconds(300);
             settingsModel.setVehicleGeoQueryRadius(100);
-            settingsModel.setVehicleSearchMinutes(15);
+            settingsModel.setVehicleSearchMinutes(30);
             settingsModel.setCommuterSearchMinutes(30);
+
             settingsModelRepository.insert(settingsModel);
             logger.info(E.LEAF + E.LEAF + " Association: " + ass.getAssociationName() + " added to MongoDB database");
 
@@ -117,7 +133,7 @@ public class AssociationService {
 
         } catch (Exception e) {
             try {
-                if (u.getUserId() == null) {
+                if (u.getUserId() != null) {
                     FirebaseAuth.getInstance().deleteUser(u.getUserId());
                     logger.info(E.RED_DOT + "Successfully deleted user.");
                 }
@@ -130,6 +146,7 @@ public class AssociationService {
             }
 
         }
+
         throw new Exception("Firebase or MongoDB failed to create user or " +
                 "association; registration broke down; like, crashed and burned!!");
     }
@@ -137,15 +154,19 @@ public class AssociationService {
     public SettingsModel addSettingsModel(SettingsModel model) {
         return settingsModelRepository.insert(model);
     }
+
     public AppError addAppError(AppError error) {
         return appErrorRepository.insert(error);
     }
+
     public List<AppError> getAssociationAppErrors(String associationId) {
         return appErrorRepository.findByAssociationId(associationId);
     }
+
     public List<SettingsModel> getAssociationSettingsModels(String associationId) {
         return settingsModelRepository.findByAssociationId(associationId);
     }
+
     public List<Association> getAssociations() {
         return associationRepository.findAll();
     }
@@ -163,10 +184,12 @@ public class AssociationService {
 
         return resource.getFile();
     }
+
     public File downloadExampleVehiclesFile() throws IOException {
         Resource resource1 = resourceLoader.getResource("classpath:vehicles.csv");
         return resource1.getFile();
     }
+
     public RegistrationBag generateFakeAssociation(String associationName,
                                                    String email,
                                                    String testCellphoneNumber,
@@ -208,8 +231,8 @@ public class AssociationService {
 
         File userFile = resource.getFile();
         File carFile = resource1.getFile();
-        List<User> users = userService.importUsersFromCSV(userFile,ass.getAssociationId());
-        List<VehicleUploadResponse> cars = vehicleService.importVehiclesFromCSV(carFile,ass.getAssociationId());
+        List<User> users = userService.importUsersFromCSV(userFile, ass.getAssociationId());
+        List<VehicleUploadResponse> cars = vehicleService.importVehiclesFromCSV(carFile, ass.getAssociationId());
 
         logger.info(XX + " Fake association on the books! " + E.LEAF +
                 " users: " + users.size() +
@@ -219,5 +242,6 @@ public class AssociationService {
 
         return bag;
     }
-    static final String XX = E.RED_APPLE + E.RED_APPLE ;
+
+    static final String XX = E.RED_APPLE + E.RED_APPLE;
 }
