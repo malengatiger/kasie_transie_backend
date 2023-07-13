@@ -6,6 +6,7 @@ import com.boha.kasietransie.data.TranslationInput;
 import com.boha.kasietransie.data.dto.VehicleMediaRequest;
 import com.boha.kasietransie.data.dto.*;
 import com.boha.kasietransie.services.*;
+import com.boha.kasietransie.util.VehicleUploadResponse;
 import com.google.common.io.Files;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -565,7 +566,7 @@ public class DataController {
             @RequestParam String associationId,
             @RequestPart MultipartFile document) throws IOException {
 
-        List<Vehicle> vehicles;
+        List<VehicleUploadResponse> vehicles;
         String doc = document.getOriginalFilename();
         if (doc == null) {
             return ResponseEntity.badRequest().body(

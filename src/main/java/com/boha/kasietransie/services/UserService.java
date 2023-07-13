@@ -62,7 +62,7 @@ public class UserService {
 
             ApiFuture<UserRecord> userRecordFuture = firebaseAuth.createUserAsync(createRequest);
             UserRecord userRecord = userRecordFuture.get();
-            logger.info("\uD83E\uDDE1\uD83E\uDDE1 userRecord from Firebase : " + gson.toJson(userRecord));
+            logger.info("\uD83E\uDDE1\uD83E\uDDE1 userRecord from Firebase : " + userRecord.getEmail());
             if (userRecord.getUid() != null) {
                 String uid = userRecord.getUid();
                 user.setUserId(uid);

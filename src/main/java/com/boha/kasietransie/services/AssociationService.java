@@ -2,6 +2,7 @@ package com.boha.kasietransie.services;
 
 import com.boha.kasietransie.data.dto.*;
 import com.boha.kasietransie.data.repos.*;
+import com.boha.kasietransie.util.VehicleUploadResponse;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -208,7 +209,7 @@ public class AssociationService {
         File userFile = resource.getFile();
         File carFile = resource1.getFile();
         List<User> users = userService.importUsersFromCSV(userFile,ass.getAssociationId());
-        List<Vehicle> cars = vehicleService.importVehiclesFromCSV(carFile,ass.getAssociationId());
+        List<VehicleUploadResponse> cars = vehicleService.importVehiclesFromCSV(carFile,ass.getAssociationId());
 
         logger.info(XX + " Fake association on the books! " + E.LEAF +
                 " users: " + users.size() +
