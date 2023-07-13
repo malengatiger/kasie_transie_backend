@@ -122,6 +122,7 @@ public class ListController {
         try {
             List<Vehicle> ass = vehicleService
                     .getAssociationVehicles(associationId);
+            logger.info(E.LEAF+ " getAssociationVehicles found: " + ass.size());
             return ResponseEntity.ok(ass);
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(

@@ -23,6 +23,7 @@
 3. 🌀🌀Set up Eldorado Park folks!
 3.1 🌀🌀create user and vehicle files
 3.2 🌀🌀assign owners to vehicles
+3.2.1 🌀🌀Print QRCodes for all --> /getAssociationVehicles
 3.3 🌀🌀install all apps on our own devices to tree-shake the setup process
 3.4 🌀🌀install apps on Eldorado Park devices
 3.5 🍎🍎🍎🍎 Ready to Rumble!!

@@ -63,18 +63,29 @@ public class MonitorAuthenticationFilter extends OncePerRequestFilter {
         //allow getCountries
         if (httpServletRequest.getRequestURI().contains("getCountries")
                 || httpServletRequest.getRequestURI().contains("addCountry")) {
-            LOGGER.info("" + mm + " contextPath: " + httpServletRequest.getContextPath()
+            LOGGER.info(mm + " contextPath: " + httpServletRequest.getContextPath()
                     + E.AMP + " requestURI: " + httpServletRequest.getRequestURI());
-            LOGGER.info("" + mm + " allowing addCountry and getCountries without authentication, is this OK?");
+            LOGGER.info(mm + " allowing addCountry and getCountries without authentication, is this OK?");
+
+            doFilter(httpServletRequest, httpServletResponse, filterChain);
+            return;
+        }
+        //allow registerAssociation, downloadExampleUsersFile, downloadExampleVehiclesFile
+        if (httpServletRequest.getRequestURI().contains("downloadExampleUsersFile")
+                || httpServletRequest.getRequestURI().contains("registerAssociation")
+                || httpServletRequest.getRequestURI().contains("downloadExampleVehiclesFile")) {
+            LOGGER.info(mm + " contextPath: " + httpServletRequest.getContextPath()
+                    + E.AMP + " requestURI: " + httpServletRequest.getRequestURI());
+            LOGGER.info(mm + " allowing downloadExampleVehiclesFile and downloadExampleUsersFile without authentication, is this OK?");
 
             doFilter(httpServletRequest, httpServletResponse, filterChain);
             return;
         }
         //allow api-docs
         if (httpServletRequest.getRequestURI().contains("api-docs")) {
-            LOGGER.info("" + mm + " contextPath: " + httpServletRequest.getContextPath()
+            LOGGER.info(mm + " contextPath: " + httpServletRequest.getContextPath()
                     + E.AMP + " requestURI: " + httpServletRequest.getRequestURI() + "\n\n");
-            LOGGER.info("" + mm + " allowing swagger openapi call");
+            LOGGER.info(mm + " allowing swagger openapi call");
 
             doFilter(httpServletRequest, httpServletResponse, filterChain);
             return;
